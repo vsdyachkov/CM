@@ -277,7 +277,7 @@
 
 + (void) setLinksForSingleRowInEntity: (NSEntityDescription*) desc andJsonDict: (NSDictionary*) json
 {
-    
+    NSLog(@"Linking comming soon!");
 }
 
 + (void) mapAllEntityWithJson: (NSDictionary*) json

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F4810DE19AE3A110032E468 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4810DB19AE3A110032E468 /* CoreMapping.m */; };
+		8F4810DF19AE3A110032E468 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4810DD19AE3A110032E468 /* NSManagedObject+manager.m */; };
 		8F75977B19AC83D900A5F389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977A19AC83D900A5F389 /* Foundation.framework */; };
 		8F75977D19AC83D900A5F389 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977C19AC83D900A5F389 /* CoreGraphics.framework */; };
 		8F75977F19AC83D900A5F389 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977E19AC83D900A5F389 /* UIKit.framework */; };
@@ -27,8 +29,6 @@
 		8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */; };
 		8F7597C019ACBB5400A5F389 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */; };
 		8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */; };
-		8F7597CA19ACC7A000A5F389 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C919ACC7A000A5F389 /* CoreMapping.m */; };
-		8F7597CD19ACD80A00A5F389 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */; };
 		8F7597D019ADE3EA00A5F389 /* test_add.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597CF19ADE3EA00A5F389 /* test_add.json */; };
 /* End PBXBuildFile section */
 
@@ -43,6 +43,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		8F4810DA19AE3A110032E468 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMapping.h; path = CoreMapping/CoreMapping.h; sourceTree = "<group>"; };
+		8F4810DB19AE3A110032E468 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = CoreMapping/CoreMapping.m; sourceTree = "<group>"; };
+		8F4810DC19AE3A110032E468 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+manager.h"; path = "CoreMapping/NSManagedObject+manager.h"; sourceTree = "<group>"; };
+		8F4810DD19AE3A110032E468 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+manager.m"; path = "CoreMapping/NSManagedObject+manager.m"; sourceTree = "<group>"; };
 		8F75977719AC83D900A5F389 /* CoreMapping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreMapping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F75977A19AC83D900A5F389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8F75977C19AC83D900A5F389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -70,10 +74,6 @@
 		8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+mapping.m"; path = "CoreMapping/NSEntityDescription+mapping.m"; sourceTree = "<group>"; };
 		8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
 		8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
-		8F7597C819ACC7A000A5F389 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMapping.h; sourceTree = "<group>"; };
-		8F7597C919ACC7A000A5F389 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreMapping.m; sourceTree = "<group>"; };
-		8F7597CB19ACD80A00A5F389 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+manager.h"; sourceTree = "<group>"; };
-		8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+manager.m"; sourceTree = "<group>"; };
 		8F7597CF19ADE3EA00A5F389 /* test_add.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test_add.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -189,10 +189,10 @@
 				8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */,
 				8F7597BE19ACBB5400A5F389 /* NSEntityDescription+mapping.h */,
 				8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */,
-				8F7597CB19ACD80A00A5F389 /* NSManagedObject+manager.h */,
-				8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */,
-				8F7597C819ACC7A000A5F389 /* CoreMapping.h */,
-				8F7597C919ACC7A000A5F389 /* CoreMapping.m */,
+				8F4810DC19AE3A110032E468 /* NSManagedObject+manager.h */,
+				8F4810DD19AE3A110032E468 /* NSManagedObject+manager.m */,
+				8F4810DA19AE3A110032E468 /* CoreMapping.h */,
+				8F4810DB19AE3A110032E468 /* CoreMapping.m */,
 			);
 			name = "CoreMapping Group";
 			sourceTree = "<group>";
@@ -297,10 +297,10 @@
 				8F7597B419AC849800A5F389 /* MyEntity.m in Sources */,
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
 				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
-				8F7597CD19ACD80A00A5F389 /* NSManagedObject+manager.m in Sources */,
 				8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+mapping.m in Sources */,
+				8F4810DF19AE3A110032E468 /* NSManagedObject+manager.m in Sources */,
 				8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */,
-				8F7597CA19ACC7A000A5F389 /* CoreMapping.m in Sources */,
+				8F4810DE19AE3A110032E468 /* CoreMapping.m in Sources */,
 				8F75978919AC83D900A5F389 /* main.m in Sources */,
 				8F7597C019ACBB5400A5F389 /* NSEntityDescription+mapping.m in Sources */,
 			);
@@ -501,6 +501,7 @@
 				8F7597AB19AC83D900A5F389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		8F7597AC19AC83D900A5F389 /* Build configuration list for PBXNativeTarget "CoreMappingTests" */ = {
 			isa = XCConfigurationList;
@@ -509,6 +510,7 @@
 				8F7597AE19AC83D900A5F389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 
