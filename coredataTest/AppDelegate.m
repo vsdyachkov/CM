@@ -21,20 +21,14 @@
     
     [CoreMapping clearDatabase];
     
-    NSDictionary* json = [self jsonWithFileName:@"test"];
+    NSDictionary* json = [self jsonWithFileName:@"test_add"];
     
     //[CoreMapping mapAllEntityWithJson:json];
     
     [CoreMapping saveInBackgroundWithBlock:^(NSManagedObjectContext *context) {
-        
-        [CoreMapping mapAllEntityWithJson:json];
-
+        [CoreMapping syncWithJson:json];
     } completion:^(BOOL success, NSError *error) {
-        
-        for (MyEntity* obj in [MyEntity findAll]) {
-            NSLog(@"name: %@", obj.name);
-        }
-        
+        [CoreMapping shortStatus];
     }];
     
     return YES;

@@ -8,9 +8,9 @@
 
 #import "NSManagedObject+manager.h"
 
-@implementation NSManagedObject (ManagedObjectExtension)
+@implementation NSManagedObject (manager)
 
-+ (NSArray*)findWithPredicate: (NSPredicate*) predicate
++ (NSArray*)findRowWithPredicate: (NSPredicate*) predicate
 {
     NSString* className = NSStringFromClass(self);
     NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CoreMapping managedObjectContext]];
@@ -22,19 +22,19 @@
     return arr;
 }
 
-+ (NSArray*)findAll
++ (NSArray*)findAllRows
 {
-    return [self findWithPredicate:nil];
+    return [self findRowWithPredicate:nil];
 }
 
-+ (id) findFirstWithPredicate: (NSPredicate*) predicate
++ (id) findFirstRowWithPredicate: (NSPredicate*) predicate
 {
     NSString* className = NSStringFromClass(self);
     NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CoreMapping managedObjectContext]];
     NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entity.name];
     [request setFetchLimit:1];
 	
-	NSArray *results = [self findWithPredicate:predicate];
+	NSArray *results = [self findRowWithPredicate:predicate];
 	if (results.count > 0) {
 		return results [0];
 	} else {
@@ -42,9 +42,9 @@
     }
 }
 
-+ (void)deleteAll
++ (void)deleteAllRows
 {
-    NSArray *items = [self findAll];
+    NSArray *items = [self findAllRows];
     for (NSManagedObject *managedObject in items) {
         [[CoreMapping managedObjectContext] deleteObject:managedObject];
     }

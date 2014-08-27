@@ -7,8 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "NSEntityDescription+EntityExtension.h"
-#import "NSAttributeDescription+AttributeExtension.h"
+#import "NSEntityDescription+mapping.h"
+#import "NSAttributeDescription+mapping.h"
 #import "NSManagedObject+manager.h"
 
 static NSString* SQLFileName = @"CoreMapping";
@@ -20,14 +20,17 @@ static NSManagedObjectModel* managedObjectModel;
 
 @interface CoreMapping : NSObject
 
-+ (NSPersistentStoreCoordinator *)persistentStoreCoordinator;
-+ (NSManagedObjectContext *)managedObjectContext;
-+ (NSManagedObjectModel *)managedObjectModel;
++ (NSPersistentStoreCoordinator*) persistentStoreCoordinator;
++ (NSManagedObjectContext*) managedObjectContext;
++ (NSManagedObjectModel*) managedObjectModel;
 
-+ (void)saveContext;
-+ (void)clearDatabase;
++ (void) saveContext;
++ (void) clearDatabase;
++ (void) status;
++ (void) shortStatus;
 
 + (void) mapAllEntityWithJson: (NSDictionary*) json;
++ (void) syncWithJson: (NSDictionary*) json;
 
 + (void) saveInBackgroundWithBlock: (void(^)(NSManagedObjectContext *context))block completion:(void(^)(BOOL success, NSError *error)) completion;
 

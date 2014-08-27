@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
-#import "NSEntityDescription+EntityExtension.h"
+#import "NSEntityDescription+mapping.h"
 
-@implementation NSEntityDescription (EntityExtension)
+@implementation NSEntityDescription (mapping)
 
 - (NSString*) mappingName
 {
@@ -31,6 +31,7 @@
     }];
     return key;
 }
+
 
 + (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate
 {

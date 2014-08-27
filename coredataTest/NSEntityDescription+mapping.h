@@ -1,5 +1,5 @@
 //
-//  NSAttributeDescription+AttributeExtension.h
+//  NSEntityDescription+EntityExtension.h
 //  CoreMapping
 //
 //  Created by Dyachkov Victor on 26.08.14.
@@ -8,8 +8,11 @@
 
 #import <CoreData/CoreData.h>
 
-@interface NSAttributeDescription (AttributeExtension)
+@interface NSEntityDescription (mapping)
 
 - (NSString*) mappingName;
+- (NSString*) idKeyString;
+
++ (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate;
 
 @end

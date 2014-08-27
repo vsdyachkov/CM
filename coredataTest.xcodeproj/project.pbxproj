@@ -25,10 +25,11 @@
 		8F7597B419AC849800A5F389 /* MyEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B319AC849800A5F389 /* MyEntity.m */; };
 		8F7597B619AC8E7E00A5F389 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597B519AC8E7E00A5F389 /* test.json */; };
 		8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */; };
-		8F7597C019ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597BF19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m */; };
-		8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m */; };
+		8F7597C019ACBB5400A5F389 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */; };
+		8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */; };
 		8F7597CA19ACC7A000A5F389 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C919ACC7A000A5F389 /* CoreMapping.m */; };
 		8F7597CD19ACD80A00A5F389 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */; };
+		8F7597D019ADE3EA00A5F389 /* test_add.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597CF19ADE3EA00A5F389 /* test_add.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,14 +66,15 @@
 		8F7597B519AC8E7E00A5F389 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MyEntity+CustomLogic.h"; sourceTree = "<group>"; };
 		8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MyEntity+CustomLogic.m"; sourceTree = "<group>"; };
-		8F7597BE19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+EntityExtension.h"; path = "CoreMapping/NSEntityDescription+EntityExtension.h"; sourceTree = "<group>"; };
-		8F7597BF19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+EntityExtension.m"; path = "CoreMapping/NSEntityDescription+EntityExtension.m"; sourceTree = "<group>"; };
-		8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+AttributeExtension.h"; path = "CoreMapping/NSAttributeDescription+AttributeExtension.h"; sourceTree = "<group>"; };
-		8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+AttributeExtension.m"; path = "CoreMapping/NSAttributeDescription+AttributeExtension.m"; sourceTree = "<group>"; };
+		8F7597BE19ACBB5400A5F389 /* NSEntityDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+mapping.h"; path = "CoreMapping/NSEntityDescription+mapping.h"; sourceTree = "<group>"; };
+		8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+mapping.m"; path = "CoreMapping/NSEntityDescription+mapping.m"; sourceTree = "<group>"; };
+		8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
+		8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
 		8F7597C819ACC7A000A5F389 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMapping.h; sourceTree = "<group>"; };
 		8F7597C919ACC7A000A5F389 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreMapping.m; sourceTree = "<group>"; };
 		8F7597CB19ACD80A00A5F389 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+manager.h"; sourceTree = "<group>"; };
 		8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+manager.m"; sourceTree = "<group>"; };
+		8F7597CF19ADE3EA00A5F389 /* test_add.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test_add.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 			isa = PBXGroup;
 			children = (
 				8F7597B519AC8E7E00A5F389 /* test.json */,
+				8F7597CF19ADE3EA00A5F389 /* test_add.json */,
 				8F75978B19AC83D900A5F389 /* AppDelegate.h */,
 				8F75978C19AC83D900A5F389 /* AppDelegate.m */,
 				8F75978E19AC83D900A5F389 /* CoreMapping.xcdatamodeld */,
@@ -182,10 +185,10 @@
 		8F7597C419ACBC7500A5F389 /* CoreMapping Group */ = {
 			isa = PBXGroup;
 			children = (
-				8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.h */,
-				8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m */,
-				8F7597BE19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.h */,
-				8F7597BF19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m */,
+				8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+mapping.h */,
+				8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */,
+				8F7597BE19ACBB5400A5F389 /* NSEntityDescription+mapping.h */,
+				8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */,
 				8F7597CB19ACD80A00A5F389 /* NSManagedObject+manager.h */,
 				8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */,
 				8F7597C819ACC7A000A5F389 /* CoreMapping.h */,
@@ -270,6 +273,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F75978719AC83D900A5F389 /* InfoPlist.strings in Resources */,
+				8F7597D019ADE3EA00A5F389 /* test_add.json in Resources */,
 				8F75979219AC83D900A5F389 /* Images.xcassets in Resources */,
 				8F7597B619AC8E7E00A5F389 /* test.json in Resources */,
 			);
@@ -294,11 +298,11 @@
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
 				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
 				8F7597CD19ACD80A00A5F389 /* NSManagedObject+manager.m in Sources */,
-				8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m in Sources */,
+				8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+mapping.m in Sources */,
 				8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */,
 				8F7597CA19ACC7A000A5F389 /* CoreMapping.m in Sources */,
 				8F75978919AC83D900A5F389 /* main.m in Sources */,
-				8F7597C019ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m in Sources */,
+				8F7597C019ACBB5400A5F389 /* NSEntityDescription+mapping.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

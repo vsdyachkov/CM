@@ -6,9 +6,9 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
-#import "NSAttributeDescription+AttributeExtension.h"
+#import "NSAttributeDescription+mapping.h"
 
-@implementation NSAttributeDescription (AttributeExtension)
+@implementation NSAttributeDescription (mapping)
 
 - (NSString*) mappingName
 {
