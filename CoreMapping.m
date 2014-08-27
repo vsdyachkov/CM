@@ -296,6 +296,9 @@
 
 + (void) syncWithJson: (NSDictionary*) json
 {
+    if (!json)
+        return;
+    
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
         
