@@ -1,0 +1,34 @@
+{
+    "MyEntityName" :[
+        {
+        "id": "2",
+        "address": "Watkins",
+        "city": "Murray",
+        "name": "Clara"
+        },
+        {
+        "id": 1,
+        "address": 1,
+        "city": true,
+        "name": "Mcfarland"
+        },
+        {
+        "id": 2,
+        "address": "Wolf",
+        "city": "Scott",
+        "name": "Young"
+        },
+        {
+        "id": 3,
+        "address": "Roseann",
+        "city": "Claire",
+        "name": "Craig"
+        },
+        {
+        "id": 4,
+        "address": "Ivy",
+        "city": "Gillespie",
+        "name": "Kim"
+        }
+    ]
+}

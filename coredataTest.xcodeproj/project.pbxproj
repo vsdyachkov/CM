@@ -22,6 +22,13 @@
 		8F75979C19AC83D900A5F389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75978019AC83D900A5F389 /* CoreData.framework */; };
 		8F7597A419AC83D900A5F389 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597A219AC83D900A5F389 /* InfoPlist.strings */; };
 		8F7597A619AC83D900A5F389 /* CoreMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597A519AC83D900A5F389 /* CoreMappingTests.m */; };
+		8F7597B419AC849800A5F389 /* MyEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B319AC849800A5F389 /* MyEntity.m */; };
+		8F7597B619AC8E7E00A5F389 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597B519AC8E7E00A5F389 /* test.json */; };
+		8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */; };
+		8F7597C019ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597BF19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m */; };
+		8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m */; };
+		8F7597CA19ACC7A000A5F389 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C919ACC7A000A5F389 /* CoreMapping.m */; };
+		8F7597CD19ACD80A00A5F389 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +60,19 @@
 		8F7597A119AC83D900A5F389 /* CoreMappingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreMappingTests-Info.plist"; sourceTree = "<group>"; };
 		8F7597A319AC83D900A5F389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8F7597A519AC83D900A5F389 /* CoreMappingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreMappingTests.m; sourceTree = "<group>"; };
+		8F7597B219AC849800A5F389 /* MyEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEntity.h; sourceTree = "<group>"; };
+		8F7597B319AC849800A5F389 /* MyEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEntity.m; sourceTree = "<group>"; };
+		8F7597B519AC8E7E00A5F389 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
+		8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MyEntity+CustomLogic.h"; sourceTree = "<group>"; };
+		8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MyEntity+CustomLogic.m"; sourceTree = "<group>"; };
+		8F7597BE19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+EntityExtension.h"; path = "CoreMapping/NSEntityDescription+EntityExtension.h"; sourceTree = "<group>"; };
+		8F7597BF19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+EntityExtension.m"; path = "CoreMapping/NSEntityDescription+EntityExtension.m"; sourceTree = "<group>"; };
+		8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+AttributeExtension.h"; path = "CoreMapping/NSAttributeDescription+AttributeExtension.h"; sourceTree = "<group>"; };
+		8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+AttributeExtension.m"; path = "CoreMapping/NSAttributeDescription+AttributeExtension.m"; sourceTree = "<group>"; };
+		8F7597C819ACC7A000A5F389 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreMapping.h; sourceTree = "<group>"; };
+		8F7597C919ACC7A000A5F389 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreMapping.m; sourceTree = "<group>"; };
+		8F7597CB19ACD80A00A5F389 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSManagedObject+manager.h"; sourceTree = "<group>"; };
+		8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSManagedObject+manager.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -84,6 +104,7 @@
 		8F75976E19AC83D900A5F389 = {
 			isa = PBXGroup;
 			children = (
+				8F7597C419ACBC7500A5F389 /* CoreMapping Group */,
 				8F75978219AC83D900A5F389 /* CoreMapping */,
 				8F75979F19AC83D900A5F389 /* CoreMappingTests */,
 				8F75977919AC83D900A5F389 /* Frameworks */,
@@ -115,10 +136,15 @@
 		8F75978219AC83D900A5F389 /* CoreMapping */ = {
 			isa = PBXGroup;
 			children = (
+				8F7597B519AC8E7E00A5F389 /* test.json */,
 				8F75978B19AC83D900A5F389 /* AppDelegate.h */,
 				8F75978C19AC83D900A5F389 /* AppDelegate.m */,
-				8F75979119AC83D900A5F389 /* Images.xcassets */,
 				8F75978E19AC83D900A5F389 /* CoreMapping.xcdatamodeld */,
+				8F7597B219AC849800A5F389 /* MyEntity.h */,
+				8F7597B319AC849800A5F389 /* MyEntity.m */,
+				8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */,
+				8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */,
+				8F75979119AC83D900A5F389 /* Images.xcassets */,
 				8F75978319AC83D900A5F389 /* Supporting Files */,
 			);
 			path = CoreMapping;
@@ -151,6 +177,21 @@
 				8F7597A219AC83D900A5F389 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		8F7597C419ACBC7500A5F389 /* CoreMapping Group */ = {
+			isa = PBXGroup;
+			children = (
+				8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.h */,
+				8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m */,
+				8F7597BE19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.h */,
+				8F7597BF19ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m */,
+				8F7597CB19ACD80A00A5F389 /* NSManagedObject+manager.h */,
+				8F7597CC19ACD80A00A5F389 /* NSManagedObject+manager.m */,
+				8F7597C819ACC7A000A5F389 /* CoreMapping.h */,
+				8F7597C919ACC7A000A5F389 /* CoreMapping.m */,
+			);
+			name = "CoreMapping Group";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -230,6 +271,7 @@
 			files = (
 				8F75978719AC83D900A5F389 /* InfoPlist.strings in Resources */,
 				8F75979219AC83D900A5F389 /* Images.xcassets in Resources */,
+				8F7597B619AC8E7E00A5F389 /* test.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,9 +290,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8F7597B419AC849800A5F389 /* MyEntity.m in Sources */,
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
+				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
+				8F7597CD19ACD80A00A5F389 /* NSManagedObject+manager.m in Sources */,
+				8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+AttributeExtension.m in Sources */,
 				8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */,
+				8F7597CA19ACC7A000A5F389 /* CoreMapping.m in Sources */,
 				8F75978919AC83D900A5F389 /* main.m in Sources */,
+				8F7597C019ACBB5400A5F389 /* NSEntityDescription+EntityExtension.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -370,6 +418,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoreMapping/CoreMapping-Prefix.pch";
 				INFOPLIST_FILE = "CoreMapping/CoreMapping-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -383,6 +432,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoreMapping/CoreMapping-Prefix.pch";
 				INFOPLIST_FILE = "CoreMapping/CoreMapping-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
