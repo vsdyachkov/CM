@@ -12,6 +12,8 @@
 
 + (NSArray*)findRowWithPredicate: (NSPredicate*) predicate
 {
+    NSAssert(predicate, @"%@ predicate: %@", errParameter, predicate);
+    
     NSString* className = NSStringFromClass(self);
     NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CoreMapping managedObjectContext]];
     NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entity.name];
@@ -29,6 +31,8 @@
 
 + (id) findFirstRowWithPredicate: (NSPredicate*) predicate
 {
+    NSAssert(predicate, @"%@ predicate: %@", errParameter, predicate);
+    
     NSString* className = NSStringFromClass(self);
     NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CoreMapping managedObjectContext]];
     NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entity.name];

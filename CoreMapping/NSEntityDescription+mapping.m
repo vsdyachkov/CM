@@ -35,6 +35,7 @@
 
 + (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate
 {
+    NSAssert(predicate, @"%@ predicate: %@", errParameter, predicate);
     //
 }
 

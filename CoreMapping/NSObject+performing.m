@@ -12,6 +12,8 @@
 
 - (BOOL) performSelectorIfResponseFromString: (NSString*) name withObject: (id) object
 {
+    NSAssert(name || object, @"%@ name: %@, object: %@", errParameter, name, object);
+    
     if ([self respondsToSelector:NSSelectorFromString(name)]) {
         #pragma clang diagnostic push
         #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
