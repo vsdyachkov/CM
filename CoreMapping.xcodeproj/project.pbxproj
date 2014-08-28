@@ -28,7 +28,6 @@
 		8F7986DA19AF479A00BA13B9 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7986D919AF479A00BA13B9 /* City.m */; };
 		8F7986DD19AF479A00BA13B9 /* Phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7986DC19AF479A00BA13B9 /* Phone.m */; };
 		8FBF884419AF89C500BA1285 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883719AF89C500BA1285 /* CoreMapping.m */; };
-		8FBF884519AF89C500BA1285 /* MyEntity+CustomLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883919AF89C500BA1285 /* MyEntity+CustomLogic.m */; };
 		8FBF884619AF89C500BA1285 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883B19AF89C500BA1285 /* NSAttributeDescription+mapping.m */; };
 		8FBF884719AF89C500BA1285 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883D19AF89C500BA1285 /* NSEntityDescription+mapping.m */; };
 		8FBF884819AF89C500BA1285 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883F19AF89C500BA1285 /* NSManagedObject+manager.m */; };
@@ -75,8 +74,6 @@
 		8F7986DC19AF479A00BA13B9 /* Phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Phone.m; sourceTree = "<group>"; };
 		8FBF883619AF89C500BA1285 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMapping.h; path = CoreMapping/CoreMapping.h; sourceTree = "<group>"; };
 		8FBF883719AF89C500BA1285 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = CoreMapping/CoreMapping.m; sourceTree = "<group>"; };
-		8FBF883819AF89C500BA1285 /* MyEntity+CustomLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MyEntity+CustomLogic.h"; path = "CoreMapping/MyEntity+CustomLogic.h"; sourceTree = "<group>"; };
-		8FBF883919AF89C500BA1285 /* MyEntity+CustomLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MyEntity+CustomLogic.m"; path = "CoreMapping/MyEntity+CustomLogic.m"; sourceTree = "<group>"; };
 		8FBF883A19AF89C500BA1285 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
 		8FBF883B19AF89C500BA1285 /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
 		8FBF883C19AF89C500BA1285 /* NSEntityDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+mapping.h"; path = "CoreMapping/NSEntityDescription+mapping.h"; sourceTree = "<group>"; };
@@ -207,10 +204,6 @@
 		8F7597C419ACBC7500A5F389 /* CoreMapping Group */ = {
 			isa = PBXGroup;
 			children = (
-				8FBF883619AF89C500BA1285 /* CoreMapping.h */,
-				8FBF883719AF89C500BA1285 /* CoreMapping.m */,
-				8FBF883819AF89C500BA1285 /* MyEntity+CustomLogic.h */,
-				8FBF883919AF89C500BA1285 /* MyEntity+CustomLogic.m */,
 				8FBF883A19AF89C500BA1285 /* NSAttributeDescription+mapping.h */,
 				8FBF883B19AF89C500BA1285 /* NSAttributeDescription+mapping.m */,
 				8FBF883C19AF89C500BA1285 /* NSEntityDescription+mapping.h */,
@@ -221,6 +214,8 @@
 				8FBF884119AF89C500BA1285 /* NSObject+performing.m */,
 				8FBF884219AF89C500BA1285 /* CMExtensions.h */,
 				8FBF884319AF89C500BA1285 /* NSRelationshipDescription+mapping.m */,
+				8FBF883619AF89C500BA1285 /* CoreMapping.h */,
+				8FBF883719AF89C500BA1285 /* CoreMapping.m */,
 			);
 			name = "CoreMapping Group";
 			sourceTree = "<group>";
@@ -323,7 +318,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8FBF884619AF89C500BA1285 /* NSAttributeDescription+mapping.m in Sources */,
-				8FBF884519AF89C500BA1285 /* MyEntity+CustomLogic.m in Sources */,
 				8FBF884419AF89C500BA1285 /* CoreMapping.m in Sources */,
 				8F7986DA19AF479A00BA13B9 /* City.m in Sources */,
 				8FBF884819AF89C500BA1285 /* NSManagedObject+manager.m in Sources */,
@@ -455,7 +449,7 @@
 				GCC_PREFIX_HEADER = "CoreMapping/CoreMapping-Prefix.pch";
 				INFOPLIST_FILE = "CoreMapping/CoreMapping-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoreMapping;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -469,7 +463,7 @@
 				GCC_PREFIX_HEADER = "CoreMapping/CoreMapping-Prefix.pch";
 				INFOPLIST_FILE = "CoreMapping/CoreMapping-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.0;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoreMapping;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
@@ -490,7 +484,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "CoreMappingTests/CoreMappingTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoreMappingTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
@@ -508,7 +502,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "CoreMapping/CoreMapping-Prefix.pch";
 				INFOPLIST_FILE = "CoreMappingTests/CoreMappingTests-Info.plist";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = CoreMappingTests;
 				TEST_HOST = "$(BUNDLE_LOADER)";
 				WRAPPER_EXTENSION = xctest;
 			};
