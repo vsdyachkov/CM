@@ -16,6 +16,8 @@
     NSDictionary* userInfo = [self userInfo];
     NSString* value = userInfo[CoreDataPrefix];
     NSString* mapKey = (value) ? value : name;
+    
+    NSAssert(mapKey, @"%@ mapKey: %@", errParameter, mapKey);
     return mapKey;
 }
 

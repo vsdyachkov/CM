@@ -16,6 +16,8 @@
     NSDictionary* userInfo = [self userInfo];
     NSString* value = userInfo[CoreDataPrefix];
     NSString* mapKey = (value) ? value : name;
+    
+    NSAssert(mapKey, @"%@ mapKey: %@", errParameter, mapKey);
     return mapKey;
 }
 
@@ -29,13 +31,14 @@
             *stop = YES;
         }
     }];
+    
+    NSAssert(key, @"%@ key: %@", errParameter, key);
     return key;
 }
 
 
 + (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate
 {
-    NSAssert(predicate, @"%@ predicate: %@", errParameter, predicate);
     //
 }
 

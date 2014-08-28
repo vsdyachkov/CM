@@ -229,7 +229,8 @@
         */
         default: [NSException raise:@"Invalid attribute type" format:@"This type is not supported in database"]; break;
     }
-
+    
+    NSAssert(convertedValue || key, @"%@ convertedValue: %@, key: %@", errParameter, convertedValue, key);
     [obj setValue:convertedValue forKey:key];
 }
 
@@ -265,6 +266,7 @@
 
     [self mapRelationshipsWithObject:obj andJsonDict:json];
     
+    NSAssert(obj, @"%@ json: %@", errParameter, obj);
     return obj;
 }
 
