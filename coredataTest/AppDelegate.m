@@ -33,7 +33,6 @@
         [[City findAllRows] enumerateObjectsUsingBlock:^(City* obj, NSUInteger idx, BOOL *stop) {
             NSLog(@"name: '%@', phones: '%d'", obj.name, obj.phones.count);
         }];
-
     }];
     
     return YES;

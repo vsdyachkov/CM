@@ -8,7 +8,11 @@
             </userInfo>
         </attribute>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="phones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Phone" inverseName="cities" inverseEntity="Phone" syncable="YES"/>
+        <relationship name="phones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Phone" inverseName="cities" inverseEntity="Phone" syncable="YES">
+            <userInfo>
+                <entry key="CM" value="phone_id"/>
+            </userInfo>
+        </relationship>
         <userInfo>
             <entry key="ord" value="0"/>
         </userInfo>
@@ -20,7 +24,7 @@
             </userInfo>
         </attribute>
         <attribute name="string_number" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="cities" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="City" inverseName="phones" inverseEntity="City" syncable="YES">
+        <relationship name="cities" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="City" inverseName="phones" inverseEntity="City" syncable="YES">
             <userInfo>
                 <entry key="CM" value="city_id"/>
             </userInfo>
@@ -30,7 +34,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="City" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="City" positionX="-63" positionY="-18" width="128" height="105"/>
         <element name="Phone" positionX="-36" positionY="36" width="128" height="88"/>
     </elements>
 </model>
