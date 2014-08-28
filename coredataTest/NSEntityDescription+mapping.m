@@ -14,7 +14,7 @@
 {
     NSString* name = [NSString stringWithFormat:@"%@",self.name];
     NSDictionary* userInfo = [self userInfo];
-    NSString* value = userInfo[@"CM"];
+    NSString* value = userInfo[CoreDataPrefix];
     NSString* mapKey = (value) ? value : name;
     return mapKey;
 }
@@ -24,7 +24,7 @@
     NSDictionary* attributes = [self attributesByName];
     __block NSString* key;
     [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
-        if ([attr.userInfo[@"CM"] isEqualToString:@"id"]) {
+        if ([attr.userInfo[CoreDataPrefix] isEqualToString:@"id"]) {
             key = [NSString stringWithFormat:@"%@",attr.name];
             *stop = YES;
         }

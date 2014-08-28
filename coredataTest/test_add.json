@@ -34,7 +34,15 @@
 		],
         "remove": [
             1,
-            2
+            4
+        ]
+    },
+    "Street" :{
+        "add": [
+            {
+            "number": 3,
+            "entity_id": 0
+            }
         ]
     }
 }

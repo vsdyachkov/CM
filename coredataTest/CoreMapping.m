@@ -108,23 +108,33 @@
 
 + (BOOL) isArray: (id) object
 {
-    if (object && [object isKindOfClass:[NSArray class]]) {
-        return YES;
-    } else {
-        return NO;
-    }
+    return (object && [object isKindOfClass:[NSArray class]]) ? YES : NO;
 }
 
 + (BOOL) isDictionary: (id) object
 {
-    if (object && [object isKindOfClass:[NSDictionary class]]) {
-        return YES;
-    } else {
-        return NO;
-    }
+    return (object && [object isKindOfClass:[NSDictionary class]]) ? YES : NO;
 }
 
++ (NSNumber*) relationshipIdFrom: (NSRelationshipDescription*) relation to: (NSRelationshipDescription*) inverse
+{
+    if (!relation.isToMany && !inverse.isToMany) return @0;
+    if (relation.isToMany && !inverse.isToMany)  return @1;
+    if (!relation.isToMany && inverse.isToMany)  return @2;
+    if (relation.isToMany && inverse.isToMany)   return @3;
+    return nil;
+}
 
++ (NSString*) relationshipNameWithId: (NSNumber*) number
+{
+    switch (number.intValue) {
+        case 0: return @"OneToOne"; break;
+        case 1: return @"OneToMany"; break;
+        case 2: return @"ManyToOne"; break;
+        case 3: return @"ManyToMany"; break;
+        default: return nil; break;
+    }
+}
 
 #pragma mark - Core Mapping stack
 
@@ -222,6 +232,7 @@
     NSString* idString = [entity idKeyString];
     NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idString, idNumber];
     [req setPredicate:myPred];
+    
     NSArray* arr = [self.managedObjectContext executeFetchRequest:req error:nil];
     if (arr.count > 0) {
         return arr[0];
@@ -243,6 +254,24 @@
         id valueFromJson = json [mappingAttrName];
         [self mapValue:valueFromJson withJsonKey:attr.name andType:attr.attributeType andManagedObject:obj];
     }];
+    
+
+    // links check
+    
+    for (NSString* name in desc.relationshipsByName) {
+        NSRelationshipDescription* relation = desc.relationshipsByName[name];
+        NSRelationshipDescription* inverse = relation.inverseRelationship;
+        
+        NSNumber* relationTypeId = [self relationshipIdFrom:relation to:inverse];
+        NSString* relationTypeName = [self relationshipNameWithId:relationTypeId];
+        
+        NSLog(@"Entity: %@, Type: %@", desc.name, relationTypeName);
+        NSLog(@"relation: %@ -> %@ (name: %@, isToMany: %hhd)", desc.name, relation.destinationEntity.name, relation.mappingName, relation.isToMany);
+        NSLog(@"inverse:  %@ <- %@ (name: %@, isToMany: %hhd) \n\n", relation.destinationEntity.name, desc.name, inverse.mappingName, inverse.isToMany);
+    }
+    
+    //
+    
     return obj;
 }
 
@@ -273,11 +302,6 @@
             [[self managedObjectContext] deleteObject:arr[0]];
         }
     }];
-}
-
-+ (void) setLinksForSingleRowInEntity: (NSEntityDescription*) desc andJsonDict: (NSDictionary*) json
-{
-    NSLog(@"Linking comming soon!");
 }
 
 + (void) mapAllEntityWithJson: (NSDictionary*) json
@@ -317,8 +341,6 @@
                 [self removeRowsInEntity:desc withNumberArray:(NSArray*)removeArray];
             }
         }
-        
-        [self setLinksForSingleRowInEntity:desc andJsonDict:json];
 
     }];
     [self saveContext];

@@ -28,7 +28,7 @@
     [CoreMapping saveInBackgroundWithBlock:^(NSManagedObjectContext *context) {
         [CoreMapping syncWithJson:json];
     } completion:^(BOOL success, NSError *error) {
-        [CoreMapping shortStatus];
+        //[CoreMapping shortStatus];
     }];
     
     return YES;

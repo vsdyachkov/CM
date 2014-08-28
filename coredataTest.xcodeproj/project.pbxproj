@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		8F4810DE19AE3A110032E468 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4810DB19AE3A110032E468 /* CoreMapping.m */; };
 		8F4810DF19AE3A110032E468 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4810DD19AE3A110032E468 /* NSManagedObject+manager.m */; };
+		8F4810E219AF2F1F0032E468 /* NSRelationshipDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F4810E119AF2F1F0032E468 /* NSRelationshipDescription+mapping.m */; };
 		8F75977B19AC83D900A5F389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977A19AC83D900A5F389 /* Foundation.framework */; };
 		8F75977D19AC83D900A5F389 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977C19AC83D900A5F389 /* CoreGraphics.framework */; };
 		8F75977F19AC83D900A5F389 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977E19AC83D900A5F389 /* UIKit.framework */; };
@@ -47,6 +48,8 @@
 		8F4810DB19AE3A110032E468 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = CoreMapping/CoreMapping.m; sourceTree = "<group>"; };
 		8F4810DC19AE3A110032E468 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+manager.h"; path = "CoreMapping/NSManagedObject+manager.h"; sourceTree = "<group>"; };
 		8F4810DD19AE3A110032E468 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+manager.m"; path = "CoreMapping/NSManagedObject+manager.m"; sourceTree = "<group>"; };
+		8F4810E019AF2F1F0032E468 /* CMExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CMExtensions.h"; sourceTree = "<group>"; };
+		8F4810E119AF2F1F0032E468 /* NSRelationshipDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSRelationshipDescription+mapping.m"; sourceTree = "<group>"; };
 		8F75977719AC83D900A5F389 /* CoreMapping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreMapping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F75977A19AC83D900A5F389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		8F75977C19AC83D900A5F389 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -191,6 +194,8 @@
 				8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */,
 				8F4810DC19AE3A110032E468 /* NSManagedObject+manager.h */,
 				8F4810DD19AE3A110032E468 /* NSManagedObject+manager.m */,
+				8F4810E019AF2F1F0032E468 /* CMExtensions.h */,
+				8F4810E119AF2F1F0032E468 /* NSRelationshipDescription+mapping.m */,
 				8F4810DA19AE3A110032E468 /* CoreMapping.h */,
 				8F4810DB19AE3A110032E468 /* CoreMapping.m */,
 			);
@@ -296,6 +301,7 @@
 			files = (
 				8F7597B419AC849800A5F389 /* MyEntity.m in Sources */,
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
+				8F4810E219AF2F1F0032E468 /* NSRelationshipDescription+mapping.m in Sources */,
 				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
 				8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+mapping.m in Sources */,
 				8F4810DF19AE3A110032E468 /* NSManagedObject+manager.m in Sources */,

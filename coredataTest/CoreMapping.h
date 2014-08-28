@@ -10,8 +10,10 @@
 #import "NSEntityDescription+mapping.h"
 #import "NSAttributeDescription+mapping.h"
 #import "NSManagedObject+manager.h"
+#import "CMExtensions.h"
 
 static NSString* SQLFileName = @"CoreMapping";
+static NSString* CoreDataPrefix = @"CM";
 
 static NSPersistentStoreCoordinator* persistentStoreCoordinator;
 static NSManagedObjectContext* managedObjectContext;
