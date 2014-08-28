@@ -24,12 +24,10 @@
     
     NSDictionary* json = [self jsonWithFileName:@"test_add"];
     
-    //[CoreMapping mapAllEntityWithJson:json];
-    
     [CoreMapping saveInBackgroundWithBlock:^(NSManagedObjectContext *context) {
         [CoreMapping syncWithJson:json];
     } completion:^(BOOL success, NSError *error) {
-        //[CoreMapping shortStatus];
+        [CoreMapping shortStatus];
         [[City findAllRows] enumerateObjectsUsingBlock:^(City* obj, NSUInteger idx, BOOL *stop) {
             NSLog(@"name: '%@', phones: '%d'", obj.name, obj.phones.count);
         }];
@@ -41,9 +39,12 @@
 
 - (NSDictionary*) jsonWithFileName: (NSString*) name
 {
+    NSAssert(name, @"%@ name: %@", errParameter, name);
+    
     NSString *filePath = [[NSBundle mainBundle] pathForResource:name ofType:@"json"];
     NSData *myJSON = [NSData dataWithContentsOfFile:filePath];
-    return [NSJSONSerialization JSONObjectWithData:myJSON options:kNilOptions error:nil];
+    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:myJSON options:kNilOptions error:nil];
+    return json;
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application

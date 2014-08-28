@@ -1,5 +1,5 @@
 {
-    "City" :{
+    "City": {
 		"add": [
 	        {
 	        "id": "0",
@@ -24,13 +24,14 @@
 	        {
 	        "id": 4,
 	        "address": "Ivy",
-	        "name": "Kim"
+	        "name": "Kim",
+            "phone_id": 0
 	        }
 		],
         "remove": [
         ]
     },
-    "Phone" :{
+    "Phone": {
         "add": [
             {
             "id": 0,
@@ -61,6 +62,14 @@
             "id": 5,
             "string_number": "12qw",
             "city_id": 0
+            }
+        ]
+    },
+    "Relationships": {
+        "add": [
+            {
+            "city_id": 0,
+            "phone_id": 0
             }
         ]
     }

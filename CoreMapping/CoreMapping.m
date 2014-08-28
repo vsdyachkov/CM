@@ -122,6 +122,8 @@
 
 + (NSNumber*) relationshipIdFrom: (NSRelationshipDescription*) relation to: (NSRelationshipDescription*) inverse
 {
+    NSAssert(relation && inverse, @"%@ relation: %@, inverse: %@", errParameter, relation, inverse);
+    
     if (!relation.isToMany && !inverse.isToMany) return @0;
     if (relation.isToMany && !inverse.isToMany)  return @1;
     if (!relation.isToMany && inverse.isToMany)  return @2;
@@ -131,6 +133,8 @@
 
 + (NSString*) relationshipNameWithId: (NSNumber*) number
 {
+    NSAssert(number, @"%@ number: %@", errParameter, number);
+    
     switch (number.intValue) {
         case 0: return @"OneToOne"; break;
         case 1: return @"OneToMany"; break;
@@ -203,8 +207,7 @@
 
 + (void) mapValue:(id) value withJsonKey: (NSString*) key andType: (NSAttributeType) type andManagedObject: (NSManagedObject*) obj
 {
-    if (!value || !key || !type || !obj)
-        return;
+    NSAssert(value || key || type || obj, @"%@ value: %@, key: %@, type: %lu, obj: %@", errParameter, value, key, (long)type, obj);
     
     id convertedValue;
     NSString* strValue = [NSString stringWithFormat:@"%@",value];
@@ -232,9 +235,8 @@
 
 + (NSManagedObject*) findOrCreateObjectInEntity: (NSEntityDescription*) entity withId: (NSNumber*) idNumber
 {
-    if (!entity || !idNumber)
-        return nil;
-    
+    NSAssert(entity || idNumber, @"%@ entity: %@, idNumber: %@", errParameter, entity, idNumber);
+
     NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:entity.name];
     NSString* idString = [entity idKeyString];
     NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idString, idNumber];
@@ -250,9 +252,8 @@
 
 + (NSManagedObject*) mapSingleRowInEntity: (NSEntityDescription*) desc andJsonDict: (NSDictionary*) json
 {
-    if (!desc || !json)
-        return nil;
-    
+    NSAssert(desc || json, @"%@ desc: %@, json: %@", errParameter, desc, json);
+
     NSNumber* idFromJson = @([json[@"id"] integerValue]);
     NSManagedObject* obj = [self findOrCreateObjectInEntity:desc withId:idFromJson];
     NSDictionary* attributes = [desc attributesByName];
@@ -261,39 +262,34 @@
         id valueFromJson = json [mappingAttrName];
         [self mapValue:valueFromJson withJsonKey:attr.name andType:attr.attributeType andManagedObject:obj];
     }];
-    
 
-    // perform Relationships: ManyToOne & OneToOne
-    
-    for (NSString* name in desc.relationshipsByName) {
-        
-        NSRelationshipDescription* relationFromChild = desc.relationshipsByName[name];
-        NSRelationshipDescription* inverseFromParent = relationFromChild.inverseRelationship;
-        
-        // This (many) Childs to -> (one) Parent
-        
-        //if (!relationFromChild.isToMany) {
-            
-            NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
-            NSString* relationMappedName = [relationFromChild mappingName];
-            NSNumber* idObjectFormJson = json[relationMappedName];
-            
-            NSManagedObject* toObject = [self findOrCreateObjectInEntity:destinationEntity withId:idObjectFormJson];
-            NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
-            [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
-            
-        //}
-    }
-    
-    //
+    [self mapRelationshipsWithObject:obj andJsonDict:json];
     
     return obj;
 }
 
++ (void) mapRelationshipsWithObject: (NSManagedObject*) obj andJsonDict: (NSDictionary*) json
+{
+    NSAssert(obj || json, @"%@ obj: %@, json: %@", errParameter, obj, json);
+
+    // perform Relationships: ManyToOne & OneToOne & OneToMane
+    NSEntityDescription* desc = obj.entity;
+    for (NSString* name in desc.relationshipsByName) {
+        NSRelationshipDescription* relationFromChild = desc.relationshipsByName[name];
+        NSRelationshipDescription* inverseFromParent = relationFromChild.inverseRelationship;
+        // This (many) Childs to -> (one) Parent
+        NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
+        NSString* relationMappedName = [relationFromChild mappingName];
+        NSNumber* idObjectFormJson = json[relationMappedName];
+        NSManagedObject* toObject = [self findOrCreateObjectInEntity:destinationEntity withId:idObjectFormJson];
+        NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
+        [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
+    }
+}
+
 + (void) mapAllRowsInEntity: (NSEntityDescription*) desc andWithJsonArray: (NSArray*) jsonArray
 {
-    if (!desc || !jsonArray)
-        return;
+    NSAssert(desc || jsonArray, @"%@ desc: %@, jsonArray: %@", errParameter, desc, jsonArray);
     
     [jsonArray enumerateObjectsUsingBlock:^(NSDictionary* singleDict, NSUInteger idx, BOOL *stop) {
         NSManagedObject* obj = [self mapSingleRowInEntity:desc andJsonDict:singleDict];
@@ -303,8 +299,7 @@
 
 + (void) removeRowsInEntity: (NSEntityDescription*) desc withNumberArray: (NSArray*) removeArray
 {
-    if (!desc || !removeArray)
-        return;
+    NSAssert(desc || removeArray, @"%@ desc: %@, removeArray: %@", errParameter, desc, removeArray);
     
     [removeArray enumerateObjectsUsingBlock:^(NSNumber* removeId, NSUInteger idx, BOOL *stop) {
         NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:desc.name];
@@ -319,8 +314,7 @@
 
 + (void) mapAllEntityWithJson: (NSDictionary*) json
 {
-    if (!json)
-        return;
+    NSAssert(json, @"%@ json: %@", errParameter, json);
     
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
@@ -333,8 +327,7 @@
 
 + (void) syncWithJson: (NSDictionary*) json
 {
-    if (!json)
-        return;
+    NSAssert(json, @"%@ json: %@", errParameter, json);
     
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {

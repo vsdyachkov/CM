@@ -16,6 +16,7 @@
 
 static NSString* SQLFileName = @"CoreMapping";
 static NSString* CoreDataPrefix = @"CM";
+static NSString* errParameter = @"### Error: One or more parameters is nil,";
 
 static NSPersistentStoreCoordinator* persistentStoreCoordinator;
 static NSManagedObjectContext* managedObjectContext;
