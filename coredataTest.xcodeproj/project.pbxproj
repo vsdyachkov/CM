@@ -25,12 +25,14 @@
 		8F75979C19AC83D900A5F389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75978019AC83D900A5F389 /* CoreData.framework */; };
 		8F7597A419AC83D900A5F389 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597A219AC83D900A5F389 /* InfoPlist.strings */; };
 		8F7597A619AC83D900A5F389 /* CoreMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597A519AC83D900A5F389 /* CoreMappingTests.m */; };
-		8F7597B419AC849800A5F389 /* MyEntity.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B319AC849800A5F389 /* MyEntity.m */; };
 		8F7597B619AC8E7E00A5F389 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597B519AC8E7E00A5F389 /* test.json */; };
 		8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */; };
 		8F7597C019ACBB5400A5F389 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */; };
 		8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */; };
 		8F7597D019ADE3EA00A5F389 /* test_add.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597CF19ADE3EA00A5F389 /* test_add.json */; };
+		8F7986DA19AF479A00BA13B9 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7986D919AF479A00BA13B9 /* City.m */; };
+		8F7986DD19AF479A00BA13B9 /* Phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7986DC19AF479A00BA13B9 /* Phone.m */; };
+		8FBF883519AF7C2600BA1285 /* NSObject+performing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883419AF7C2600BA1285 /* NSObject+performing.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,16 +70,20 @@
 		8F7597A119AC83D900A5F389 /* CoreMappingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreMappingTests-Info.plist"; sourceTree = "<group>"; };
 		8F7597A319AC83D900A5F389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		8F7597A519AC83D900A5F389 /* CoreMappingTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CoreMappingTests.m; sourceTree = "<group>"; };
-		8F7597B219AC849800A5F389 /* MyEntity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyEntity.h; sourceTree = "<group>"; };
-		8F7597B319AC849800A5F389 /* MyEntity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyEntity.m; sourceTree = "<group>"; };
 		8F7597B519AC8E7E00A5F389 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
-		8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MyEntity+CustomLogic.h"; sourceTree = "<group>"; };
-		8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MyEntity+CustomLogic.m"; sourceTree = "<group>"; };
+		8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MyEntity+CustomLogic.h"; path = "CoreMapping/MyEntity+CustomLogic.h"; sourceTree = "<group>"; };
+		8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MyEntity+CustomLogic.m"; path = "CoreMapping/MyEntity+CustomLogic.m"; sourceTree = "<group>"; };
 		8F7597BE19ACBB5400A5F389 /* NSEntityDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+mapping.h"; path = "CoreMapping/NSEntityDescription+mapping.h"; sourceTree = "<group>"; };
 		8F7597BF19ACBB5400A5F389 /* NSEntityDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+mapping.m"; path = "CoreMapping/NSEntityDescription+mapping.m"; sourceTree = "<group>"; };
 		8F7597C119ACBC6B00A5F389 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
 		8F7597C219ACBC6B00A5F389 /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
 		8F7597CF19ADE3EA00A5F389 /* test_add.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test_add.json; sourceTree = "<group>"; };
+		8F7986D819AF479A00BA13B9 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
+		8F7986D919AF479A00BA13B9 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
+		8F7986DB19AF479A00BA13B9 /* Phone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Phone.h; sourceTree = "<group>"; };
+		8F7986DC19AF479A00BA13B9 /* Phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Phone.m; sourceTree = "<group>"; };
+		8FBF883319AF7C2600BA1285 /* NSObject+performing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+performing.h"; sourceTree = "<group>"; };
+		8FBF883419AF7C2600BA1285 /* NSObject+performing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+performing.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,10 +112,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8F4810EC19AF454F0032E468 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				8F75978E19AC83D900A5F389 /* CoreMapping.xcdatamodeld */,
+				8F7986DB19AF479A00BA13B9 /* Phone.h */,
+				8F7986DC19AF479A00BA13B9 /* Phone.m */,
+				8F7986D819AF479A00BA13B9 /* City.h */,
+				8F7986D919AF479A00BA13B9 /* City.m */,
+				8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */,
+				8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */,
+			);
+			name = CoreData;
+			sourceTree = "<group>";
+		};
 		8F75976E19AC83D900A5F389 = {
 			isa = PBXGroup;
 			children = (
 				8F7597C419ACBC7500A5F389 /* CoreMapping Group */,
+				8F4810EC19AF454F0032E468 /* CoreData */,
 				8F75978219AC83D900A5F389 /* CoreMapping */,
 				8F75979F19AC83D900A5F389 /* CoreMappingTests */,
 				8F75977919AC83D900A5F389 /* Frameworks */,
@@ -145,11 +166,6 @@
 				8F7597CF19ADE3EA00A5F389 /* test_add.json */,
 				8F75978B19AC83D900A5F389 /* AppDelegate.h */,
 				8F75978C19AC83D900A5F389 /* AppDelegate.m */,
-				8F75978E19AC83D900A5F389 /* CoreMapping.xcdatamodeld */,
-				8F7597B219AC849800A5F389 /* MyEntity.h */,
-				8F7597B319AC849800A5F389 /* MyEntity.m */,
-				8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */,
-				8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */,
 				8F75979119AC83D900A5F389 /* Images.xcassets */,
 				8F75978319AC83D900A5F389 /* Supporting Files */,
 			);
@@ -196,6 +212,8 @@
 				8F4810DD19AE3A110032E468 /* NSManagedObject+manager.m */,
 				8F4810E019AF2F1F0032E468 /* CMExtensions.h */,
 				8F4810E119AF2F1F0032E468 /* NSRelationshipDescription+mapping.m */,
+				8FBF883319AF7C2600BA1285 /* NSObject+performing.h */,
+				8FBF883419AF7C2600BA1285 /* NSObject+performing.m */,
 				8F4810DA19AE3A110032E468 /* CoreMapping.h */,
 				8F4810DB19AE3A110032E468 /* CoreMapping.m */,
 			);
@@ -299,13 +317,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8F7597B419AC849800A5F389 /* MyEntity.m in Sources */,
+				8F7986DA19AF479A00BA13B9 /* City.m in Sources */,
+				8F7986DD19AF479A00BA13B9 /* Phone.m in Sources */,
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
 				8F4810E219AF2F1F0032E468 /* NSRelationshipDescription+mapping.m in Sources */,
 				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
 				8F7597C319ACBC6B00A5F389 /* NSAttributeDescription+mapping.m in Sources */,
 				8F4810DF19AE3A110032E468 /* NSManagedObject+manager.m in Sources */,
 				8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */,
+				8FBF883519AF7C2600BA1285 /* NSObject+performing.m in Sources */,
 				8F4810DE19AE3A110032E468 /* CoreMapping.m in Sources */,
 				8F75978919AC83D900A5F389 /* main.m in Sources */,
 				8F7597C019ACBB5400A5F389 /* NSEntityDescription+mapping.m in Sources */,
@@ -527,7 +547,8 @@
 				8F75978F19AC83D900A5F389 /* CoreMapping.xcdatamodel */,
 			);
 			currentVersion = 8F75978F19AC83D900A5F389 /* CoreMapping.xcdatamodel */;
-			path = CoreMapping.xcdatamodeld;
+			name = CoreMapping.xcdatamodeld;
+			path = CoreMapping/CoreMapping.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};

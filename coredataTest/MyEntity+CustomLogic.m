@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
+/*
 #import "MyEntity+CustomLogic.h"
 
 @implementation MyEntity (CustomLogic)
@@ -17,3 +18,4 @@
 }
 
 @end
+*/

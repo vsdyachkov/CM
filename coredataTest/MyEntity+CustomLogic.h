@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
+/*
 #import "MyEntity.h"
 
 @interface MyEntity (CustomLogic)
@@ -13,3 +14,4 @@
 - (void) customizeWithJson: (NSDictionary*) json;
 
 @end
+*/

@@ -1,64 +1,36 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="5064" systemVersion="13E28" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
-    <entity name="MyEntity" representedClassName="MyEntity" syncable="YES">
+    <entity name="City" representedClassName="City" syncable="YES">
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="city" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="CM" value="CityAttr"/>
-            </userInfo>
-        </attribute>
-        <attribute name="entity_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+        <attribute name="city_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
             <userInfo>
                 <entry key="CM" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="myBool" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
-        <relationship name="streets" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Street" inverseName="myEntity" inverseEntity="Street" syncable="YES">
-            <userInfo>
-                <entry key="CM" value="street_id"/>
-            </userInfo>
-        </relationship>
+        <relationship name="phones" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Phone" inverseName="cities" inverseEntity="Phone" syncable="YES"/>
         <userInfo>
-            <entry key="CM" value="MyEntityName"/>
             <entry key="ord" value="0"/>
         </userInfo>
     </entity>
-    <entity name="MyEntity1" representedClassName="MyEntity" syncable="YES">
-        <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="city2" optional="YES" attributeType="String" syncable="YES">
-            <userInfo>
-                <entry key="CM" value="city"/>
-            </userInfo>
-        </attribute>
-        <attribute name="entity_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
+    <entity name="Phone" representedClassName="Phone" syncable="YES">
+        <attribute name="phone_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
             <userInfo>
                 <entry key="CM" value="id"/>
             </userInfo>
         </attribute>
-        <attribute name="myBool" optional="YES" attributeType="Boolean" syncable="YES"/>
-        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="string_number" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="cities" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="City" inverseName="phones" inverseEntity="City" syncable="YES">
+            <userInfo>
+                <entry key="CM" value="city_id"/>
+            </userInfo>
+        </relationship>
         <userInfo>
-            <entry key="CM" value="MyEntityName"/>
             <entry key="ord" value="1"/>
         </userInfo>
     </entity>
-    <entity name="Street" syncable="YES">
-        <attribute name="number" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="street_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
-            <userInfo>
-                <entry key="CM" value="id"/>
-            </userInfo>
-        </attribute>
-        <relationship name="myEntity" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="MyEntity" inverseName="streets" inverseEntity="MyEntity" syncable="YES">
-            <userInfo>
-                <entry key="CM" value="entity_id"/>
-            </userInfo>
-        </relationship>
-    </entity>
     <elements>
-        <element name="MyEntity" positionX="-63" positionY="-18" width="128" height="133"/>
-        <element name="MyEntity1" positionX="-36" positionY="36" width="128" height="118"/>
-        <element name="Street" positionX="-45" positionY="45" width="128" height="88"/>
+        <element name="City" positionX="-63" positionY="-18" width="128" height="103"/>
+        <element name="Phone" positionX="-36" positionY="36" width="128" height="88"/>
     </elements>
 </model>

@@ -7,7 +7,8 @@
 //
 
 #import "AppDelegate.h"
-#import "MyEntity.h"
+#import "City.h"
+#import "Phone.h"
 
 @implementation AppDelegate
 
@@ -29,6 +30,10 @@
         [CoreMapping syncWithJson:json];
     } completion:^(BOOL success, NSError *error) {
         //[CoreMapping shortStatus];
+        [[City findAllRows] enumerateObjectsUsingBlock:^(City* obj, NSUInteger idx, BOOL *stop) {
+            NSLog(@"name: '%@', phones: '%d'", obj.name, obj.phones.count);
+        }];
+
     }];
     
     return YES;

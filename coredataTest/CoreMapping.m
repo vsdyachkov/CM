@@ -8,8 +8,9 @@
 
 #import "CoreMapping.h"
 
-@implementation CoreMapping
 
+
+@implementation CoreMapping
 
 
 #pragma mark - Core Data stack
@@ -136,6 +137,8 @@
     }
 }
 
+
+
 #pragma mark - Core Mapping stack
 
 
@@ -160,7 +163,7 @@
         NSArray* arr = [[CoreMapping managedObjectContext] executeFetchRequest:request error:nil];
         if (full)
             [report appendString:@"\n"];
-        [report appendFormat:@"Entity: %@ (%d rows)\n",entityDescription.name, arr.count];
+        [report appendFormat:@"Entity: %@ {%d rows} \n", entityDescription.name, arr.count];
         if (full) {
             [report appendString:@"\n"];
         } else {
@@ -220,6 +223,7 @@
         */
         default: [NSException raise:@"Invalid attribute type" format:@"This type is not supported in database"]; break;
     }
+
     [obj setValue:convertedValue forKey:key];
 }
 
@@ -256,18 +260,26 @@
     }];
     
 
-    // links check
+    // perform Relationships: ManyToOne & OneToOne
     
     for (NSString* name in desc.relationshipsByName) {
-        NSRelationshipDescription* relation = desc.relationshipsByName[name];
-        NSRelationshipDescription* inverse = relation.inverseRelationship;
         
-        NSNumber* relationTypeId = [self relationshipIdFrom:relation to:inverse];
-        NSString* relationTypeName = [self relationshipNameWithId:relationTypeId];
+        NSRelationshipDescription* relationFromChild = desc.relationshipsByName[name];
+        NSRelationshipDescription* inverseFromParent = relationFromChild.inverseRelationship;
         
-        NSLog(@"Entity: %@, Type: %@", desc.name, relationTypeName);
-        NSLog(@"relation: %@ -> %@ (name: %@, isToMany: %hhd)", desc.name, relation.destinationEntity.name, relation.mappingName, relation.isToMany);
-        NSLog(@"inverse:  %@ <- %@ (name: %@, isToMany: %hhd) \n\n", relation.destinationEntity.name, desc.name, inverse.mappingName, inverse.isToMany);
+        // This (many) Childs to -> (one) Parent
+        
+        //if (!relationFromChild.isToMany) {
+            
+            NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
+            NSString* relationMappedName = [relationFromChild mappingName];
+            NSNumber* idObjectFormJson = json[relationMappedName];
+            
+            NSManagedObject* toObject = [self findOrCreateObjectInEntity:destinationEntity withId:idObjectFormJson];
+            NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
+            [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
+            
+        //}
     }
     
     //
@@ -282,9 +294,7 @@
     
     [jsonArray enumerateObjectsUsingBlock:^(NSDictionary* singleDict, NSUInteger idx, BOOL *stop) {
         NSManagedObject* obj = [self mapSingleRowInEntity:desc andJsonDict:singleDict];
-        if ([obj respondsToSelector:NSSelectorFromString(@"customizeWithJson:")]) {
-            [obj performSelector:NSSelectorFromString(@"customizeWithJson:") withObject:singleDict afterDelay:0];
-        }
+        [obj performSelectorIfResponseFromString:@"customizeWithJson:" withObject:singleDict];
     }];
 }
 

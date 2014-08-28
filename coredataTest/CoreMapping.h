@@ -11,6 +11,8 @@
 #import "NSAttributeDescription+mapping.h"
 #import "NSManagedObject+manager.h"
 #import "CMExtensions.h"
+#import "NSObject+performing.h"
+
 
 static NSString* SQLFileName = @"CoreMapping";
 static NSString* CoreDataPrefix = @"CM";
