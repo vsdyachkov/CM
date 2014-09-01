@@ -12,11 +12,14 @@
 #import "NSManagedObject+manager.h"
 #import "CMExtensions.h"
 #import "NSObject+performing.h"
+#import "CMTests.h"
+#import "CMHelper.h"
 
+#define errNilParam @"\n### Error: One or more parameters is nil,"
+#define errInvalidClassParam @"\n### Error: Invalid parameter class,"
 
 static NSString* SQLFileName = @"CoreMapping";
 static NSString* CoreDataPrefix = @"CM";
-static NSString* errParameter = @"### Error: One or more parameters is nil,";
 
 static NSPersistentStoreCoordinator* persistentStoreCoordinator;
 static NSManagedObjectContext* managedObjectContext;

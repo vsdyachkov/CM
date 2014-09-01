@@ -8,6 +8,8 @@
 
 #import "CoreMapping.h"
 
+#import "City.h"
+
 
 
 @implementation CoreMapping
@@ -58,7 +60,7 @@
 {
     if (childManagedObjectContext != nil)
         return childManagedObjectContext;
-    NSManagedObjectContext *childManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+    childManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
     [childManagedObjectContext setParentContext:[self managedObjectContext]];
     return childManagedObjectContext;
 }
@@ -87,7 +89,8 @@
 {
     NSError* error;
     [[self childManagedObjectContext] save:&error];
-    if (error) NSLog(@"Can't save child context, error: %@", error.localizedDescription);
+    if (error)
+        NSLog(@"Can't save child context, error: %@", error.localizedDescription);
     return error;
 }
 
@@ -108,44 +111,6 @@
 
 
 
-#pragma mark - Helper methods
-
-+ (BOOL) isArray: (id) object
-{
-    return (object && [object isKindOfClass:[NSArray class]]) ? YES : NO;
-}
-
-+ (BOOL) isDictionary: (id) object
-{
-    return (object && [object isKindOfClass:[NSDictionary class]]) ? YES : NO;
-}
-
-+ (NSNumber*) relationshipIdFrom: (NSRelationshipDescription*) relation to: (NSRelationshipDescription*) inverse
-{
-    NSAssert(relation && inverse, @"%@ relation: %@, inverse: %@", errParameter, relation, inverse);
-    
-    if (!relation.isToMany && !inverse.isToMany) return @0;
-    if (relation.isToMany && !inverse.isToMany)  return @1;
-    if (!relation.isToMany && inverse.isToMany)  return @2;
-    if (relation.isToMany && inverse.isToMany)   return @3;
-    return nil;
-}
-
-+ (NSString*) relationshipNameWithId: (NSNumber*) number
-{
-    NSAssert(number, @"%@ number: %@", errParameter, number);
-    
-    switch (number.intValue) {
-        case 0: return @"OneToOne"; break;
-        case 1: return @"OneToMany"; break;
-        case 2: return @"ManyToOne"; break;
-        case 3: return @"ManyToMany"; break;
-        default: return nil; break;
-    }
-}
-
-
-
 #pragma mark - Core Mapping stack
 
 
@@ -159,7 +124,6 @@
     [self fullPrint:NO];
 }
 
-
 + (void) fullPrint: (BOOL) full
 {
     NSMutableString* report = @"Current Core Data status:\n".mutableCopy;
@@ -167,7 +131,7 @@
     {
         
         NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entityDescription.name];
-        NSArray* arr = [[CoreMapping managedObjectContext] executeFetchRequest:request error:nil];
+        NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:request error:nil];
         if (full)
             [report appendString:@"\n"];
         [report appendFormat:@"Entity: %@ {%d rows} \n", entityDescription.name, arr.count];
@@ -195,11 +159,11 @@
         NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:self.managedObjectContext];
         [fetchRequest setEntity:entity];
         NSError *error;
-        NSArray *items = [self.managedObjectContext executeFetchRequest:fetchRequest error:&error];
+        NSArray *items = [[self contextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
         for (NSManagedObject *managedObject in items) {
-            [self.managedObjectContext deleteObject:managedObject];
+            [[self contextForCurrentThread] deleteObject:managedObject];
         }
-        if (![self.managedObjectContext save:&error]) {
+        if (![[self contextForCurrentThread] save:&error]) {
             NSLog(@"Error: %@",error.localizedDescription);
         }
     }
@@ -207,7 +171,9 @@
 
 + (void) mapValue:(id) value withJsonKey: (NSString*) key andType: (NSAttributeType) type andManagedObject: (NSManagedObject*) obj
 {
-    NSAssert(value || key || type || obj, @"%@ value: %@, key: %@, type: %lu, obj: %@", errParameter, value, key, (long)type, obj);
+    NSAssert(value || key || type || obj, @"%@ value: %@, key: %@, type: %lu, obj: %@", errNilParam, value, key, (long)type, obj);
+    [CMTests checkString:key];
+    [CMTests checkManagedObject:obj];
     
     id convertedValue;
     NSString* strValue = [NSString stringWithFormat:@"%@",value];
@@ -230,33 +196,39 @@
         default: [NSException raise:@"Invalid attribute type" format:@"This type is not supported in database"]; break;
     }
     
-    NSAssert(convertedValue || key, @"%@ convertedValue: %@, key: %@", errParameter, convertedValue, key);
+    NSAssert(convertedValue || key, @"%@ convertedValue: %@, key: %@", errNilParam, convertedValue, key);
     [obj setValue:convertedValue forKey:key];
 }
 
 + (NSManagedObject*) findOrCreateObjectInEntity: (NSEntityDescription*) entity withId: (NSNumber*) idNumber
 {
-    NSAssert(entity || idNumber, @"%@ entity: %@, idNumber: %@", errParameter, entity, idNumber);
+    NSAssert(entity || idNumber, @"%@ entity: %@, idNumber: %@", errNilParam, entity, idNumber);
+    [CMTests checkEntityDescription:entity];
+    [CMTests checkNumber:idNumber];
 
     NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:entity.name];
     NSString* idString = [entity idKeyString];
     NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idString, idNumber];
     [req setPredicate:myPred];
     
-    NSArray* arr = [self.managedObjectContext executeFetchRequest:req error:nil];
+    //NSLog(@"thread: %@", [NSThread currentThread]);
+    NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:req error:nil];
     if (arr.count > 0) {
         return arr[0];
     } else {
-        return [NSEntityDescription insertNewObjectForEntityForName:entity.name inManagedObjectContext:self.managedObjectContext];
+        return [NSEntityDescription insertNewObjectForEntityForName:entity.name inManagedObjectContext:[self contextForCurrentThread]];
     }
 }
 
 + (NSManagedObject*) mapSingleRowInEntity: (NSEntityDescription*) desc andJsonDict: (NSDictionary*) json
 {
-    NSAssert(desc || json, @"%@ desc: %@, json: %@", errParameter, desc, json);
-
+    NSAssert(desc || json, @"%@ desc: %@, json: %@", errNilParam, desc, json);
+    [CMTests checkEntityDescription:desc];
+    [CMTests checkDictionary:json];
+    
     NSNumber* idFromJson = @([json[@"id"] integerValue]);
     NSManagedObject* obj = [self findOrCreateObjectInEntity:desc withId:idFromJson];
+    
     NSDictionary* attributes = [desc attributesByName];
     [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
         NSString* mappingAttrName = [attr mappingName];
@@ -266,13 +238,15 @@
 
     [self mapRelationshipsWithObject:obj andJsonDict:json];
     
-    NSAssert(obj, @"%@ json: %@", errParameter, obj);
+    NSAssert(obj, @"%@ json: %@", errNilParam, obj);
     return obj;
 }
 
 + (void) mapRelationshipsWithObject: (NSManagedObject*) obj andJsonDict: (NSDictionary*) json
 {
-    NSAssert(obj || json, @"%@ obj: %@, json: %@", errParameter, obj, json);
+    NSAssert(obj || json, @"%@ obj: %@, json: %@", errNilParam, obj, json);
+    [CMTests checkManagedObject:obj];
+    [CMTests checkDictionary:json];
 
     // perform Relationships: ManyToOne & OneToOne & OneToMane
     NSEntityDescription* desc = obj.entity;
@@ -283,15 +257,22 @@
         NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
         NSString* relationMappedName = [relationFromChild mappingName];
         NSNumber* idObjectFormJson = json[relationMappedName];
-        NSManagedObject* toObject = [self findOrCreateObjectInEntity:destinationEntity withId:idObjectFormJson];
-        NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
-        [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
+        if (idObjectFormJson) {
+            NSManagedObject* toObject = [self findOrCreateObjectInEntity:destinationEntity withId:idObjectFormJson];
+            NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
+            [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
+        } else {
+            //NSLog(@"### Error: In Entity '%@' relation key %@ not fount (%@=%@)", [desc name], relationMappedName, relationMappedName, idObjectFormJson);
+        }
+
     }
 }
 
 + (void) mapAllRowsInEntity: (NSEntityDescription*) desc andWithJsonArray: (NSArray*) jsonArray
 {
-    NSAssert(desc || jsonArray, @"%@ desc: %@, jsonArray: %@", errParameter, desc, jsonArray);
+    NSAssert(desc || jsonArray, @"%@ desc: %@, jsonArray: %@", errNilParam, desc, jsonArray);
+    [CMTests checkEntityDescription:desc];
+    [CMTests checkArray:jsonArray];
     
     [jsonArray enumerateObjectsUsingBlock:^(NSDictionary* singleDict, NSUInteger idx, BOOL *stop) {
         NSManagedObject* obj = [self mapSingleRowInEntity:desc andJsonDict:singleDict];
@@ -301,27 +282,32 @@
 
 + (void) removeRowsInEntity: (NSEntityDescription*) desc withNumberArray: (NSArray*) removeArray
 {
-    NSAssert(desc || removeArray, @"%@ desc: %@, removeArray: %@", errParameter, desc, removeArray);
+    NSAssert(desc || removeArray, @"%@ desc: %@, removeArray: %@", errNilParam, desc, removeArray);
+    [CMTests checkEntityDescription:desc];
+    [CMTests checkArray:removeArray];
     
     [removeArray enumerateObjectsUsingBlock:^(NSNumber* removeId, NSUInteger idx, BOOL *stop) {
         NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:desc.name];
         NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", [desc idKeyString], removeId];
         [req setPredicate:myPred];
-        NSArray* arr = [[self managedObjectContext] executeFetchRequest:req error:nil];
+        NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:req error:nil];
         if (arr.count > 0) {
-            [[self managedObjectContext] deleteObject:arr[0]];
+            [[self contextForCurrentThread] deleteObject:arr[0]];
         }
     }];
 }
 
 + (void) mapAllEntityWithJson: (NSDictionary*) json
 {
-    NSAssert(json, @"%@ json: %@", errParameter, json);
+    NSAssert(json, @"%@ json: %@", errNilParam, json);
+    [CMTests checkDictionary:json];
+    
+    // va_list argumentList;
+    // NSLog(@"%s",argumentList);
     
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
-        NSString* mappingEntityName = [desc mappingName];
-        NSArray* arrayWithName = json[mappingEntityName];
+        NSArray* arrayWithName = json[desc.mappingName];
         [self mapAllRowsInEntity:desc andWithJsonArray:arrayWithName];
         [self saveContext];
     }];
@@ -329,26 +315,17 @@
 
 + (void) syncWithJson: (NSDictionary*) json
 {
-    NSAssert(json, @"%@ json: %@", errParameter, json);
+    NSAssert(json, @"%@ json: %@", errNilParam, json);
+    [CMTests checkDictionary:json];
     
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
-        
-        NSString* mappingEntityName = [desc mappingName];
 
-        if ([self isArray:json[mappingEntityName][@"add"]]) {
-            NSArray* addArray = json[mappingEntityName][@"add"];
-            if (addArray.count > 0) {
-                [self mapAllRowsInEntity:desc andWithJsonArray:addArray];
-            }
-        }
+        NSArray* addArray = [CMTests validateArray:json[desc.mappingName][@"add"]];
+        if (addArray) [self mapAllRowsInEntity:desc andWithJsonArray:addArray];
         
-        if ([self isArray:json[mappingEntityName][@"remove"]]) {
-            NSArray* removeArray = json[mappingEntityName][@"remove"];
-            if (removeArray.count > 0) {
-                [self removeRowsInEntity:desc withNumberArray:(NSArray*)removeArray];
-            }
-        }
+        NSArray* removeArray = [CMTests validateArray:json[desc.mappingName][@"remove"]];
+        if (removeArray) [self removeRowsInEntity:desc withNumberArray:(NSArray*)removeArray];
 
     }];
     [self saveContext];
@@ -356,6 +333,8 @@
 
 + (void) saveInBackgroundWithBlock: (void(^)(NSManagedObjectContext *context))block completion:(void(^)(BOOL success, NSError *error)) completion
 {
+    NSAssert([NSThread isMainThread], @"This function should be called from main thread !");
+    
     NSManagedObjectContext *childManagedObjectContext = [self childManagedObjectContext];
     [childManagedObjectContext performBlock:^{
         if (block) {

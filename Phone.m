@@ -2,7 +2,7 @@
 //  Phone.m
 //  CoreMapping
 //
-//  Created by Dyachkov Victor on 28.08.14.
+//  Created by Dyachkov Victor on 29.08.14.
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
@@ -14,6 +14,6 @@
 
 @dynamic phone_id;
 @dynamic string_number;
-@dynamic city;
+@dynamic cities;
 
 @end
