@@ -20,12 +20,6 @@
 	        "id": 3,
 	        "address": "Roseann",
 	        "name": "Craig"
-	        },
-	        {
-	        "id": 4,
-	        "address": "Ivy",
-	        "name": "Kim",
-            "phone_id": 0
 	        }
 		],
         "remove": [

@@ -4,7 +4,7 @@
         <attribute name="address" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="city_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
             <userInfo>
-                <entry key="CM" value="id"/>
+                <entry key="CM_ID" value="YES"/>
             </userInfo>
         </attribute>
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
@@ -21,6 +21,7 @@
         <attribute name="phone_id" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES">
             <userInfo>
                 <entry key="CM" value="id"/>
+                <entry key="CM_ID" value="YES"/>
             </userInfo>
         </attribute>
         <attribute name="string_number" optional="YES" attributeType="String" syncable="YES"/>
@@ -34,7 +35,7 @@
         </userInfo>
     </entity>
     <elements>
-        <element name="City" positionX="-63" positionY="-18" width="128" height="105"/>
+        <element name="City" positionX="-63" positionY="-18" width="128" height="103"/>
         <element name="Phone" positionX="-36" positionY="36" width="128" height="88"/>
     </elements>
 </model>

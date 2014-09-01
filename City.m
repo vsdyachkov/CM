@@ -2,7 +2,7 @@
 //  City.m
 //  CoreMapping
 //
-//  Created by Dyachkov Victor on 29.08.14.
+//  Created by Dyachkov Victor on 01.09.14.
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 

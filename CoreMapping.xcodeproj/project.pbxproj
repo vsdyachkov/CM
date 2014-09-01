@@ -10,8 +10,6 @@
 		8F04F3FA19B09A28009E3D0C /* CMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F3F919B09A28009E3D0C /* CMTests.m */; };
 		8F04F3FD19B0A1EE009E3D0C /* CMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F3FC19B0A1EE009E3D0C /* CMHelper.m */; };
 		8F04F40019B0A696009E3D0C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F3FF19B0A696009E3D0C /* MainViewController.m */; };
-		8F04F40319B0A81F009E3D0C /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F40219B0A81F009E3D0C /* City.m */; };
-		8F04F40619B0A81F009E3D0C /* Phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F40519B0A81F009E3D0C /* Phone.m */; };
 		8F67F9A919AF9FF80034A734 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F67F9A819AF9FF80034A734 /* test.json */; };
 		8F75977B19AC83D900A5F389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977A19AC83D900A5F389 /* Foundation.framework */; };
 		8F75977D19AC83D900A5F389 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977C19AC83D900A5F389 /* CoreGraphics.framework */; };
@@ -30,6 +28,8 @@
 		8F7597A619AC83D900A5F389 /* CoreMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597A519AC83D900A5F389 /* CoreMappingTests.m */; };
 		8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */; };
 		8F7597D019ADE3EA00A5F389 /* test_add.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597CF19ADE3EA00A5F389 /* test_add.json */; };
+		8F9D0F1F19B47A7400E7C857 /* Phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9D0F1E19B47A7400E7C857 /* Phone.m */; };
+		8F9D0F2219B47A7500E7C857 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9D0F2119B47A7500E7C857 /* City.m */; };
 		8FBF884419AF89C500BA1285 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883719AF89C500BA1285 /* CoreMapping.m */; };
 		8FBF884619AF89C500BA1285 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883B19AF89C500BA1285 /* NSAttributeDescription+mapping.m */; };
 		8FBF884719AF89C500BA1285 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883D19AF89C500BA1285 /* NSEntityDescription+mapping.m */; };
@@ -55,10 +55,6 @@
 		8F04F3FC19B0A1EE009E3D0C /* CMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMHelper.m; sourceTree = "<group>"; };
 		8F04F3FE19B0A696009E3D0C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = ../MainViewController.h; sourceTree = "<group>"; };
 		8F04F3FF19B0A696009E3D0C /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = ../MainViewController.m; sourceTree = "<group>"; };
-		8F04F40119B0A81F009E3D0C /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
-		8F04F40219B0A81F009E3D0C /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
-		8F04F40419B0A81F009E3D0C /* Phone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Phone.h; sourceTree = "<group>"; };
-		8F04F40519B0A81F009E3D0C /* Phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Phone.m; sourceTree = "<group>"; };
 		8F67F9A819AF9FF80034A734 /* test.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test.json; sourceTree = "<group>"; };
 		8F75977719AC83D900A5F389 /* CoreMapping.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoreMapping.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F75977A19AC83D900A5F389 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -81,6 +77,10 @@
 		8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "MyEntity+CustomLogic.h"; path = "CoreMapping/MyEntity+CustomLogic.h"; sourceTree = "<group>"; };
 		8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "MyEntity+CustomLogic.m"; path = "CoreMapping/MyEntity+CustomLogic.m"; sourceTree = "<group>"; };
 		8F7597CF19ADE3EA00A5F389 /* test_add.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = test_add.json; sourceTree = "<group>"; };
+		8F9D0F1D19B47A7400E7C857 /* Phone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Phone.h; sourceTree = "<group>"; };
+		8F9D0F1E19B47A7400E7C857 /* Phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Phone.m; sourceTree = "<group>"; };
+		8F9D0F2019B47A7500E7C857 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
+		8F9D0F2119B47A7500E7C857 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
 		8FBF883619AF89C500BA1285 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMapping.h; path = CoreMapping/CoreMapping.h; sourceTree = "<group>"; };
 		8FBF883719AF89C500BA1285 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = CoreMapping/CoreMapping.m; sourceTree = "<group>"; };
 		8FBF883A19AF89C500BA1285 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
@@ -127,10 +127,10 @@
 				8F7597B719ACB45C00A5F389 /* MyEntity+CustomLogic.h */,
 				8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */,
 				8F75978E19AC83D900A5F389 /* CoreMapping.xcdatamodeld */,
-				8F04F40419B0A81F009E3D0C /* Phone.h */,
-				8F04F40519B0A81F009E3D0C /* Phone.m */,
-				8F04F40119B0A81F009E3D0C /* City.h */,
-				8F04F40219B0A81F009E3D0C /* City.m */,
+				8F9D0F2019B47A7500E7C857 /* City.h */,
+				8F9D0F2119B47A7500E7C857 /* City.m */,
+				8F9D0F1D19B47A7400E7C857 /* Phone.h */,
+				8F9D0F1E19B47A7400E7C857 /* Phone.m */,
 			);
 			name = CoreData;
 			sourceTree = "<group>";
@@ -338,15 +338,15 @@
 				8FBF884819AF89C500BA1285 /* NSManagedObject+manager.m in Sources */,
 				8F04F3FA19B09A28009E3D0C /* CMTests.m in Sources */,
 				8F04F3FD19B0A1EE009E3D0C /* CMHelper.m in Sources */,
+				8F9D0F2219B47A7500E7C857 /* City.m in Sources */,
 				8FBF884719AF89C500BA1285 /* NSEntityDescription+mapping.m in Sources */,
-				8F04F40619B0A81F009E3D0C /* Phone.m in Sources */,
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
 				8FBF884A19AF89C500BA1285 /* NSRelationshipDescription+mapping.m in Sources */,
 				8FBF884919AF89C500BA1285 /* NSObject+performing.m in Sources */,
 				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
+				8F9D0F1F19B47A7400E7C857 /* Phone.m in Sources */,
 				8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */,
 				8F04F40019B0A696009E3D0C /* MainViewController.m in Sources */,
-				8F04F40319B0A81F009E3D0C /* City.m in Sources */,
 				8F75978919AC83D900A5F389 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

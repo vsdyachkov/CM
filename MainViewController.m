@@ -27,6 +27,8 @@
         [CoreMapping shortStatus];
     }];
     
+    если из City -> city_id убрать CM : id  >> все неверно парсится
+    
 }
 
 @end

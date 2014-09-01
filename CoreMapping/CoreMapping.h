@@ -20,6 +20,8 @@
 
 static NSString* SQLFileName = @"CoreMapping";
 static NSString* CoreDataPrefix = @"CM";
+static NSString* CoreDataIdPrefix = @"CM_ID";
+
 
 static NSPersistentStoreCoordinator* persistentStoreCoordinator;
 static NSManagedObjectContext* managedObjectContext;

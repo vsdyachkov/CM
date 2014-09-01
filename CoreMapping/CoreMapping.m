@@ -207,15 +207,16 @@
     [CMTests checkNumber:idNumber];
 
     NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:entity.name];
-    NSString* idString = [entity idKeyString];
-    NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idString, idNumber];
+    NSString* idKey = [entity mappingIdKey];
+    NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idKey, idNumber];
     [req setPredicate:myPred];
     
-    //NSLog(@"thread: %@", [NSThread currentThread]);
+    //NSLog(@"myPred: %@", myPred);
     NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:req error:nil];
     if (arr.count > 0) {
         return arr[0];
     } else {
+        NSLog(@"insert %@ (perdicate: %@)", entity.name, myPred);
         return [NSEntityDescription insertNewObjectForEntityForName:entity.name inManagedObjectContext:[self contextForCurrentThread]];
     }
 }
@@ -226,7 +227,17 @@
     [CMTests checkEntityDescription:desc];
     [CMTests checkDictionary:json];
     
-    NSNumber* idFromJson = @([json[@"id"] integerValue]);
+
+    NSString* mappingIdKey = [desc mappingIdValue];
+    
+    NSNumber* idFromJson;
+    
+    if (mappingIdKey) {
+        idFromJson = @([json[mappingIdKey] integerValue]);
+    } else {
+        idFromJson = @([json[@"id"] integerValue]);
+    }
+
     NSManagedObject* obj = [self findOrCreateObjectInEntity:desc withId:idFromJson];
     
     NSDictionary* attributes = [desc attributesByName];
@@ -288,7 +299,7 @@
     
     [removeArray enumerateObjectsUsingBlock:^(NSNumber* removeId, NSUInteger idx, BOOL *stop) {
         NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:desc.name];
-        NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", [desc idKeyString], removeId];
+        NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", [desc mappingIdValue], removeId];
         [req setPredicate:myPred];
         NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:req error:nil];
         if (arr.count > 0) {
@@ -307,7 +318,7 @@
     
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
-        NSArray* arrayWithName = json[desc.mappingName];
+        NSArray* arrayWithName = json[desc.mappingEntityName];
         [self mapAllRowsInEntity:desc andWithJsonArray:arrayWithName];
         [self saveContext];
     }];
@@ -321,10 +332,10 @@
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
 
-        NSArray* addArray = [CMTests validateArray:json[desc.mappingName][@"add"]];
+        NSArray* addArray = [CMTests validateArray:json[desc.mappingEntityName][@"add"]];
         if (addArray) [self mapAllRowsInEntity:desc andWithJsonArray:addArray];
         
-        NSArray* removeArray = [CMTests validateArray:json[desc.mappingName][@"remove"]];
+        NSArray* removeArray = [CMTests validateArray:json[desc.mappingEntityName][@"remove"]];
         if (removeArray) [self removeRowsInEntity:desc withNumberArray:(NSArray*)removeArray];
 
     }];

@@ -11,8 +11,9 @@
 
 @interface NSEntityDescription (mapping)
 
-- (NSString*) mappingName;
-- (NSString*) idKeyString;
+- (NSString*) mappingEntityName;
+- (NSString*) mappingIdKey;
+- (NSString*) mappingIdValue;
 
 + (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate;
 

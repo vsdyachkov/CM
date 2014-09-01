@@ -10,7 +10,7 @@
 
 @implementation NSEntityDescription (mapping)
 
-- (NSString*) mappingName
+- (NSString*) mappingEntityName
 {
     NSString* name = [NSString stringWithFormat:@"%@",self.name];
     NSDictionary* userInfo = [self userInfo];
@@ -21,18 +21,39 @@
     return mapKey;
 }
 
-- (NSString*) idKeyString
+
+- (NSString*) mappingIdKey
 {
     NSDictionary* attributes = [self attributesByName];
     __block NSString* key;
     [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
-        if ([attr.userInfo[CoreDataPrefix] isEqualToString:@"id"]) {
-            key = [NSString stringWithFormat:@"%@",attr.name];
-            *stop = YES;
+        
+        if ([attr.userInfo[CoreDataIdPrefix] isEqualToString:@"YES"]) {
+            key = attr.name;
         }
+        
     }];
     
-    NSAssert(key, @"%@ key: %@", errNilParam, key);
+    NSAssert(key, @"Table should have '%@ = YES' userinfo", CoreDataIdPrefix);
+    
+    return key;
+}
+
+- (NSString*) mappingIdValue
+{
+    NSDictionary* attributes = [self attributesByName];
+    __block NSString* key;
+    [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
+        
+        if ([attr.userInfo[CoreDataIdPrefix] isEqualToString:@"YES"]) {
+            NSString* mappingName = attr.userInfo[CoreDataPrefix];
+            NSString* realName = attr.name;
+            key = (mappingName) ? mappingName : realName;
+            *stop = YES;
+        }
+        
+    }];
+
     return key;
 }
 
