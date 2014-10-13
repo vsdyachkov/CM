@@ -62,44 +62,37 @@
 
 + (void) checkArray: (id) object
 {
-    BOOL result = [self isArray:object];
-    NSAssert(result, @"%@ %@ is not NSArray", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isArray:object], @"%@ %@ is not NSArray", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkDictionary: (id) object
 {
-    BOOL result = [self isDictionary:object];
-    NSAssert(result, @"%@ %@ is not NSDictionary", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isDictionary:object], @"%@ %@ is not NSDictionary", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkNumber: (id) object
 {
-    BOOL result = [self isNumber:object];
-    NSAssert(result, @"%@ %@ is not NSNumber", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isNumber:object], @"%@ %@ is not NSNumber", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkString: (id) object
 {
-    BOOL result = [self isString:object];
-    NSAssert(result, @"%@ %@ is not NSString", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isString:object], @"%@ %@ is not NSString", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkEntityDescription: (id) object
 {
-    BOOL result = [self isEntityDescription:object];
-    NSAssert(result, @"%@ %@ is not NSEntityDescription", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isEntityDescription:object], @"%@ %@ is not NSEntityDescription", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkManagedObject: (id) object
 {
-    BOOL result = [self isManagedObject:object];
-    NSAssert(result, @"%@ %@ is not NSManagedObject", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isManagedObject:object], @"%@ %@ is not NSManagedObject", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkRelationshipDescription: (id) object
 {
-    BOOL result = [self isRelationshipDescription:object];
-    NSAssert(result, @"%@ %@ is not NSRelationshipDescription", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isRelationshipDescription:object], @"%@ %@ is not NSRelationshipDescription", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 

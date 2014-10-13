@@ -7,13 +7,9 @@
 //
 
 #import "CoreMapping.h"
-
 #import "City.h"
 
-
-
 @implementation CoreMapping
-
 
 #pragma mark - Core Data stack
 
@@ -134,7 +130,7 @@
         NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:request error:nil];
         if (full)
             [report appendString:@"\n"];
-        [report appendFormat:@"Entity: %@ {%d rows} \n", entityDescription.name, arr.count];
+        [report appendFormat:@"Entity: %@ {%lu rows} \n", entityDescription.name, (unsigned long)arr.count];
         if (full) {
             [report appendString:@"\n"];
         } else {
@@ -179,9 +175,9 @@
     NSString* strValue = [NSString stringWithFormat:@"%@",value];
     switch (type) {
         case NSUndefinedAttributeType: convertedValue =  nil; break;
-        case NSInteger16AttributeType: convertedValue =  [NSNumber numberWithInt:[strValue integerValue]]; break;
-        case NSInteger32AttributeType: convertedValue =  [NSNumber numberWithInt:[strValue integerValue]]; break;
-        case NSInteger64AttributeType: convertedValue =  [NSNumber numberWithInt:[strValue integerValue]]; break;
+        case NSInteger16AttributeType: convertedValue =  [NSNumber numberWithInt:[strValue intValue]]; break;
+        case NSInteger32AttributeType: convertedValue =  [NSNumber numberWithInt:[strValue intValue]]; break;
+        case NSInteger64AttributeType: convertedValue =  [NSNumber numberWithInt:[strValue intValue]]; break;
         case NSDecimalAttributeType: convertedValue =    [NSNumber numberWithInt:[strValue doubleValue]]; break;
         case NSDoubleAttributeType: convertedValue =     [NSNumber numberWithInt:[strValue doubleValue]]; break;
         case NSFloatAttributeType: convertedValue =      [NSNumber numberWithInt:[strValue floatValue]]; break;
@@ -189,10 +185,7 @@
         case NSBooleanAttributeType: convertedValue =    [NSNumber numberWithInt:[strValue boolValue]]; break;
         case NSDateAttributeType: convertedValue =       nil; break;
         case NSBinaryDataAttributeType: convertedValue = [strValue dataUsingEncoding:NSUTF8StringEncoding]; break;
-        /*
-        case 1800:   return @"NSTransformableAttributeType";
-        case 2000:   return @"NSObjectIDAttributeType";
-        */
+
         default: [NSException raise:@"Invalid attribute type" format:@"This type is not supported in database"]; break;
     }
     
@@ -210,13 +203,11 @@
     NSString* idKey = [entity mappingIdKey];
     NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idKey, idNumber];
     [req setPredicate:myPred];
-    
-    //NSLog(@"myPred: %@", myPred);
+
     NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:req error:nil];
     if (arr.count > 0) {
         return arr[0];
     } else {
-        NSLog(@"insert %@ (perdicate: %@)", entity.name, myPred);
         return [NSEntityDescription insertNewObjectForEntityForName:entity.name inManagedObjectContext:[self contextForCurrentThread]];
     }
 }
@@ -227,23 +218,25 @@
     [CMTests checkEntityDescription:desc];
     [CMTests checkDictionary:json];
     
-
     NSString* mappingIdKey = [desc mappingIdValue];
     
     NSNumber* idFromJson;
-    
-    if (mappingIdKey) {
-        idFromJson = @([json[mappingIdKey] integerValue]);
-    } else {
-        idFromJson = @([json[@"id"] integerValue]);
+    if (mappingIdKey)
+    {
+        if (json[mappingIdKey]) {
+            idFromJson = @([json[mappingIdKey] integerValue]);
+        } else {
+            idFromJson = @([json[@"id"] integerValue]);
+        }
     }
-
+    
     NSManagedObject* obj = [self findOrCreateObjectInEntity:desc withId:idFromJson];
     
     NSDictionary* attributes = [desc attributesByName];
     [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
         NSString* mappingAttrName = [attr mappingName];
-        id valueFromJson = json [mappingAttrName];
+        // if "id" of entity != mappingAttrName in json
+        id valueFromJson = (json [mappingAttrName]) ? json [mappingAttrName] : json[@"id"];
         [self mapValue:valueFromJson withJsonKey:attr.name andType:attr.attributeType andManagedObject:obj];
     }];
 
@@ -269,11 +262,13 @@
         NSString* relationMappedName = [relationFromChild mappingName];
         NSNumber* idObjectFormJson = json[relationMappedName];
         if (idObjectFormJson) {
+            // Relationship found
             NSManagedObject* toObject = [self findOrCreateObjectInEntity:destinationEntity withId:idObjectFormJson];
             NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
             [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
         } else {
-            //NSLog(@"### Error: In Entity '%@' relation key %@ not fount (%@=%@)", [desc name], relationMappedName, relationMappedName, idObjectFormJson);
+            // Relationship not found
+            //NSLog(@"In Entity '%@' relation key %@ not fount (%@=%@)", [desc name], relationMappedName, relationMappedName, idObjectFormJson);
         }
 
     }
@@ -312,9 +307,6 @@
 {
     NSAssert(json, @"%@ json: %@", errNilParam, json);
     [CMTests checkDictionary:json];
-    
-    // va_list argumentList;
-    // NSLog(@"%s",argumentList);
     
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {

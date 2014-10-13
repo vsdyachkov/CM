@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad
 {
+    
     [super viewDidLoad];
     
     [CoreMapping clearDatabase];
@@ -24,10 +25,15 @@
     [CoreMapping saveInBackgroundWithBlock:^(NSManagedObjectContext *context) {
         [CoreMapping syncWithJson:json];
     } completion:^(BOOL success, NSError *error) {
-        [CoreMapping shortStatus];
+        
+        NSLog(@"city: %lu rows", (unsigned long)[City findAllRows].count);
+        NSLog(@"phone: %lu rows", (unsigned long)[Phone findAllRows].count);
+        
+        //[CoreMapping shortStatus];
+        
     }];
     
-    если из City -> city_id убрать CM : id  >> все неверно парсится
+    //если из City -> city_id убрать CM : id  >> все неверно парсится
     
 }
 
