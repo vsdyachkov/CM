@@ -7,7 +7,6 @@
 //
 
 #import "CoreMapping.h"
-#import "City.h"
 
 @implementation CoreMapping
 
