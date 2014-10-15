@@ -13,30 +13,43 @@
 
 #pragma mark - Core Data stack
 
++ (NSURL *) defaultStoreName;
+{
+    NSString* fileName = [[[NSBundle mainBundle] infoDictionary] valueForKey:(id)kCFBundleNameKey];
+    if (fileName == nil) fileName = SQLFileName;
+    if (![fileName hasSuffix:@"sqlite"]) fileName = [fileName stringByAppendingPathExtension:@"sqlite"];
+    
+    NSURL *storeURL = [[self applicationDbDirectory] URLByAppendingPathComponent:fileName];
+    return storeURL;
+}
+
 + (NSManagedObjectModel *)managedObjectModel
 {
     if (managedObjectModel != nil)
         return managedObjectModel;
-    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:SQLFileName withExtension:@"momd"];
-    managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    
+    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     return managedObjectModel;
 }
+
 
 + (NSPersistentStoreCoordinator *)persistentStoreCoordinator
 {
     if (persistentStoreCoordinator != nil)
         return persistentStoreCoordinator;
-    NSString* pathComponent = [NSString stringWithFormat:@"%@.sqlite", SQLFileName];
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:pathComponent];
+    
     NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
                              [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
                              [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-    NSError *error = nil;
+    
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error]) {
+
+    NSError *error = nil;
+    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self defaultStoreName] options:options error:&error]) {
         NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        abort();
+        NSAssert(error, @"Unresolved error %@, %@", error, [error userInfo]);
     }
+    
     return persistentStoreCoordinator;
 }
 
@@ -96,13 +109,41 @@
 }
 
 
-
 #pragma mark - Application's Documents directory
 
 
-+ (NSURL *)applicationDocumentsDirectory
++ (NSURL *) applicationDocumentsDirectory
 {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
++ (NSURL *) applicationDbDirectory
+{
+    NSString* bundleName = [[[NSBundle mainBundle] infoDictionary] valueForKey:(id)kCFBundleNameKey];
+    if (bundleName == nil) bundleName = @"DB";
+    if ([bundleName hasSuffix:@"sqlite"]) bundleName = [bundleName stringByDeletingLastPathComponent];
+    
+    NSString *supportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:bundleName];
+    if (![[NSFileManager defaultManager] fileExistsAtPath:supportDirectory])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:supportDirectory withIntermediateDirectories:NO attributes:nil error:nil];
+    }
+
+    return [[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:bundleName];
+}
+
++ (void) createDirectory:(NSString *)directoryName atFilePath:(NSString *)filePath
+{
+    NSString *filePathAndDirectory = [filePath stringByAppendingPathComponent:directoryName];
+    NSError *error;
+    
+    if (![[NSFileManager defaultManager] createDirectoryAtPath:filePathAndDirectory
+                                   withIntermediateDirectories:NO
+                                                    attributes:nil
+                                                         error:&error])
+    {
+        NSLog(@"Create directory error: %@", error);
+    }
 }
 
 

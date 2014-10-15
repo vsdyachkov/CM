@@ -62,36 +62,43 @@
 
 + (void) checkArray: (id) object
 {
+    if (![self isArray:object]) NSLog(@"%@ %@ is not NSArray", errInvalidClassParam, NSStringFromClass([object class]));
     NSAssert([self isArray:object], @"%@ %@ is not NSArray", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkDictionary: (id) object
 {
+    if (![self isDictionary:object]) NSLog(@"%@ %@ is not NSDictionary", errInvalidClassParam, NSStringFromClass([object class]));
     NSAssert([self isDictionary:object], @"%@ %@ is not NSDictionary", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkNumber: (id) object
 {
+    if (![self isNumber:object]) NSLog(@"%@ %@ is not NSNumber", errInvalidClassParam, NSStringFromClass([object class]));
     NSAssert([self isNumber:object], @"%@ %@ is not NSNumber", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkString: (id) object
 {
+    if (![self isString:object]) NSLog(@"%@ %@ is not NSString", errInvalidClassParam, NSStringFromClass([object class]));
     NSAssert([self isString:object], @"%@ %@ is not NSString", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkEntityDescription: (id) object
 {
+    if (![self isEntityDescription:object]) NSLog(@"%@ %@ is not NSEntityDescription", errInvalidClassParam, NSStringFromClass([object class]));
     NSAssert([self isEntityDescription:object], @"%@ %@ is not NSEntityDescription", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkManagedObject: (id) object
 {
+    if (![self isManagedObject:object]) NSLog(@"%@ %@ is not NSManagedObject", errInvalidClassParam, NSStringFromClass([object class]));
     NSAssert([self isManagedObject:object], @"%@ %@ is not NSManagedObject", errInvalidClassParam, NSStringFromClass([object class]));
 }
 
 + (void) checkRelationshipDescription: (id) object
 {
+    if (![self isRelationshipDescription:object]) NSLog(@"%@ %@ is not NSRelationshipDescription", errInvalidClassParam, NSStringFromClass([object class]));
     NSAssert([self isRelationshipDescription:object], @"%@ %@ is not NSRelationshipDescription", errInvalidClassParam, NSStringFromClass([object class]));
 }
 

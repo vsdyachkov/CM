@@ -18,10 +18,9 @@
 #define errNilParam @"\n### Error: One or more parameters is nil,"
 #define errInvalidClassParam @"\n### Error: Invalid parameter class,"
 
-static NSString* SQLFileName = @"CoreMapping";
+static NSString* SQLFileName = @"CoreMapping.sqlite";
 static NSString* CoreDataPrefix = @"CM";
 static NSString* CoreDataIdPrefix = @"CM_ID";
-
 
 static NSPersistentStoreCoordinator* persistentStoreCoordinator;
 static NSManagedObjectContext* managedObjectContext;
