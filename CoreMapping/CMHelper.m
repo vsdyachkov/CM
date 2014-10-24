@@ -44,9 +44,15 @@
     [CMTests checkString:name];
     
     NSString *filePath = [[NSBundle mainBundle] pathForResource:name ofType:@"json"];
+    
+    [CMTests checkString:filePath];
+    
     NSData *myJSON = [NSData dataWithContentsOfFile:filePath];
     NSDictionary* json = [NSJSONSerialization JSONObjectWithData:myJSON options:kNilOptions error:nil];
+    
+    NSAssert(myJSON, @"Json %@ is not valid", filePath);
     return json;
 }
+
 
 @end

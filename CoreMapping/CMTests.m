@@ -21,6 +21,15 @@
     }
 }
 
++ (NSDictionary*) validateDictionary: (id) object
+{
+    if (object && [object isKindOfClass:[NSDictionary class]]) {
+        return (NSDictionary*) object;
+    } else {
+        return nil;
+    }
+}
+
 // detect
 
 + (BOOL) isArray: (id) object

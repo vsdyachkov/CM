@@ -57,7 +57,6 @@
     return key;
 }
 
-
 + (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate
 {
     //

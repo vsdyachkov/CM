@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface CMHelper : NSObject
 
 + (NSNumber*) relationshipIdFrom: (NSRelationshipDescription*) relation to: (NSRelationshipDescription*) inverse;

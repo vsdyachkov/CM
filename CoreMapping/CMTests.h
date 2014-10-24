@@ -6,11 +6,10 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 @interface CMTests : NSObject
 
 + (NSArray*) validateArray: (id) object;
++ (NSDictionary*) validateDictionary: (id) object;
 
 + (BOOL) isArray: (id) object;
 + (BOOL) isDictionary: (id) object;

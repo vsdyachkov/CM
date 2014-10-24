@@ -22,9 +22,7 @@
     [CoreMapping clearDatabase];
     NSDictionary* json = [CMHelper jsonWithFileName:@"test_add"];
 
-    [CoreMapping saveInBackgroundWithBlock:^(NSManagedObjectContext *context) {
-        [CoreMapping syncWithJson:json];
-    } completion:^(BOOL success, NSError *error) {
+    [CoreMapping syncWithJson: json completion:^{
         [CoreMapping shortStatus];
     }];
     

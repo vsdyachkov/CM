@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
-
 @interface NSManagedObject (manager)
 
 + (NSArray*) findRowWithPredicate: (NSPredicate*) predicate;

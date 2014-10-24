@@ -21,4 +21,15 @@
     return mapKey;
 }
 
+- (NSString*) manyToManyTableName
+{
+    NSString* name = [NSString stringWithFormat:@"%@",self.name];
+    NSDictionary* userInfo = [self userInfo];
+    NSString* value = userInfo[CoreDataManyToManyNameName];
+    NSString* mapKey = (value) ? value : name;
+    
+    NSAssert(mapKey, @"%@ manyToManyName: %@", errNilParam, mapKey);
+    return mapKey;
+}
+
 @end

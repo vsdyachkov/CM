@@ -6,9 +6,6 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
-#import <CoreData/CoreData.h>
-#import "CoreMapping.h"
-
 @interface NSEntityDescription (mapping)
 
 - (NSString*) mappingEntityName;
