@@ -16,6 +16,7 @@
 
 - (void)viewDidLoad
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(progress:) name:CMprogressNotificationName object:nil];
     
     [super viewDidLoad];
     
@@ -26,6 +27,12 @@
         [CoreMapping shortStatus];
     }];
     
+}
+
+- (void) progress: (NSNotification *) notification
+{
+    NSNumber* progress = [notification.userInfo objectForKey:CMprogressNotificationName];
+    NSLog (@"progress: %@", progress);
 }
 
 @end

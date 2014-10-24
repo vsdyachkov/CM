@@ -377,10 +377,6 @@
     NSArray* entities = [self.managedObjectModel entities];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
         
-        progress = (float)(idx+1)/(entities.count+1);
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:CMprogressNotificationName object:nil userInfo:@{CMprogressNotificationName:@(progress)}];
-        
         if ([CMTests validateDictionary:json[desc.mappingEntityName]])
         {
             NSDictionary* jsonTable = json[desc.mappingEntityName];            
@@ -392,12 +388,18 @@
                 if (addArray) [self mapAllRowsInEntity:desc andWithJsonArray:addArray];
             }
             
+            progress = (float)(idx+0.5f)/(entities.count+1);
+            [[NSNotificationCenter defaultCenter] postNotificationName:CMprogressNotificationName object:nil userInfo:@{CMprogressNotificationName:@(progress)}];
+            
             if ([jsonTable.allKeys containsObject:@"remove"])
             {
                 NSArray* removeArray = [CMTests validateArray:json[desc.mappingEntityName][@"remove"]];
                 [report appendFormat:@"[-] Removed %lu '%@'\n", (unsigned long)removeArray.count, desc.mappingEntityName];
                 if (removeArray) [self removeRowsInEntity:desc withNumberArray:(NSArray*)removeArray];
             }
+            
+            progress = (float)(idx+1.0f)/(entities.count+1);
+            [[NSNotificationCenter defaultCenter] postNotificationName:CMprogressNotificationName object:nil userInfo:@{CMprogressNotificationName:@(progress)}];
         }
         else
         {
