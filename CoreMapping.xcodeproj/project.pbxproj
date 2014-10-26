@@ -8,6 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		02605DC2244D4B099667DB5F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 525811D60497460C9D9766C4 /* libPods.a */; };
+		7744E50E19FD60F1004D8C42 /* CMCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E4FD19FD60F1004D8C42 /* CMCoreData.m */; };
+		7744E50F19FD60F1004D8C42 /* CMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E4FF19FD60F1004D8C42 /* CMHelper.m */; };
+		7744E51019FD60F1004D8C42 /* CMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50119FD60F1004D8C42 /* CMTests.m */; };
+		7744E51119FD60F1004D8C42 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50319FD60F1004D8C42 /* CoreMapping.m */; };
+		7744E51219FD60F1004D8C42 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50519FD60F1004D8C42 /* NSAttributeDescription+mapping.m */; };
+		7744E51319FD60F1004D8C42 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50719FD60F1004D8C42 /* NSEntityDescription+mapping.m */; };
+		7744E51419FD60F1004D8C42 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50919FD60F1004D8C42 /* NSManagedObject+manager.m */; };
+		7744E51519FD60F1004D8C42 /* NSObject+performing.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50B19FD60F1004D8C42 /* NSObject+performing.m */; };
+		7744E51619FD60F1004D8C42 /* NSRelationshipDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50D19FD60F1004D8C42 /* NSRelationshipDescription+mapping.m */; };
 		8F04F40019B0A696009E3D0C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F3FF19B0A696009E3D0C /* MainViewController.m */; };
 		8F67F9A919AF9FF80034A734 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F67F9A819AF9FF80034A734 /* test.json */; };
 		8F75977B19AC83D900A5F389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977A19AC83D900A5F389 /* Foundation.framework */; };
@@ -19,38 +28,33 @@
 		8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F75978C19AC83D900A5F389 /* AppDelegate.m */; };
 		8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8F75978E19AC83D900A5F389 /* CoreMapping.xcdatamodeld */; };
 		8F75979219AC83D900A5F389 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8F75979119AC83D900A5F389 /* Images.xcassets */; };
-		8F75979919AC83D900A5F389 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75979819AC83D900A5F389 /* XCTest.framework */; };
-		8F75979A19AC83D900A5F389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977A19AC83D900A5F389 /* Foundation.framework */; };
-		8F75979B19AC83D900A5F389 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977E19AC83D900A5F389 /* UIKit.framework */; };
-		8F75979C19AC83D900A5F389 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75978019AC83D900A5F389 /* CoreData.framework */; };
-		8F7597A419AC83D900A5F389 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597A219AC83D900A5F389 /* InfoPlist.strings */; };
-		8F7597A619AC83D900A5F389 /* CoreMappingTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597A519AC83D900A5F389 /* CoreMappingTests.m */; };
 		8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F7597B819ACB45C00A5F389 /* MyEntity+CustomLogic.m */; };
 		8F7597D019ADE3EA00A5F389 /* test_add.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F7597CF19ADE3EA00A5F389 /* test_add.json */; };
 		8F9D0F1F19B47A7400E7C857 /* Phone.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9D0F1E19B47A7400E7C857 /* Phone.m */; };
 		8F9D0F2219B47A7500E7C857 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F9D0F2119B47A7500E7C857 /* City.m */; };
-		8FBF884419AF89C500BA1285 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883719AF89C500BA1285 /* CoreMapping.m */; };
-		8FBF884619AF89C500BA1285 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883B19AF89C500BA1285 /* NSAttributeDescription+mapping.m */; };
-		8FBF884719AF89C500BA1285 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883D19AF89C500BA1285 /* NSEntityDescription+mapping.m */; };
-		8FBF884819AF89C500BA1285 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF883F19AF89C500BA1285 /* NSManagedObject+manager.m */; };
-		8FBF884919AF89C500BA1285 /* NSObject+performing.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF884119AF89C500BA1285 /* NSObject+performing.m */; };
-		8FBF884A19AF89C500BA1285 /* NSRelationshipDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FBF884319AF89C500BA1285 /* NSRelationshipDescription+mapping.m */; };
-		8FE361AA19ED692800BB1289 /* CMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FE361A719ED692800BB1289 /* CMHelper.m */; };
-		8FE361AB19ED692800BB1289 /* CMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 8FE361A919ED692800BB1289 /* CMTests.m */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		8F75979D19AC83D900A5F389 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8F75976F19AC83D900A5F389 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8F75977619AC83D900A5F389;
-			remoteInfo = CoreMapping;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		525811D60497460C9D9766C4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		7744E4FB19FD60F1004D8C42 /* CMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMConstants.h; path = "CoreMapping Group/CMConstants.h"; sourceTree = "<group>"; };
+		7744E4FC19FD60F1004D8C42 /* CMCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMCoreData.h; path = "CoreMapping Group/CMCoreData.h"; sourceTree = "<group>"; };
+		7744E4FD19FD60F1004D8C42 /* CMCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMCoreData.m; path = "CoreMapping Group/CMCoreData.m"; sourceTree = "<group>"; };
+		7744E4FE19FD60F1004D8C42 /* CMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMHelper.h; path = "CoreMapping Group/CMHelper.h"; sourceTree = "<group>"; };
+		7744E4FF19FD60F1004D8C42 /* CMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMHelper.m; path = "CoreMapping Group/CMHelper.m"; sourceTree = "<group>"; };
+		7744E50019FD60F1004D8C42 /* CMTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMTests.h; path = "CoreMapping Group/CMTests.h"; sourceTree = "<group>"; };
+		7744E50119FD60F1004D8C42 /* CMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMTests.m; path = "CoreMapping Group/CMTests.m"; sourceTree = "<group>"; };
+		7744E50219FD60F1004D8C42 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMapping.h; path = "CoreMapping Group/CoreMapping.h"; sourceTree = "<group>"; };
+		7744E50319FD60F1004D8C42 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = "CoreMapping Group/CoreMapping.m"; sourceTree = "<group>"; };
+		7744E50419FD60F1004D8C42 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping Group/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
+		7744E50519FD60F1004D8C42 /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping Group/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
+		7744E50619FD60F1004D8C42 /* NSEntityDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+mapping.h"; path = "CoreMapping Group/NSEntityDescription+mapping.h"; sourceTree = "<group>"; };
+		7744E50719FD60F1004D8C42 /* NSEntityDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+mapping.m"; path = "CoreMapping Group/NSEntityDescription+mapping.m"; sourceTree = "<group>"; };
+		7744E50819FD60F1004D8C42 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+manager.h"; path = "CoreMapping Group/NSManagedObject+manager.h"; sourceTree = "<group>"; };
+		7744E50919FD60F1004D8C42 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+manager.m"; path = "CoreMapping Group/NSManagedObject+manager.m"; sourceTree = "<group>"; };
+		7744E50A19FD60F1004D8C42 /* NSObject+performing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+performing.h"; path = "CoreMapping Group/NSObject+performing.h"; sourceTree = "<group>"; };
+		7744E50B19FD60F1004D8C42 /* NSObject+performing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+performing.m"; path = "CoreMapping Group/NSObject+performing.m"; sourceTree = "<group>"; };
+		7744E50C19FD60F1004D8C42 /* CMExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CMExtensions.h"; path = "CoreMapping Group/CMExtensions.h"; sourceTree = "<group>"; };
+		7744E50D19FD60F1004D8C42 /* NSRelationshipDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSRelationshipDescription+mapping.m"; path = "CoreMapping Group/NSRelationshipDescription+mapping.m"; sourceTree = "<group>"; };
 		7E39AC3D0DBB460792423FC9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		8F04F3FE19B0A696009E3D0C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = ../MainViewController.h; sourceTree = "<group>"; };
 		8F04F3FF19B0A696009E3D0C /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = ../MainViewController.m; sourceTree = "<group>"; };
@@ -68,7 +72,6 @@
 		8F75978C19AC83D900A5F389 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		8F75978F19AC83D900A5F389 /* CoreMapping.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = CoreMapping.xcdatamodel; sourceTree = "<group>"; };
 		8F75979119AC83D900A5F389 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = CoreMapping/Images.xcassets; sourceTree = "<group>"; };
-		8F75979719AC83D900A5F389 /* CoreMappingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CoreMappingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		8F75979819AC83D900A5F389 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		8F7597A119AC83D900A5F389 /* CoreMappingTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CoreMappingTests-Info.plist"; sourceTree = "<group>"; };
 		8F7597A319AC83D900A5F389 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -80,22 +83,6 @@
 		8F9D0F1E19B47A7400E7C857 /* Phone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Phone.m; sourceTree = "<group>"; };
 		8F9D0F2019B47A7500E7C857 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
 		8F9D0F2119B47A7500E7C857 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
-		8FBF883619AF89C500BA1285 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMapping.h; path = CoreMapping/CoreMapping.h; sourceTree = "<group>"; };
-		8FBF883719AF89C500BA1285 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = CoreMapping/CoreMapping.m; sourceTree = "<group>"; };
-		8FBF883A19AF89C500BA1285 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
-		8FBF883B19AF89C500BA1285 /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
-		8FBF883C19AF89C500BA1285 /* NSEntityDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+mapping.h"; path = "CoreMapping/NSEntityDescription+mapping.h"; sourceTree = "<group>"; };
-		8FBF883D19AF89C500BA1285 /* NSEntityDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+mapping.m"; path = "CoreMapping/NSEntityDescription+mapping.m"; sourceTree = "<group>"; };
-		8FBF883E19AF89C500BA1285 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+manager.h"; path = "CoreMapping/NSManagedObject+manager.h"; sourceTree = "<group>"; };
-		8FBF883F19AF89C500BA1285 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+manager.m"; path = "CoreMapping/NSManagedObject+manager.m"; sourceTree = "<group>"; };
-		8FBF884019AF89C500BA1285 /* NSObject+performing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+performing.h"; path = "CoreMapping/NSObject+performing.h"; sourceTree = "<group>"; };
-		8FBF884119AF89C500BA1285 /* NSObject+performing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+performing.m"; path = "CoreMapping/NSObject+performing.m"; sourceTree = "<group>"; };
-		8FBF884219AF89C500BA1285 /* CMExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CMExtensions.h"; path = "CoreMapping/CMExtensions.h"; sourceTree = "<group>"; };
-		8FBF884319AF89C500BA1285 /* NSRelationshipDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSRelationshipDescription+mapping.m"; path = "CoreMapping/NSRelationshipDescription+mapping.m"; sourceTree = "<group>"; };
-		8FE361A619ED692800BB1289 /* CMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMHelper.h; path = CoreMapping/CMHelper.h; sourceTree = "<group>"; };
-		8FE361A719ED692800BB1289 /* CMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMHelper.m; path = CoreMapping/CMHelper.m; sourceTree = "<group>"; };
-		8FE361A819ED692800BB1289 /* CMTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMTests.h; path = CoreMapping/CMTests.h; sourceTree = "<group>"; };
-		8FE361A919ED692800BB1289 /* CMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMTests.m; path = CoreMapping/CMTests.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,17 +95,6 @@
 				8F75977F19AC83D900A5F389 /* UIKit.framework in Frameworks */,
 				8F75977B19AC83D900A5F389 /* Foundation.framework in Frameworks */,
 				02605DC2244D4B099667DB5F /* libPods.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8F75979419AC83D900A5F389 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8F75979919AC83D900A5F389 /* XCTest.framework in Frameworks */,
-				8F75979C19AC83D900A5F389 /* CoreData.framework in Frameworks */,
-				8F75979B19AC83D900A5F389 /* UIKit.framework in Frameworks */,
-				8F75979A19AC83D900A5F389 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -158,7 +134,6 @@
 			isa = PBXGroup;
 			children = (
 				8F75977719AC83D900A5F389 /* CoreMapping.app */,
-				8F75979719AC83D900A5F389 /* CoreMappingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -223,22 +198,25 @@
 		8F7597C419ACBC7500A5F389 /* CoreMapping Group */ = {
 			isa = PBXGroup;
 			children = (
-				8FBF883A19AF89C500BA1285 /* NSAttributeDescription+mapping.h */,
-				8FBF883B19AF89C500BA1285 /* NSAttributeDescription+mapping.m */,
-				8FBF883C19AF89C500BA1285 /* NSEntityDescription+mapping.h */,
-				8FBF883D19AF89C500BA1285 /* NSEntityDescription+mapping.m */,
-				8FBF883E19AF89C500BA1285 /* NSManagedObject+manager.h */,
-				8FBF883F19AF89C500BA1285 /* NSManagedObject+manager.m */,
-				8FBF884219AF89C500BA1285 /* CMExtensions.h */,
-				8FBF884319AF89C500BA1285 /* NSRelationshipDescription+mapping.m */,
-				8FBF884019AF89C500BA1285 /* NSObject+performing.h */,
-				8FBF884119AF89C500BA1285 /* NSObject+performing.m */,
-				8FE361A619ED692800BB1289 /* CMHelper.h */,
-				8FE361A719ED692800BB1289 /* CMHelper.m */,
-				8FE361A819ED692800BB1289 /* CMTests.h */,
-				8FE361A919ED692800BB1289 /* CMTests.m */,
-				8FBF883619AF89C500BA1285 /* CoreMapping.h */,
-				8FBF883719AF89C500BA1285 /* CoreMapping.m */,
+				7744E4FB19FD60F1004D8C42 /* CMConstants.h */,
+				7744E4FC19FD60F1004D8C42 /* CMCoreData.h */,
+				7744E4FD19FD60F1004D8C42 /* CMCoreData.m */,
+				7744E4FE19FD60F1004D8C42 /* CMHelper.h */,
+				7744E4FF19FD60F1004D8C42 /* CMHelper.m */,
+				7744E50019FD60F1004D8C42 /* CMTests.h */,
+				7744E50119FD60F1004D8C42 /* CMTests.m */,
+				7744E50219FD60F1004D8C42 /* CoreMapping.h */,
+				7744E50319FD60F1004D8C42 /* CoreMapping.m */,
+				7744E50419FD60F1004D8C42 /* NSAttributeDescription+mapping.h */,
+				7744E50519FD60F1004D8C42 /* NSAttributeDescription+mapping.m */,
+				7744E50619FD60F1004D8C42 /* NSEntityDescription+mapping.h */,
+				7744E50719FD60F1004D8C42 /* NSEntityDescription+mapping.m */,
+				7744E50819FD60F1004D8C42 /* NSManagedObject+manager.h */,
+				7744E50919FD60F1004D8C42 /* NSManagedObject+manager.m */,
+				7744E50A19FD60F1004D8C42 /* NSObject+performing.h */,
+				7744E50B19FD60F1004D8C42 /* NSObject+performing.m */,
+				7744E50C19FD60F1004D8C42 /* CMExtensions.h */,
+				7744E50D19FD60F1004D8C42 /* NSRelationshipDescription+mapping.m */,
 			);
 			name = "CoreMapping Group";
 			sourceTree = "<group>";
@@ -265,24 +243,6 @@
 			productReference = 8F75977719AC83D900A5F389 /* CoreMapping.app */;
 			productType = "com.apple.product-type.application";
 		};
-		8F75979619AC83D900A5F389 /* CoreMappingTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 8F7597AC19AC83D900A5F389 /* Build configuration list for PBXNativeTarget "CoreMappingTests" */;
-			buildPhases = (
-				8F75979319AC83D900A5F389 /* Sources */,
-				8F75979419AC83D900A5F389 /* Frameworks */,
-				8F75979519AC83D900A5F389 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				8F75979E19AC83D900A5F389 /* PBXTargetDependency */,
-			);
-			name = CoreMappingTests;
-			productName = CoreMappingTests;
-			productReference = 8F75979719AC83D900A5F389 /* CoreMappingTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -291,11 +251,6 @@
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = Dyachkov Victor;
-				TargetAttributes = {
-					8F75979619AC83D900A5F389 = {
-						TestTargetID = 8F75977619AC83D900A5F389;
-					};
-				};
 			};
 			buildConfigurationList = 8F75977219AC83D900A5F389 /* Build configuration list for PBXProject "CoreMapping" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -310,7 +265,6 @@
 			projectRoot = "";
 			targets = (
 				8F75977619AC83D900A5F389 /* CoreMapping */,
-				8F75979619AC83D900A5F389 /* CoreMappingTests */,
 			);
 		};
 /* End PBXProject section */
@@ -324,14 +278,6 @@
 				8F67F9A919AF9FF80034A734 /* test.json in Resources */,
 				8F7597D019ADE3EA00A5F389 /* test_add.json in Resources */,
 				8F75979219AC83D900A5F389 /* Images.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		8F75979519AC83D900A5F389 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8F7597A419AC83D900A5F389 /* InfoPlist.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,41 +321,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8FBF884619AF89C500BA1285 /* NSAttributeDescription+mapping.m in Sources */,
-				8FBF884419AF89C500BA1285 /* CoreMapping.m in Sources */,
-				8FBF884819AF89C500BA1285 /* NSManagedObject+manager.m in Sources */,
 				8F9D0F2219B47A7500E7C857 /* City.m in Sources */,
-				8FBF884719AF89C500BA1285 /* NSEntityDescription+mapping.m in Sources */,
-				8FE361AA19ED692800BB1289 /* CMHelper.m in Sources */,
+				7744E51419FD60F1004D8C42 /* NSManagedObject+manager.m in Sources */,
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
-				8FBF884A19AF89C500BA1285 /* NSRelationshipDescription+mapping.m in Sources */,
-				8FE361AB19ED692800BB1289 /* CMTests.m in Sources */,
-				8FBF884919AF89C500BA1285 /* NSObject+performing.m in Sources */,
+				7744E51319FD60F1004D8C42 /* NSEntityDescription+mapping.m in Sources */,
+				7744E50F19FD60F1004D8C42 /* CMHelper.m in Sources */,
+				7744E51019FD60F1004D8C42 /* CMTests.m in Sources */,
+				7744E50E19FD60F1004D8C42 /* CMCoreData.m in Sources */,
 				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
+				7744E51219FD60F1004D8C42 /* NSAttributeDescription+mapping.m in Sources */,
 				8F9D0F1F19B47A7400E7C857 /* Phone.m in Sources */,
 				8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */,
+				7744E51519FD60F1004D8C42 /* NSObject+performing.m in Sources */,
+				7744E51619FD60F1004D8C42 /* NSRelationshipDescription+mapping.m in Sources */,
+				7744E51119FD60F1004D8C42 /* CoreMapping.m in Sources */,
 				8F04F40019B0A696009E3D0C /* MainViewController.m in Sources */,
 				8F75978919AC83D900A5F389 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		8F75979319AC83D900A5F389 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				8F7597A619AC83D900A5F389 /* CoreMappingTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		8F75979E19AC83D900A5F389 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8F75977619AC83D900A5F389 /* CoreMapping */;
-			targetProxy = 8F75979D19AC83D900A5F389 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		8F75978519AC83D900A5F389 /* InfoPlist.strings */ = {
@@ -531,46 +462,6 @@
 			};
 			name = Release;
 		};
-		8F7597AD19AC83D900A5F389 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CoreMapping.app/CoreMapping";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreMapping/CoreMapping-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "CoreMappingTests/CoreMappingTests-Info.plist";
-				PRODUCT_NAME = CoreMappingTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		8F7597AE19AC83D900A5F389 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CoreMapping.app/CoreMapping";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "CoreMapping/CoreMapping-Prefix.pch";
-				INFOPLIST_FILE = "CoreMappingTests/CoreMappingTests-Info.plist";
-				PRODUCT_NAME = CoreMappingTests;
-				TEST_HOST = "$(BUNDLE_LOADER)";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -588,15 +479,6 @@
 			buildConfigurations = (
 				8F7597AA19AC83D900A5F389 /* Debug */,
 				8F7597AB19AC83D900A5F389 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		8F7597AC19AC83D900A5F389 /* Build configuration list for PBXNativeTarget "CoreMappingTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				8F7597AD19AC83D900A5F389 /* Debug */,
-				8F7597AE19AC83D900A5F389 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

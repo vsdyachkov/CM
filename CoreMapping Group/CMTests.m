@@ -32,6 +32,11 @@
 
 // detect
 
++ (BOOL) isURL: (id) object
+{
+    return (object && [object isKindOfClass:[NSURL class]]) ? YES : NO;
+}
+
 + (BOOL) isArray: (id) object
 {
     return (object && [object isKindOfClass:[NSArray class]]) ? YES : NO;
@@ -68,6 +73,12 @@
 }
 
 // check
+
++ (void) checkURL: (id) object
+{
+    if (![self isURL:object]) NSLog(@"%@ %@ is not NSURL", errInvalidClassParam, NSStringFromClass([object class]));
+    NSAssert([self isURL:object], @"%@ %@ is not NSURL", errInvalidClassParam, NSStringFromClass([object class]));
+}
 
 + (void) checkArray: (id) object
 {

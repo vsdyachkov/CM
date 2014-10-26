@@ -10,31 +10,31 @@
 
 @implementation NSManagedObject (manager)
 
-+ (NSArray*)findRowWithPredicate: (NSPredicate*) predicate
++ (NSArray*)findRowsWithPredicate: (NSPredicate*) predicate
 {
     NSString* className = NSStringFromClass(self);
-    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CoreMapping managedObjectContext]];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
     NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entity.name];
     [request setPredicate:predicate];
     NSError* error;
-    NSArray* arr = [[CoreMapping managedObjectContext] executeFetchRequest:request error:&error];
+    NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
     if (error) NSLog(@"Error finding: %@",error.localizedDescription);
     return arr;
 }
 
 + (NSArray*)findAllRows
 {
-    return [self findRowWithPredicate:nil];
+    return [self findRowsWithPredicate:nil];
 }
 
 + (id) findFirstRowWithPredicate: (NSPredicate*) predicate
 {
     NSString* className = NSStringFromClass(self);
-    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CoreMapping managedObjectContext]];
+    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
     NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entity.name];
     [request setFetchLimit:1];
 	
-	NSArray *results = [self findRowWithPredicate:predicate];
+	NSArray *results = [self findRowsWithPredicate:predicate];
 	if (results.count > 0) {
 		return results [0];
 	} else {
@@ -46,10 +46,10 @@
 {
     NSArray *items = [self findAllRows];
     for (NSManagedObject *managedObject in items) {
-        [[CoreMapping managedObjectContext] deleteObject:managedObject];
+        [[CMCoreData managedObjectContext] deleteObject:managedObject];
     }
     NSError* error;
-    if (![[CoreMapping managedObjectContext] save:&error]) {
+    if (![[CMCoreData managedObjectContext] save:&error]) {
         NSLog(@"### Error: %@", error.localizedDescription);
     }
 }

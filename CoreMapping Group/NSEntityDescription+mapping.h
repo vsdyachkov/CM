@@ -6,12 +6,16 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
+#import "CoreMapping.h"
+
 @interface NSEntityDescription (mapping)
 
 - (NSString*) mappingEntityName;
 - (NSString*) mappingIdKey;
 - (NSString*) mappingIdValue;
 
-+ (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate;
+- (BOOL) isNoParse;
+
+//+ (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate;
 
 @end

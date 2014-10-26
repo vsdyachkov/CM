@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
+#import "CoreMapping.h"
+
 @interface NSAttributeDescription (mapping)
 
 - (NSString*) mappingName;

@@ -11,212 +11,7 @@
 
 @implementation CoreMapping
 
-
-#pragma mark - Core Data stack
-
-+ (NSURL*) defaultStoreName;
-{
-    NSString* fileName = [[[NSBundle mainBundle] infoDictionary] valueForKey:(id)kCFBundleNameKey];
-    if (fileName == nil) fileName = SQLFileName;
-    if (![fileName hasSuffix:@"sqlite"]) fileName = [fileName stringByAppendingPathExtension:@"sqlite"];
-    
-    NSURL *storeURL = [[self applicationDocumentsDirectory] URLByAppendingPathComponent:fileName];
-    return storeURL;
-}
-
-+ (NSManagedObjectModel*) managedObjectModel
-{
-    if (managedObjectModel != nil)
-        return managedObjectModel;
-    
-    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
-    return managedObjectModel;
-}
-
-
-+ (NSPersistentStoreCoordinator*) persistentStoreCoordinator
-{
-    if (persistentStoreCoordinator != nil)
-        return persistentStoreCoordinator;
-    
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
-    
-    persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
-    
-    NSError *error = nil;
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self defaultStoreName] options:options error:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        NSAssert(error, @"Unresolved error %@, %@", error, [error userInfo]);
-    }
-    
-    return persistentStoreCoordinator;
-}
-
-+ (NSManagedObjectContext*) managedObjectContext
-{
-    if (managedObjectContext != nil)
-        return managedObjectContext;
-    NSPersistentStoreCoordinator *coordinator = [self persistentStoreCoordinator];
-    if (coordinator != nil) {
-        managedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        [managedObjectContext setPersistentStoreCoordinator:coordinator];
-    }
-    return managedObjectContext;
-}
-
-+ (NSManagedObjectContext *) childManagedObjectContext
-{
-    if (childManagedObjectContext != nil)
-        return childManagedObjectContext;
-    childManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [childManagedObjectContext setParentContext:[self managedObjectContext]];
-    return childManagedObjectContext;
-}
-
-+ (void) saveContext
-{
-    if ([NSThread isMainThread]) {
-        [self saveMainContext];
-    } else {
-        [self saveChildContext];
-        [[self managedObjectContext] performBlock:^{
-            [self saveMainContext];
-        }];
-    }
-}
-
-+ (NSError*) saveMainContext
-{
-    NSError* error;
-    [[self managedObjectContext] save:&error];
-    if (error) NSLog(@"Can't save context, error: %@", error.localizedDescription);
-    return error;
-}
-
-+ (NSError*) saveChildContext
-{
-    NSError* error;
-    [[self childManagedObjectContext] save:&error];
-    if (error)
-        NSLog(@"Can't save child context, error: %@", error.localizedDescription);
-    return error;
-}
-
-+ (NSManagedObjectContext*) contextForCurrentThread
-{
-    return ([NSThread isMainThread]) ? [self managedObjectContext] : [self childManagedObjectContext];
-}
-
-
-#pragma mark - Application's Documents directory
-
-
-+ (NSURL*) applicationDocumentsDirectory
-{
-    return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-}
-
-/*
-+ (NSURL*) applicationDbDirectory
-{
-    NSString* bundleName = [[[NSBundle mainBundle] infoDictionary] valueForKey:(id)kCFBundleNameKey];
-    if (bundleName == nil) bundleName = @"DB";
-    if ([bundleName hasSuffix:@"sqlite"]) bundleName = [bundleName stringByDeletingLastPathComponent];
-    
-    NSString *supportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:bundleName];
-    if (![[NSFileManager defaultManager] fileExistsAtPath:supportDirectory])
-    {
-        [[NSFileManager defaultManager] createDirectoryAtPath:supportDirectory withIntermediateDirectories:NO attributes:nil error:nil];
-    }
-    
-    return [[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:bundleName];
-}
-*/
-
-+ (void) createDirectory:(NSString *)directoryName atFilePath:(NSString *)filePath
-{
-    NSString *filePathAndDirectory = [filePath stringByAppendingPathComponent:directoryName];
-    NSError *error;
-    if (![[NSFileManager defaultManager] createDirectoryAtPath:filePathAndDirectory withIntermediateDirectories:NO attributes:nil error:&error])
-    {
-        NSLog(@"Create directory error: %@", error);
-    }
-}
-
-
 #pragma mark - Core Mapping stack
-
-+ (NSMutableDictionary*) addRelationshipIfNeed: (NSString*) name andRelationship: (NSRelationshipDescription*) relationship
-{
-    if (relationshipDictionary != nil) {
-        if (![relationshipDictionary.allKeys containsObject:name]) {
-            [relationshipDictionary setObject:relationship forKey:name];
-            return relationshipDictionary;
-        }
-        return relationshipDictionary;
-    }
-    
-    relationshipDictionary = [NSMutableDictionary new];
-    [relationshipDictionary setObject:relationship forKey:name];
-    return relationshipDictionary;
-}
-
-+ (void) status
-{
-    [self fullPrint:YES];
-}
-
-+ (void) shortStatus
-{
-    [self fullPrint:NO];
-}
-
-+ (void) fullPrint: (BOOL) full
-{
-    NSMutableString* report = @"\n\nCurrent Core Data status:\n".mutableCopy;
-    for (NSEntityDescription* entityDescription in [self.managedObjectModel entities])
-    {
-        
-        NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entityDescription.name];
-        NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:request error:nil];
-        if (full)
-            [report appendString:@"\n"];
-        [report appendFormat:@"[i] %@: %lu rows\n", entityDescription.name, (unsigned long)arr.count];
-        if (full) {
-            [report appendString:@"\n"];
-        } else {
-            continue;
-        }
-        [arr enumerateObjectsUsingBlock:^(NSManagedObject* obj, NSUInteger idx, BOOL *stop) {
-            [report appendFormat:@"- %@\n\n", obj];
-        }];
-        if (arr.count < 1)
-            [report appendString:@"- <Empty>"];
-    }
-    NSLog(@"%@\n\n",report);
-}
-
-+ (void) clearDatabase
-{
-    NSArray *entities = [[self.managedObjectModel entities] valueForKey:@"name"];
-    
-    for (NSString* entityName in entities)
-    {
-        NSFetchRequest *fetchRequest = [NSFetchRequest new];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:self.managedObjectContext];
-        [fetchRequest setEntity:entity];
-        NSError *error;
-        NSArray *items = [[self contextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
-        for (NSManagedObject *managedObject in items) {
-            [[self contextForCurrentThread] deleteObject:managedObject];
-        }
-        if (![[self contextForCurrentThread] save:&error]) {
-            NSLog(@"Error: %@",error.localizedDescription);
-        }
-    }
-}
 
 + (void) mapValue:(id) value withJsonKey: (NSString*) key andType: (NSAttributeType) type andManagedObject: (NSManagedObject*) obj
 {
@@ -227,7 +22,7 @@
     id convertedValue;
     NSString* strValue = [NSString stringWithFormat:@"%@",value];
     NSDateFormatter* format = [[NSDateFormatter alloc] init];
-    [format setDateFormat: defaultDateFormat];
+    [format setDateFormat: CMDefaultDateFormat];
     switch (type) {
         case NSUndefinedAttributeType: convertedValue =  nil; break;
         case NSInteger16AttributeType: convertedValue =  [NSNumber numberWithInt:[strValue intValue]]; break;
@@ -259,12 +54,12 @@
     NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idKey, idNumber];
     [req setPredicate:myPred];
     
-    NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:req error:nil];
+    NSArray* arr = [[CMCoreData contextForCurrentThread] executeFetchRequest:req error:nil];
     if (arr.count > 0) {
         return arr[0];
     } else {
         if (create) {
-            return [NSEntityDescription insertNewObjectForEntityForName:entity.name inManagedObjectContext:[self contextForCurrentThread]];
+            return [NSEntityDescription insertNewObjectForEntityForName:entity.name inManagedObjectContext:[CMCoreData contextForCurrentThread]];
         } else {
             return nil;
         }
@@ -306,13 +101,28 @@
     return obj;
 }
 
++ (NSMutableDictionary*) addRelationshipIfNeed: (NSString*) name andRelationship: (NSRelationshipDescription*) relationship
+{
+    if (relationshipDictionary != nil) {
+        if (![relationshipDictionary.allKeys containsObject:name]) {
+            [relationshipDictionary setObject:relationship forKey:name];
+            return relationshipDictionary;
+        }
+        return relationshipDictionary;
+    }
+    
+    relationshipDictionary = [NSMutableDictionary new];
+    [relationshipDictionary setObject:relationship forKey:name];
+    return relationshipDictionary;
+}
+
 + (void) mapRelationshipsWithObject: (NSManagedObject*) obj andJsonDict: (NSDictionary*) json
 {
     NSAssert(obj || json, @"%@ obj: %@, json: %@", errNilParam, obj, json);
     [CMTests checkManagedObject:obj];
     [CMTests checkDictionary:json];
     
-    // perform Relationships: ManyToOne & OneToOne & OneToMane
+    // perform Relationships: ManyToOne & OneToOne & OneToMany
     NSEntityDescription* desc = obj.entity;
     for (NSString* name in desc.relationshipsByName) {
         NSRelationshipDescription* relationFromChild = desc.relationshipsByName[name];
@@ -358,12 +168,14 @@
         NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:desc.name];
         NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", [desc mappingIdValue], removeId];
         [req setPredicate:myPred];
-        NSArray* arr = [[self contextForCurrentThread] executeFetchRequest:req error:nil];
+        NSArray* arr = [[CMCoreData contextForCurrentThread] executeFetchRequest:req error:nil];
         if (arr.count > 0) {
-            [[self contextForCurrentThread] deleteObject:arr[0]];
+            [[CMCoreData contextForCurrentThread] deleteObject:arr[0]];
         }
     }];
 }
+
+#pragma mark - Sync methods
 
 + (void) syncWithJson: (NSDictionary*) json
 {
@@ -374,36 +186,49 @@
     
     __block float progress = 0.0f;
     
-    NSArray* entities = [self.managedObjectModel entities];
+    NSMutableArray* entities = [[CMCoreData managedObjectModel] entities].mutableCopy;
+    
+    // Remove not parsing entities
+    [entities.copy enumerateObjectsUsingBlock:^(NSEntityDescription* obj, NSUInteger idx, BOOL *stop) {
+        if ([obj isNoParse]) {
+            [entities removeObject:obj];
+        }
+    }];
+    
+    // Add and Remove processing
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* desc, NSUInteger idx, BOOL *stop) {
         
         if ([CMTests validateDictionary:json[desc.mappingEntityName]])
         {
-            NSDictionary* jsonTable = json[desc.mappingEntityName];            
+            NSDictionary* jsonTable = json[desc.mappingEntityName];
             
-            if ([jsonTable.allKeys containsObject:@"add"])
+            if ([jsonTable.allKeys containsObject:CMJsonAddName])
             {
-                NSArray* addArray = [CMTests validateArray:json[desc.mappingEntityName][@"add"]];
-                [report appendFormat:@"[+] Added %lu '%@'\n", (unsigned long)addArray.count, desc.mappingEntityName];
+                NSArray* addArray = [CMTests validateArray:json[desc.mappingEntityName][CMJsonAddName]];
+                [report appendFormat:@"[+] Added %lu '%@' from Json -> %@ -> %@\n", (unsigned long)addArray.count, desc.mappingEntityName, desc.mappingEntityName,CMJsonAddName];
                 if (addArray) [self mapAllRowsInEntity:desc andWithJsonArray:addArray];
+            } else {
+                [report appendFormat:@"[i] No 'add' section in Json -> %@ -> %@\n", desc.mappingEntityName, CMJsonAddName];
             }
             
             progress = (float)(idx+0.5f)/(entities.count+1);
-            [[NSNotificationCenter defaultCenter] postNotificationName:CMprogressNotificationName object:nil userInfo:@{CMprogressNotificationName:@(progress)}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CMProgressNotificationName object:nil userInfo:@{CMProgress:@(progress), CMProgressEntityName:desc.mappingEntityName}];
             
-            if ([jsonTable.allKeys containsObject:@"remove"])
+            if ([jsonTable.allKeys containsObject:CMJsonRemoveName])
             {
-                NSArray* removeArray = [CMTests validateArray:json[desc.mappingEntityName][@"remove"]];
-                [report appendFormat:@"[-] Removed %lu '%@'\n", (unsigned long)removeArray.count, desc.mappingEntityName];
+                NSArray* removeArray = [CMTests validateArray:json[desc.mappingEntityName][CMJsonRemoveName]];
+                [report appendFormat:@"[-] Removed %lu '%@' from Json -> %@ -> %@\n", (unsigned long)removeArray.count, desc.mappingEntityName, desc.mappingEntityName, CMJsonRemoveName];
                 if (removeArray) [self removeRowsInEntity:desc withNumberArray:(NSArray*)removeArray];
+            } else {
+                [report appendFormat:@"[i] No 'remove' section in Json -> %@ -> %@\n", desc.mappingEntityName, CMJsonAddName];
             }
             
             progress = (float)(idx+1.0f)/(entities.count+1);
-            [[NSNotificationCenter defaultCenter] postNotificationName:CMprogressNotificationName object:nil userInfo:@{CMprogressNotificationName:@(progress)}];
+            [[NSNotificationCenter defaultCenter] postNotificationName:CMProgressNotificationName object:nil userInfo:@{CMProgress:@(progress), CMProgressEntityName:desc.mappingEntityName}];
         }
         else
         {
-            [report appendFormat:@"[!] '%@' is not array or not found\n", desc.mappingEntityName];
+            [report appendFormat:@"[!] Json -> '%@' not found or not array\n", desc.mappingEntityName];
         }
         
     }];
@@ -424,8 +249,8 @@
         if (![json.allKeys containsObject:key]) return;
         NSDictionary* relationDict = [json objectForKey:key];
         
-        if (![relationDict.allKeys containsObject:@"add"]) return;
-        NSArray* addArray = [relationDict objectForKey:@"add"];
+        if (![relationDict.allKeys containsObject:CMJsonAddName]) return;
+        NSArray* addArray = [relationDict objectForKey:CMJsonAddName];
         
         for (NSDictionary* tmpJson in addArray) {
             
@@ -452,34 +277,102 @@
                     NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
                     [secondObject performSelectorIfResponseFromString:selectorName withObject:firstObject];
                 }
-
+                
             }
             
         }
-
+        
     }
+
+    [[NSNotificationCenter defaultCenter] postNotificationName:CMProgressNotificationName object:nil userInfo:@{CMProgress:@(1)}];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName:CMprogressNotificationName object:nil userInfo:@{CMprogressNotificationName:@(1)}];
-    
-    [report appendFormat:@"[+] Add %d relationship from tables: %@", relations, relationshipDictionary.allKeys];
+    if (relationshipDictionary) {
+        [report appendFormat:@"[+] Add %d relationship from tables: Json -> %@", relations, relationshipDictionary.allKeys];
+    } else {
+        [report appendFormat:@"[i] No relationship tables found"];
+    }
     
     NSLog(@"%@\n\n",report);
     
-    [self saveContext];
+    [CMCoreData saveContext];
     
 }
 
++ (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion
+{
+    NSAssert(json, @"%@ json: %@", errNilParam, json);
+    [CMTests checkDictionary:json];
+    
+    [self databaseOperationInBackground:^(NSManagedObjectContext *context) {
+        [self syncWithJson:json];
+    } completion:^(BOOL success, NSError *error) {
+        if (success) completion(json);
+    }];
+}
+
++ (void) syncWithJsonByName: (NSString*) name
+{
+    NSAssert(name, @"%@ name: %@", errNilParam, name);
+    [CMTests checkString:name];
+    
+    NSDictionary* json = [CMHelper jsonWithFileName:name];
+    [self syncWithJson:json];
+}
+
++ (void) syncWithJsonByName: (NSString*) name completion:(void(^)(NSDictionary* json)) completion
+{
+    NSAssert(name, @"%@ name: %@", errNilParam, name);
+    [CMTests checkString:name];
+    
+    NSDictionary* json = [CMHelper jsonWithFileName:name];
+    [self databaseOperationInBackground:^(NSManagedObjectContext *context) {
+        [self syncWithJson:json];
+    } completion:^(BOOL success, NSError *error) {
+        if (success) completion(json);
+    }];
+}
+
++ (void) syncWithJsonByUrl: (NSURL*) url completion:(void(^)(NSDictionary* json)) completion
+{
+    NSAssert(url, @"%@ url: %@", errNilParam, url);
+    [CMTests checkURL:url];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    [request setTimeoutInterval:10.0];
+    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    op.responseSerializer = [AFJSONResponseSerializer serializer];
+    NSMutableSet* responseTypes = [NSMutableSet setWithSet:op.responseSerializer.acceptableContentTypes];
+    [responseTypes addObject:@"text/html"];
+    op.responseSerializer.acceptableContentTypes = responseTypes;
+    
+    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+        [Logger logSuccessWithTitle:@"Json downloaded" message:nil debugDict:@{@"url":url} alert:NO];
+        [self databaseOperationInBackground:^(NSManagedObjectContext *context) {
+            [self syncWithJson:responseObject];
+        } completion:^(BOOL success, NSError *error) {
+            if (success) completion(responseObject);
+        }];
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        [Logger logErrorWithTitle:@"Json not downloaded" message:error.localizedDescription debugDict:@{@"url":url} alert:NO];
+    }];
+    
+    [[NSOperationQueue mainQueue] cancelAllOperations];
+    [[NSOperationQueue mainQueue] addOperation:op];
+}
+
+#pragma mark - Async database operation methods
+
 + (void) databaseOperationInBackground: (void(^)(NSManagedObjectContext *context))block completion:(void(^)(BOOL success, NSError *error)) completion
 {
-    NSAssert([NSThread isMainThread], @"This function should be called from main thread !");
+    NSAssert([NSThread isMainThread], errInvalidThread);
     
-    NSManagedObjectContext *childManagedObjectContext = [self childManagedObjectContext];
+    NSManagedObjectContext *childManagedObjectContext = [CMCoreData childManagedObjectContext];
     [childManagedObjectContext performBlock:^{
         if (block) {
             block(childManagedObjectContext);
-            NSError* error1 = [self saveChildContext];
-            [[self managedObjectContext] performBlock:^{
-                NSError* error2 = [self saveMainContext];
+            NSError* error1 = [CMCoreData saveChildContext];
+            [[CMCoreData managedObjectContext] performBlock:^{
+                NSError* error2 = [CMCoreData saveMainContext];
                 BOOL isSuccess = (!error1 && !error2);
                 NSString* errorDesc = [NSString stringWithFormat:@"Errors: %@, %@", error1.localizedDescription, error2.localizedDescription];
                 NSError* fatalError = [NSError errorWithDomain:errorDesc code:-1 userInfo:nil];
@@ -490,36 +383,5 @@
         }
     }];
 }
-
-+ (void) syncWithJson: (NSDictionary*) json completion:(void(^)()) completion
-{
-    [self databaseOperationInBackground:^(NSManagedObjectContext *context) {
-        [self syncWithJson:json];
-    } completion:^(BOOL success, NSError *error) {
-        if (success) completion();
-    }];
-}
-
-+ (void) syncWithJsonByUrl: (NSURL*) url completion:(void(^)()) completion
-{
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setTimeoutInterval:10.0];
-    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    op.responseSerializer = [AFJSONResponseSerializer serializer];
-    NSMutableSet* responseTypes = [NSMutableSet setWithSet:op.responseSerializer.acceptableContentTypes];
-    [responseTypes addObject:@"text/html"];
-    op.responseSerializer.acceptableContentTypes = responseTypes;
-    
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-        [self syncWithJson:responseObject completion:completion];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        //
-    }];
-    
-    [[NSOperationQueue mainQueue] cancelAllOperations];
-    [[NSOperationQueue mainQueue] addOperation:op];
-}
-
-
 
 @end

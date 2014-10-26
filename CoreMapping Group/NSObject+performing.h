@@ -6,6 +6,8 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
+#import "CoreMapping.h"
+
 @interface NSObject (performing)
 
 - (BOOL) performSelectorIfResponseFromString: (NSString*) name withObject: (id) object;

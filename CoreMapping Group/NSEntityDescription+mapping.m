@@ -14,7 +14,7 @@
 {
     NSString* name = [NSString stringWithFormat:@"%@",self.name];
     NSDictionary* userInfo = [self userInfo];
-    NSString* value = userInfo[CoreDataPrefix];
+    NSString* value = userInfo[CMPrefix];
     NSString* mapKey = (value) ? value : name;
     
     NSAssert(mapKey, @"%@ mapKey: %@", errNilParam, mapKey);
@@ -28,14 +28,12 @@
     __block NSString* key;
     [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
         
-        if ([attr.userInfo[CoreDataIdPrefix] isEqualToString:@"YES"]) {
+        if ([attr.userInfo[CMIdPrefix] isEqualToString:@"YES"]) {
             key = attr.name;
         }
         
     }];
-    
-    NSAssert(key, @"Table should have '%@ = YES' userinfo", CoreDataIdPrefix);
-    
+    NSAssert(key, @"Table should have '%@ = YES' userinfo", CMIdPrefix);
     return key;
 }
 
@@ -43,23 +41,30 @@
 {
     NSDictionary* attributes = [self attributesByName];
     __block NSString* key;
-    [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
-        
-        if ([attr.userInfo[CoreDataIdPrefix] isEqualToString:@"YES"]) {
-            NSString* mappingName = attr.userInfo[CoreDataPrefix];
+    [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop)
+    {
+        if ([attr.userInfo[CMIdPrefix] isEqualToString:@"YES"]) {
+            NSString* mappingName = attr.userInfo[CMPrefix];
             NSString* realName = attr.name;
             key = (mappingName) ? mappingName : realName;
             *stop = YES;
         }
-        
     }];
-
     return key;
 }
 
+- (BOOL) isNoParse
+{
+    NSDictionary* userInfo = [self userInfo];
+    NSString* value = userInfo[CMNoParse];
+    return (value && [value isEqualToString:@"YES"]) ? YES : NO;
+}
+
+/*
 + (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate
 {
     //
 }
+*/
 
 @end

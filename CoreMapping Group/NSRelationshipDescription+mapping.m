@@ -14,7 +14,7 @@
 {
     NSString* name = [NSString stringWithFormat:@"%@",self.name];
     NSDictionary* userInfo = [self userInfo];
-    NSString* value = userInfo[CoreDataPrefix];
+    NSString* value = userInfo[CMPrefix];
     NSString* mapKey = (value) ? value : name;
     
     NSAssert(mapKey, @"%@ mapKey: %@", errNilParam, mapKey);
@@ -25,7 +25,7 @@
 {
     NSString* name = [NSString stringWithFormat:@"%@",self.name];
     NSDictionary* userInfo = [self userInfo];
-    NSString* value = userInfo[CoreDataManyToManyNameName];
+    NSString* value = userInfo[CMManyToManyName];
     NSString* mapKey = (value) ? value : name;
     
     NSAssert(mapKey, @"%@ manyToManyName: %@", errNilParam, mapKey);

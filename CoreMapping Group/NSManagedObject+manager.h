@@ -6,9 +6,11 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
+#import "CoreMapping.h"
+
 @interface NSManagedObject (manager)
 
-+ (NSArray*) findRowWithPredicate: (NSPredicate*) predicate;
++ (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate;
 + (NSArray*) findAllRows;
 + (id) findFirstRowWithPredicate: (NSPredicate*) predicate;
 
