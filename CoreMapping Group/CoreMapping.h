@@ -22,18 +22,18 @@ static NSMutableDictionary* relationshipDictionary;
 
 // All methods with completion block are async
 
-// Parse from NSDictionary
+// Parse Json from NSDictionary
 + (void) syncWithJson: (NSDictionary*) json;
-+ (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion;
++ (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion failure: (void(^)(NSError *error)) failure;
 
-// Parse from bundle
+// Parse Json from bundle
 + (void) syncWithJsonByName: (NSString*) name;
-+ (void) syncWithJsonByName: (NSString*) name completion:(void(^)(NSDictionary* json)) completion;
++ (void) syncWithJsonByName: (NSString*) name completion:(void(^)(NSDictionary* json)) completion failure: (void(^)(NSError *error)) failure;
 
-// Parse from url
-+ (void) syncWithJsonByUrl: (NSURL*) url completion:(void(^)(NSDictionary* json)) completion;
+// Parse Json from url
++ (void) syncWithJsonByUrl: (NSURL*) url completion:(void(^)(NSDictionary* json)) completion failure: (void(^)(NSError *error)) failure;
 
 // Async working with coredata in background
-+ (void) databaseOperationInBackground: (void(^)(NSManagedObjectContext *context))block completion:(void(^)(BOOL success, NSError *error)) completion;
++ (void) databaseOperationInBackground: (void(^)()) block completion:(void(^)()) completion failure: (void(^)(NSError *error)) failure;
 
 @end

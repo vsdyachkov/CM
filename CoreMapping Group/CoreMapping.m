@@ -298,15 +298,17 @@
     
 }
 
-+ (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion
++ (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion failure: (void(^)(NSError *error)) failure
 {
     NSAssert(json, @"%@ json: %@", errNilParam, json);
     [CMTests checkDictionary:json];
     
-    [self databaseOperationInBackground:^(NSManagedObjectContext *context) {
+    [self databaseOperationInBackground:^{
         [self syncWithJson:json];
-    } completion:^(BOOL success, NSError *error) {
-        if (success) completion(json);
+    } completion:^{
+        completion(json);
+    } failure:^(NSError *error) {
+        failure (error);
     }];
 }
 
@@ -319,20 +321,23 @@
     [self syncWithJson:json];
 }
 
-+ (void) syncWithJsonByName: (NSString*) name completion:(void(^)(NSDictionary* json)) completion
++ (void) syncWithJsonByName: (NSString*) name completion:(void(^)(NSDictionary* json)) completion failure: (void(^)(NSError *error)) failure
 {
     NSAssert(name, @"%@ name: %@", errNilParam, name);
     [CMTests checkString:name];
     
     NSDictionary* json = [CMHelper jsonWithFileName:name];
-    [self databaseOperationInBackground:^(NSManagedObjectContext *context) {
+    
+    [self databaseOperationInBackground:^{
         [self syncWithJson:json];
-    } completion:^(BOOL success, NSError *error) {
-        if (success) completion(json);
+    } completion:^{
+        completion(json);
+    } failure:^(NSError *error) {
+        failure (error);
     }];
 }
 
-+ (void) syncWithJsonByUrl: (NSURL*) url completion:(void(^)(NSDictionary* json)) completion
++ (void) syncWithJsonByUrl: (NSURL*) url completion:(void(^)(NSDictionary* json)) completion failure: (void(^)(NSError *error)) failure
 {
     NSAssert(url, @"%@ url: %@", errNilParam, url);
     [CMTests checkURL:url];
@@ -347,13 +352,16 @@
     
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
         [Logger logSuccessWithTitle:@"Json downloaded" message:nil debugDict:@{@"url":url} alert:NO];
-        [self databaseOperationInBackground:^(NSManagedObjectContext *context) {
+        [self databaseOperationInBackground:^{
             [self syncWithJson:responseObject];
-        } completion:^(BOOL success, NSError *error) {
-            if (success) completion(responseObject);
+        } completion:^{
+            completion(responseObject);
+        } failure:^(NSError *error) {
+            failure (error);
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
         [Logger logErrorWithTitle:@"Json not downloaded" message:error.localizedDescription debugDict:@{@"url":url} alert:NO];
+        failure(error);
     }];
     
     [[NSOperationQueue mainQueue] cancelAllOperations];
@@ -362,7 +370,7 @@
 
 #pragma mark - Async database operation methods
 
-+ (void) databaseOperationInBackground: (void(^)(NSManagedObjectContext *context))block completion:(void(^)(BOOL success, NSError *error)) completion
++ (void) databaseOperationInBackground: (void(^)()) block completion:(void(^)()) completion failure: (void(^)(NSError *error)) failure
 {
     NSAssert([NSThread isMainThread], errInvalidThread);
     
@@ -376,9 +384,7 @@
                 BOOL isSuccess = (!error1 && !error2);
                 NSString* errorDesc = [NSString stringWithFormat:@"Errors: %@, %@", error1.localizedDescription, error2.localizedDescription];
                 NSError* fatalError = [NSError errorWithDomain:errorDesc code:-1 userInfo:nil];
-                if (completion) {
-                    (isSuccess) ? completion(YES, nil) : completion(NO, fatalError);
-                }
+                (isSuccess) ? completion : failure(fatalError);
             }];
         }
     }];
