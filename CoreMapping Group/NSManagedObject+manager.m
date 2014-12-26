@@ -10,39 +10,93 @@
 
 @implementation NSManagedObject (manager)
 
-+ (NSArray*)findRowsWithPredicate: (NSPredicate*) predicate
+# pragma mark - Helper method
+
++ (NSFetchRequest*) requestWithPredicate: (NSPredicate*) predicate
 {
     NSString* className = NSStringFromClass(self);
     NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
     NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entity.name];
     [request setPredicate:predicate];
+    return request;
+}
+
+# pragma mark - Finding
+
++ (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) sortDescriptor
+{
+    NSFetchRequest* request = [self requestWithPredicate:predicate];
+    if (sortDescriptor) [request setSortDescriptors:@[sortDescriptor]];
     NSError* error;
     NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
     if (error) NSLog(@"Error finding: %@",error.localizedDescription);
     return arr;
 }
 
-+ (NSArray*)findAllRows
++ (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate
+{
+    return [self findRowsWithPredicate:predicate andSortDescriptor:nil];
+}
+
++ (NSArray*) findAllRows
 {
     return [self findRowsWithPredicate:nil];
 }
 
-+ (id) findFirstRowWithPredicate: (NSPredicate*) predicate
+# pragma mark - Finding first
+
++ (id) findFirstRowWithPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) sortDescriptor
 {
-    NSString* className = NSStringFromClass(self);
-    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
-    NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entity.name];
+    NSFetchRequest* request = [self requestWithPredicate:predicate];
+    if (sortDescriptor) [request setSortDescriptors:@[sortDescriptor]];
     [request setFetchLimit:1];
-	
-	NSArray *results = [self findRowsWithPredicate:predicate];
-	if (results.count > 0) {
-		return results [0];
-	} else {
+    NSError* error;
+    NSArray* results = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
+    if (error) NSLog(@"Error finding: %@",error.localizedDescription);
+    if (results.count > 0) {
+        return results [0];
+    } else {
         return nil;
     }
 }
 
-+ (void)deleteAllRows
++ (id) findFirstRowWithPredicate: (NSPredicate*) predicate
+{
+    return [self findFirstRowWithPredicate:predicate andSortDescriptor:nil];
+}
+
+# pragma mark - Inserting
+
++ (id) insert
+{
+    NSString* className = NSStringFromClass([self class]);
+    return [NSEntityDescription insertNewObjectForEntityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
+}
+
+# pragma mark - Deleting
+
+- (void) deleteObjects: (NSSet*) set
+{
+    NSString* className;
+    for (NSManagedObject* obj in set) {
+        className = NSStringFromClass([obj class]);
+        [obj deleteRow];
+    }
+    NSString* selectorName = [NSString stringWithFormat:@"remove%@s:", className];
+    [self performSelectorIfResponseFromString:selectorName withObject:set];
+    NSError* error;
+    if (![[CMCoreData managedObjectContext] save:&error]) {
+        NSLog(@"### Error: %@", error.localizedDescription);
+    }
+    
+}
+
+- (void) deleteRow
+{
+    [[CMCoreData managedObjectContext] deleteObject:self];
+}
+
++ (void) deleteAllRows
 {
     NSArray *items = [self findAllRows];
     for (NSManagedObject *managedObject in items) {

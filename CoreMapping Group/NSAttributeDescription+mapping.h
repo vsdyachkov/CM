@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Dyachkov Victor. All rights reserved.
 //
 
+#import <Foundation/Foundation.h>
 #import "CoreMapping.h"
 
 @interface NSAttributeDescription (mapping)

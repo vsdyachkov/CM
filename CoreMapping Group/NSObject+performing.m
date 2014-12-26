@@ -12,8 +12,7 @@
 
 - (BOOL) performSelectorIfResponseFromString: (NSString*) name withObject: (id) object
 {
-    NSAssert(name || object, @"%@ name: %@, object: %@", errNilParam, name, object);
-    [CMTests checkString:name];
+    [CMTests validateValue:name withClass:[NSString class]];
     
     if ([self respondsToSelector:NSSelectorFromString(name)]) {
         #pragma clang diagnostic push

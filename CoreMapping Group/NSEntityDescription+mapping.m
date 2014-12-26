@@ -17,7 +17,6 @@
     NSString* value = userInfo[CMPrefix];
     NSString* mapKey = (value) ? value : name;
     
-    NSAssert(mapKey, @"%@ mapKey: %@", errNilParam, mapKey);
     return mapKey;
 }
 
@@ -25,7 +24,7 @@
 - (NSString*) mappingIdKey
 {
     NSDictionary* attributes = [self attributesByName];
-    __block NSString* key;
+    __block NSString* key = nil;
     [[attributes allValues] enumerateObjectsUsingBlock:^(NSAttributeDescription* attr, NSUInteger idx, BOOL *stop) {
         
         if ([attr.userInfo[CMIdPrefix] isEqualToString:@"YES"]) {
@@ -60,11 +59,5 @@
     return (value && [value isEqualToString:@"YES"]) ? YES : NO;
 }
 
-/*
-+ (void) findOfCreateObjectWithPredicate: (NSPredicate*) predicate
-{
-    //
-}
-*/
 
 @end

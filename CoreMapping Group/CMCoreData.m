@@ -10,9 +10,14 @@
 
 @implementation CMCoreData
 
-#pragma mark - Core Data stack
+static NSPersistentStoreCoordinator* persistentStoreCoordinator;
+static NSManagedObjectContext* managedObjectContext;
+static NSManagedObjectContext* childManagedObjectContext;
+static NSManagedObjectModel* managedObjectModel;
 
-+ (NSURL*) defaultStoreName;
+#pragma mark - SQL database configuration
+
++ (NSURL*) SQLFilePath;
 {
     NSString* fileName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(id)kCFBundleNameKey];
     if (fileName == nil) fileName = CMSqlFileName;
@@ -28,31 +33,43 @@
         return managedObjectModel;
     
     managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    
+    if (managedObjectModel.entities.count == 0) {
+        NSLog(CMModelError);
+        abort();
+    }
+    
     return managedObjectModel;
 }
-
 
 + (NSPersistentStoreCoordinator*) persistentStoreCoordinator
 {
     if (persistentStoreCoordinator != nil)
         return persistentStoreCoordinator;
     
-    NSDictionary *options = [NSDictionary dictionaryWithObjectsAndKeys:
-                             [NSNumber numberWithBool:YES], NSMigratePersistentStoresAutomaticallyOption,
-                             [NSNumber numberWithBool:YES], NSInferMappingModelAutomaticallyOption, nil];
+    NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES};
     
     persistentStoreCoordinator = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:[self managedObjectModel]];
     
     NSError *error = nil;
-    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self defaultStoreName] options:options error:&error]) {
-        NSLog(@"Unresolved error %@, %@", error, [error userInfo]);
-        NSAssert(error, @"Unresolved error %@, %@", error, [error userInfo]);
+    if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
+        [[NSFileManager defaultManager] removeItemAtURL:[self SQLFilePath] error:nil];
+        NSLog(CMMigrationError);
+        if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
+            NSLog(@"%@: %@", CMPersistentStoreError, error.localizedDescription);
+            abort();
+        } else {
+            NSLog(CMMigrationSuccess);
+        }
+        
     }
     
     return persistentStoreCoordinator;
 }
 
-+ (NSManagedObjectContext*) managedObjectContext
+#pragma mark - ManagedObjectContext configuration
+
++ (NSManagedObjectContext*) mainManagedObjectContext
 {
     if (managedObjectContext != nil)
         return managedObjectContext;
@@ -69,8 +86,35 @@
     if (childManagedObjectContext != nil)
         return childManagedObjectContext;
     childManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-    [childManagedObjectContext setParentContext:[self managedObjectContext]];
+    [childManagedObjectContext setParentContext:[self mainManagedObjectContext]];
     return childManagedObjectContext;
+}
+
++ (NSManagedObjectContext*) managedObjectContext
+{
+    return ([NSThread isMainThread]) ? [self mainManagedObjectContext] : [self childManagedObjectContext];
+}
+
+#pragma mark - Save context configuration
+
++ (void) saveMainContext
+{
+    NSError* error;
+    [[self mainManagedObjectContext] save:&error];
+    if (error) {
+        NSLog(@"%@: %@", CMSavingMainContextError, error.localizedDescription);
+        abort();
+    }
+}
+
++ (void) saveChildContext
+{
+    NSError* error;
+    [[self childManagedObjectContext] save:&error];
+    if (error) {
+        NSLog(@"%@: %@", CMSavingChildContextError, error.localizedDescription);
+        abort();
+    }
 }
 
 + (void) saveContext
@@ -79,34 +123,28 @@
         [self saveMainContext];
     } else {
         [self saveChildContext];
-        [[self managedObjectContext] performBlock:^{
+        [[self mainManagedObjectContext] performBlock:^{
             [self saveMainContext];
         }];
     }
 }
 
-+ (NSError*) saveMainContext
-{
-    NSError* error;
-    [[self managedObjectContext] save:&error];
-    if (error) NSLog(@"Can't save context, error: %@", error.localizedDescription);
-    return error;
-}
+#pragma mark - Async database operation method
 
-+ (NSError*) saveChildContext
++ (void) databaseOperationInBackground: (void(^)()) block completion:(void(^)()) completion
 {
-    NSError* error;
-    [[self childManagedObjectContext] save:&error];
-    if (error)
-        NSLog(@"Can't save child context, error: %@", error.localizedDescription);
-    return error;
+    NSAssert([NSThread isMainThread], CMThreadError);
+    
+    NSManagedObjectContext *childManagedObjectContext = [CMCoreData childManagedObjectContext];
+    [childManagedObjectContext performBlock:^{
+        if (block) {
+            block();
+            [[CMCoreData mainManagedObjectContext] performBlock:^{
+                completion();
+            }];
+        }
+    }];
 }
-
-+ (NSManagedObjectContext*) contextForCurrentThread
-{
-    return ([NSThread isMainThread]) ? [self managedObjectContext] : [self childManagedObjectContext];
-}
-
 
 #pragma mark - Application's Documents directory
 
@@ -116,30 +154,25 @@
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
 }
 
-/*
- + (NSURL*) applicationDbDirectory
- {
- NSString* bundleName = [[[NSBundle mainBundle] infoDictionary] objectForKey:(id)kCFBundleNameKey];
- if (bundleName == nil) bundleName = @"DB";
- if ([bundleName hasSuffix:@"sqlite"]) bundleName = [bundleName stringByDeletingLastPathComponent];
- 
- NSString *supportDirectory = [NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES)[0] stringByAppendingPathComponent:bundleName];
- if (![[NSFileManager defaultManager] fileExistsAtPath:supportDirectory])
- {
- [[NSFileManager defaultManager] createDirectoryAtPath:supportDirectory withIntermediateDirectories:NO attributes:nil error:nil];
- }
- 
- return [[[[NSFileManager defaultManager] URLsForDirectory:NSApplicationSupportDirectory inDomains:NSUserDomainMask] lastObject] URLByAppendingPathComponent:bundleName];
- }
- */
+#pragma mark - Helper methods
 
-+ (void) createDirectory:(NSString *)directoryName atFilePath:(NSString *)filePath
++ (void) clearDatabase
 {
-    NSString *filePathAndDirectory = [filePath stringByAppendingPathComponent:directoryName];
-    NSError *error;
-    if (![[NSFileManager defaultManager] createDirectoryAtPath:filePathAndDirectory withIntermediateDirectories:NO attributes:nil error:&error])
+    NSArray *entities = [[[CMCoreData managedObjectModel] entities] valueForKey:@"name"];
+    
+    for (NSString* entityName in entities)
     {
-        NSLog(@"Create directory error: %@", error);
+        NSFetchRequest *fetchRequest = [NSFetchRequest new];
+        NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:[CMCoreData mainManagedObjectContext]];
+        [fetchRequest setEntity:entity];
+        NSError *error;
+        NSArray *items = [[CMCoreData managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+        for (NSManagedObject *managedObject in items) {
+            [[CMCoreData managedObjectContext] deleteObject:managedObject];
+        }
+        if (![[CMCoreData managedObjectContext] save:&error]) {
+            NSLog(@"Error: %@",error.localizedDescription);
+        }
     }
 }
 
@@ -161,7 +194,7 @@
         
         NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entityDescription.name];
         
-        NSArray* arr = [[CMCoreData contextForCurrentThread] executeFetchRequest:request error:nil];
+        NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:nil];
         if (full)
             [report appendString:@"\n"];
         [report appendFormat:@"[i] %@: %lu rows\n", entityDescription.name, (unsigned long)arr.count];
@@ -176,27 +209,7 @@
         if (arr.count < 1)
             [report appendString:@"- <Empty>"];
     }
-    NSLog(@"%@\n\n",report);
-}
-
-+ (void) clearDatabase
-{
-    NSArray *entities = [[[CMCoreData managedObjectModel] entities] valueForKey:@"name"];
-    
-    for (NSString* entityName in entities)
-    {
-        NSFetchRequest *fetchRequest = [NSFetchRequest new];
-        NSEntityDescription *entity = [NSEntityDescription entityForName:entityName inManagedObjectContext:[CMCoreData managedObjectContext]];
-        [fetchRequest setEntity:entity];
-        NSError *error;
-        NSArray *items = [[CMCoreData contextForCurrentThread] executeFetchRequest:fetchRequest error:&error];
-        for (NSManagedObject *managedObject in items) {
-            [[CMCoreData contextForCurrentThread] deleteObject:managedObject];
-        }
-        if (![[CMCoreData contextForCurrentThread] save:&error]) {
-            NSLog(@"Error: %@",error.localizedDescription);
-        }
-    }
+    NSLog(@"%@\n",report);
 }
 
 @end

@@ -7,28 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
-
-static NSPersistentStoreCoordinator* persistentStoreCoordinator;
-static NSManagedObjectContext* managedObjectContext;
-static NSManagedObjectContext* childManagedObjectContext;
-static NSManagedObjectModel* managedObjectModel;
+#import "CoreMapping.h"
 
 @interface CMCoreData : NSObject
 
+// CoreData methods with background safe working
+
 + (NSPersistentStoreCoordinator*) persistentStoreCoordinator;
-+ (NSManagedObjectContext*) managedObjectContext;
-+ (NSManagedObjectContext*) childManagedObjectContext;
 + (NSManagedObjectModel*) managedObjectModel;
-
-+ (NSManagedObjectContext*) contextForCurrentThread;
-
-+ (NSError*) saveMainContext;
-+ (NSError*) saveChildContext;
++ (NSManagedObjectContext*) managedObjectContext;
 
 + (void) saveContext;
-
 + (void) clearDatabase;
 + (void) status;
 + (void) shortStatus;
+
+// Helper method
+
++ (void) databaseOperationInBackground: (void(^)()) block completion:(void(^)()) completion;
 
 @end

@@ -17,7 +17,6 @@
     NSString* value = userInfo[CMPrefix];
     NSString* mapKey = (value) ? value : name;
     
-    NSAssert(mapKey, @"%@ mapKey: %@", errNilParam, mapKey);
     return mapKey;
 }
 
@@ -28,8 +27,33 @@
     NSString* value = userInfo[CMManyToManyName];
     NSString* mapKey = (value) ? value : name;
     
-    NSAssert(mapKey, @"%@ manyToManyName: %@", errNilParam, mapKey);
     return mapKey;
+}
+
+- (NSNumber*) relationshipType
+{
+    NSRelationshipDescription* relation = self;
+    NSRelationshipDescription* inverse = relation.inverseRelationship;
+    
+    if (!relation.isToMany && !inverse.isToMany) return @(CMOneToOne);
+    if (relation.isToMany && !inverse.isToMany)  return @(CMOneToMany);
+    if (!relation.isToMany && inverse.isToMany)  return @(CMManyToOne);
+    if (relation.isToMany && inverse.isToMany)   return @(CMManyToMany);
+    
+    return nil;
+}
+
+- (NSString*) relationshipString
+{
+    NSRelationshipDescription* relation = self;
+    NSRelationshipDescription* inverse = relation.inverseRelationship;
+    
+    if (!relation.isToMany && !inverse.isToMany) return @"OneToOne";
+    if (relation.isToMany && !inverse.isToMany)  return @"OneToMany";
+    if (!relation.isToMany && inverse.isToMany)  return @"ManyToOne";
+    if (relation.isToMany && inverse.isToMany)   return @"ManyToMany";
+    
+    return nil;
 }
 
 @end
