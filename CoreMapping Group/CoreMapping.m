@@ -146,7 +146,7 @@ static NSMutableDictionary* relationshipDictionary;
                     NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
                     [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
                 }
-
+                
             }
         } else {
             [self addRelationshipIfNeed:[relationFromChild manyToManyTableName] andRelationship:relationFromChild];
@@ -328,32 +328,32 @@ void CFLog(NSString *format, ...)
 {
     [CMTests validateValue:json withClass:[NSDictionary class]];
     
-    CFLog(@"\nParsing status:\n");
+    CFLog(@"Parsing status:\n");
     [self progressNotificationWithStatus:CMParsing progress:0.0f andEntity:nil];
     
     NSMutableArray* entities = [self entitiesForParsing];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* entity, NSUInteger idx, BOOL *stop)
-    {
-        if ([CMTests validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
-        {
-            [self parseAddBlockForEntity:entity withJson:json];
-            [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
-        
-            [self parseRemoveBlockForEntity:entity withJson:json];
-            [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
-        }
-        else
-        {
-            CFLog(@"[!] Json -> '%@' not found or not array\n", entity.mappingEntityName);
-        }
-    }];
+     {
+         if ([CMTests validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
+         {
+             [self parseAddBlockForEntity:entity withJson:json];
+             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
+             
+             [self parseRemoveBlockForEntity:entity withJson:json];
+             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
+         }
+         else
+         {
+             CFLog(@"[!] Json -> '%@' not found or not array\n", entity.mappingEntityName);
+         }
+     }];
     
     [self parseRelationshipsWithJson:json];
     [self progressNotificationWithStatus:CMParsing progress:1.0f andEntity:nil];
     
     [CMCoreData saveContext];
     [CMCoreData shortStatus];
-
+    
     [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
 }
 
@@ -397,9 +397,9 @@ void CFLog(NSString *format, ...)
 + (void) syncWithJsonByUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure
 {
     [CMTests validateValue:url withClass:[NSURL class]];
-
+    
     [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
-
+    
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     //[request setTimeoutInterval:10.0];
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -408,16 +408,16 @@ void CFLog(NSString *format, ...)
     [responseTypes addObject:@"text/html"];
     op.responseSerializer.acceptableContentTypes = responseTypes;
     
-    CFLog(@"\n[i] Downloading Json from url:\n%@", url);
+    CFLog(@"[i] Downloading Json from url:\n%@\n\n", url);
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-        CFLog(@"\n[i] Json downloaded from url:\n%@\n", url);
+        CFLog(@"[i] Json downloaded from url:\n%@\n\n", url);
         [CMCoreData databaseOperationInBackground:^{
             [self syncWithJson:responseObject];
         } completion:^{
             success(responseObject);
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        CFLog(@"\n[!] Json not downloaded from url:\n%@error: %@\n", url, error.localizedDescription);
+        CFLog(@"[!] Json not downloaded from url:\n%@error: %@\n\n", url, error.localizedDescription);
         [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
         failure(error);
     }];
@@ -425,11 +425,11 @@ void CFLog(NSString *format, ...)
     __weak AFHTTPRequestOperation* operation = op;
     
     [op setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
-    {
-        NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
-        float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
-        [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
-    }];
+     {
+         NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
+         float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
+         [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
+     }];
     
     [[NSOperationQueue mainQueue] cancelAllOperations];
     [[NSOperationQueue mainQueue] addOperation:op];
