@@ -12,4 +12,6 @@
 
 + (id) validateValue: (id) value withClass: (Class) myClass;
 
++ (void) CFLog:(NSString*)format, ...;
+
 @end

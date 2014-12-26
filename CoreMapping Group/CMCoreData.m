@@ -35,7 +35,7 @@ static NSManagedObjectModel* managedObjectModel;
     managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     
     if (managedObjectModel.entities.count == 0) {
-        NSLog(CMModelError);
+        [CMTests CFLog:CMModelError];
         abort();
     }
     
@@ -54,12 +54,12 @@ static NSManagedObjectModel* managedObjectModel;
     NSError *error = nil;
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
         [[NSFileManager defaultManager] removeItemAtURL:[self SQLFilePath] error:nil];
-        NSLog(CMMigrationError);
+        [CMTests CFLog:CMMigrationError];
         if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
-            NSLog(@"%@: %@", CMPersistentStoreError, error.localizedDescription);
+            [CMTests CFLog:@"%@: %@", CMPersistentStoreError, error.localizedDescription];
             abort();
         } else {
-            NSLog(CMMigrationSuccess);
+            [CMTests CFLog:CMMigrationSuccess];
         }
         
     }
@@ -102,7 +102,7 @@ static NSManagedObjectModel* managedObjectModel;
     NSError* error;
     [[self mainManagedObjectContext] save:&error];
     if (error) {
-        NSLog(@"%@: %@", CMSavingMainContextError, error.localizedDescription);
+        [CMTests CFLog:@"%@: %@", CMSavingMainContextError, error.localizedDescription];
         abort();
     }
 }
@@ -112,7 +112,7 @@ static NSManagedObjectModel* managedObjectModel;
     NSError* error;
     [[self childManagedObjectContext] save:&error];
     if (error) {
-        NSLog(@"%@: %@", CMSavingChildContextError, error.localizedDescription);
+        [CMTests CFLog:@"%@: %@", CMSavingChildContextError, error.localizedDescription];
         abort();
     }
 }
@@ -171,7 +171,7 @@ static NSManagedObjectModel* managedObjectModel;
             [[CMCoreData managedObjectContext] deleteObject:managedObject];
         }
         if (![[CMCoreData managedObjectContext] save:&error]) {
-            NSLog(@"Error: %@",error.localizedDescription);
+            [CMTests CFLog:@"Error: %@",error.localizedDescription];
         }
     }
 }
@@ -188,7 +188,7 @@ static NSManagedObjectModel* managedObjectModel;
 
 + (void) fullPrint: (BOOL) full
 {
-    NSMutableString* report = @"\n\nCurrent Core Data status:\n".mutableCopy;
+    [CMTests CFLog:@"\nCurrent Core Data status:"];
     for (NSEntityDescription* entityDescription in [[CMCoreData managedObjectModel] entities])
     {
         
@@ -196,20 +196,19 @@ static NSManagedObjectModel* managedObjectModel;
         
         NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:nil];
         if (full)
-            [report appendString:@"\n"];
-        [report appendFormat:@"[i] %@: %lu rows\n", entityDescription.name, (unsigned long)arr.count];
+            [CMTests CFLog:@"\n"];
+        [CMTests CFLog:@"[i] %@: %lu rows\n", entityDescription.name, (unsigned long)arr.count];
         if (full) {
-            [report appendString:@"\n"];
+            [CMTests CFLog:@"\n"];
         } else {
             continue;
         }
         [arr enumerateObjectsUsingBlock:^(NSManagedObject* obj, NSUInteger idx, BOOL *stop) {
-            [report appendFormat:@"- %@\n\n", obj];
+            [CMTests CFLog:@"- %@\n\n", obj];
         }];
         if (arr.count < 1)
-            [report appendString:@"- <Empty>"];
+            [CMTests CFLog:@"- <Empty>"];
     }
-    NSLog(@"%@\n",report);
 }
 
 @end

@@ -146,7 +146,7 @@ static NSMutableDictionary* relationshipDictionary;
                     NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
                     [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
                 }
-                
+
             }
         } else {
             [self addRelationshipIfNeed:[relationFromChild manyToManyTableName] andRelationship:relationFromChild];
@@ -202,10 +202,10 @@ static NSMutableDictionary* relationshipDictionary;
     if ([jsonTable.allKeys containsObject:CMJsonAddName])
     {
         NSArray* addArray = [CMTests validateValue:json[entity.mappingEntityName][CMJsonAddName] withClass:[NSArray class]];
-        CFLog(@"[+] Added %lu '%@' from Json -> %@ -> %@\n", (unsigned long)addArray.count, entity.mappingEntityName, entity.mappingEntityName,CMJsonAddName);
+        [CMTests CFLog:@"[+] Added %lu '%@' from Json -> %@ -> %@\n", (unsigned long)addArray.count, entity.mappingEntityName, entity.mappingEntityName,CMJsonAddName];
         if (addArray) [self mapAllRowsInEntity:entity andWithJsonArray:addArray];
     } else {
-        CFLog(@"[i] No 'add' section in Json -> %@ -> %@\n", entity.mappingEntityName, CMJsonAddName);
+        [CMTests CFLog:@"[i] No 'add' section in Json -> %@ -> %@\n", entity.mappingEntityName, CMJsonAddName];
     }
 }
 
@@ -215,10 +215,10 @@ static NSMutableDictionary* relationshipDictionary;
     if ([jsonTable.allKeys containsObject:CMJsonRemoveName])
     {
         NSArray* removeArray = [CMTests validateValue:json[entity.mappingEntityName][CMJsonRemoveName] withClass:[NSArray class]];
-        CFLog(@"[-] Removed %lu '%@' from Json -> %@ -> %@\n", (unsigned long)removeArray.count, entity.mappingEntityName, entity.mappingEntityName, CMJsonRemoveName);
+        [CMTests CFLog:@"[-] Removed %lu '%@' from Json -> %@ -> %@\n", (unsigned long)removeArray.count, entity.mappingEntityName, entity.mappingEntityName, CMJsonRemoveName];
         if (removeArray) [self removeRowsInEntity:entity withNumberArray:(NSArray*)removeArray];
     } else {
-        CFLog(@"[i] No 'remove' section in Json -> %@ -> %@\n", entity.mappingEntityName, CMJsonRemoveName);
+        [CMTests CFLog:@"[i] No 'remove' section in Json -> %@ -> %@\n", entity.mappingEntityName, CMJsonRemoveName];
     }
 }
 
@@ -274,28 +274,14 @@ static NSMutableDictionary* relationshipDictionary;
     }
     
     if (relations>0) {
-        CFLog(@"[+] Add %d relationship from tables: Json -> %@", relations, relationshipDictionary.allKeys);
+        [CMTests CFLog:@"[+] Add %d relationship from tables: Json -> %@", relations, relationshipDictionary.allKeys];
     } else {
-        CFLog(@"[i] No relationship tables found");
+        [CMTests CFLog:@"[i] No relationship tables found"];
     }
     
 }
 
 #pragma mark - Helper method
-
-void CFLog(NSString *format, ...)
-{
-    if (!format) {
-        return;
-    }
-    
-    va_list args;
-    va_start(args, format);
-    
-    CFShow((__bridge CFStringRef)[[NSString alloc] initWithFormat:format arguments:args]);
-    
-    va_end(args);
-}
 
 + (NSDictionary*) jsonWithFileName: (NSString*) name error: (NSError**) error
 {
@@ -328,32 +314,32 @@ void CFLog(NSString *format, ...)
 {
     [CMTests validateValue:json withClass:[NSDictionary class]];
     
-    CFLog(@"Parsing status:\n");
+    [CMTests CFLog:@"Parsing status:\n"];
     [self progressNotificationWithStatus:CMParsing progress:0.0f andEntity:nil];
     
     NSMutableArray* entities = [self entitiesForParsing];
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* entity, NSUInteger idx, BOOL *stop)
-     {
-         if ([CMTests validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
-         {
-             [self parseAddBlockForEntity:entity withJson:json];
-             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
-             
-             [self parseRemoveBlockForEntity:entity withJson:json];
-             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
-         }
-         else
-         {
-             CFLog(@"[!] Json -> '%@' not found or not array\n", entity.mappingEntityName);
-         }
-     }];
+    {
+        if ([CMTests validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
+        {
+            [self parseAddBlockForEntity:entity withJson:json];
+            [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
+        
+            [self parseRemoveBlockForEntity:entity withJson:json];
+            [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
+        }
+        else
+        {
+            [CMTests CFLog:@"[!] Json -> '%@' not found or not array\n", entity.mappingEntityName];
+        }
+    }];
     
     [self parseRelationshipsWithJson:json];
     [self progressNotificationWithStatus:CMParsing progress:1.0f andEntity:nil];
     
     [CMCoreData saveContext];
     [CMCoreData shortStatus];
-    
+
     [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
 }
 
@@ -397,9 +383,9 @@ void CFLog(NSString *format, ...)
 + (void) syncWithJsonByUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure
 {
     [CMTests validateValue:url withClass:[NSURL class]];
-    
+
     [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
-    
+
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     //[request setTimeoutInterval:10.0];
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -408,16 +394,16 @@ void CFLog(NSString *format, ...)
     [responseTypes addObject:@"text/html"];
     op.responseSerializer.acceptableContentTypes = responseTypes;
     
-    CFLog(@"[i] Downloading Json from url:\n%@\n\n", url);
+    [CMTests CFLog:@"[i] Downloading Json from url:\n%@\n\n", url];
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-        CFLog(@"[i] Json downloaded from url:\n%@\n\n", url);
+        [CMTests CFLog:@"[i] Json downloaded from url:\n%@\n\n", url];
         [CMCoreData databaseOperationInBackground:^{
             [self syncWithJson:responseObject];
         } completion:^{
             success(responseObject);
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        CFLog(@"[!] Json not downloaded from url:\n%@error: %@\n\n", url, error.localizedDescription);
+        [CMTests CFLog:@"[!] Json not downloaded from url:\n%@error: %@\n\n", url, error.localizedDescription];
         [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
         failure(error);
     }];
@@ -425,11 +411,11 @@ void CFLog(NSString *format, ...)
     __weak AFHTTPRequestOperation* operation = op;
     
     [op setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
-     {
-         NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
-         float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
-         [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
-     }];
+    {
+        NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
+        float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
+        [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
+    }];
     
     [[NSOperationQueue mainQueue] cancelAllOperations];
     [[NSOperationQueue mainQueue] addOperation:op];
