@@ -38,6 +38,7 @@ static NSString* CMSqlFileName = @"CoreMapping.sqlite";
 static NSString* CMPrefix = @"CM";
 static NSString* CMIdPrefix = @"CM_ID";
 static NSString* CMNoParse = @"CM_NP";
+static NSString* CMParseOrd = @"CM_ORD";
 static NSString* CMManyToManyName = @"CM_MM";
 
 static NSString* CMJsonAddName = @"add";

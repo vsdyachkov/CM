@@ -193,6 +193,25 @@ static NSMutableDictionary* relationshipDictionary;
             [entities removeObject:obj];
         }
     }];
+    
+    [entities sortUsingComparator:^NSComparisonResult(NSEntityDescription* entity1, NSEntityDescription* entity2)
+    {
+        NSString* ord1 = entity1.userInfo[CMParseOrd];
+        NSString* ord2 = entity2.userInfo[CMParseOrd];
+        
+        if (!ord1 && !ord2) return NSOrderedSame;
+        if (!ord1 && ord2) return NSOrderedDescending;
+        if (ord1 && !ord2) return NSOrderedAscending;
+        
+        NSInteger ord1Int = [ord1 integerValue];
+        NSInteger ord2Int = [ord2 integerValue];
+        
+        if (ord1Int > ord2Int) return NSOrderedDescending;
+        if (ord1Int < ord2Int) return NSOrderedAscending;
+        
+        return NSOrderedSame;
+    }];
+    
     return entities;
 }
 
@@ -239,11 +258,17 @@ static NSMutableDictionary* relationshipDictionary;
         if (![json.allKeys containsObject:key]) continue;
         NSDictionary* relationDict = [json objectForKey:key];
         
+        relationDict = [CMTests validateValue:relationDict withClass:[NSDictionary class]];
+
         if (![relationDict.allKeys containsObject:CMJsonAddName]) continue;
         NSArray* addArray = [relationDict objectForKey:CMJsonAddName];
         
         for (NSDictionary* tmpJson in addArray)
         {
+            if (![CMTests validateValue:tmpJson withClass:[NSDictionary class]]) {
+                continue;
+            }
+            
             relations++;
             
             NSRelationshipDescription* relationFromChild = [relationshipDictionary objectForKey:key];
@@ -271,10 +296,48 @@ static NSMutableDictionary* relationshipDictionary;
                 }
             }
         }
+        
+        if (![relationDict.allKeys containsObject:CMJsonRemoveName]) continue;
+        NSArray* removeArray = [relationDict objectForKey:CMJsonRemoveName];
+        
+        for (NSDictionary* tmpJson in removeArray)
+        {
+            if (![CMTests validateValue:tmpJson withClass:[NSDictionary class]]) {
+                continue;
+            }
+            
+            relations++;
+            
+            NSRelationshipDescription* relationFromChild = [relationshipDictionary objectForKey:key];
+            NSRelationshipDescription* inverseFromParent = relationFromChild.inverseRelationship;
+            
+            NSEntityDescription* childEntity = relationFromChild.entity;
+            NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
+            
+            NSString* key1 = [childEntity mappingIdKey];
+            NSString* key2 = [destinationEntity mappingIdKey];
+            
+            NSNumber* value1 = @([tmpJson[key1] integerValue]);
+            NSNumber* value2 = @([tmpJson[key2] integerValue]);
+            
+            if (value1 && value2)
+            {
+                // Relationship found
+                NSManagedObject* firstObject = [self findObjectInEntity:childEntity withId:value1 enableCreating:NO];
+                NSManagedObject* secondObject = [self findObjectInEntity:destinationEntity withId:value2 enableCreating:NO];
+                
+                if (firstObject && secondObject)
+                {
+                    NSString* selectorName = [NSString stringWithFormat:@"remove%@Object:", inverseFromParent.name.capitalizedString];
+                    [secondObject performSelectorIfResponseFromString:selectorName withObject:firstObject];
+                }
+            }
+        }
+        
     }
     
     if (relations>0) {
-        [CMTests CFLog:@"[+] Add %d relationship from tables: Json -> %@", relations, relationshipDictionary.allKeys];
+        [CMTests CFLog:@"[+] Add %d relationship from tables: Json -> %@", relations, [relationshipDictionary.allKeys componentsJoinedByString:@", "]];
     } else {
         [CMTests CFLog:@"[i] No relationship tables found"];
     }
@@ -318,6 +381,8 @@ static NSMutableDictionary* relationshipDictionary;
     [self progressNotificationWithStatus:CMParsing progress:0.0f andEntity:nil];
     
     NSMutableArray* entities = [self entitiesForParsing];
+    NSArray* tmparr = [entities valueForKeyPath:@"mappingEntityName"];
+    
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* entity, NSUInteger idx, BOOL *stop)
     {
         if ([CMTests validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
@@ -393,17 +458,16 @@ static NSMutableDictionary* relationshipDictionary;
     NSMutableSet* responseTypes = [NSMutableSet setWithSet:op.responseSerializer.acceptableContentTypes];
     [responseTypes addObject:@"text/html"];
     op.responseSerializer.acceptableContentTypes = responseTypes;
-    
-    [CMTests CFLog:@"[i] Downloading Json from url:\n%@\n\n", url];
+    printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@", url.absoluteString] UTF8String]);
     [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-        [CMTests CFLog:@"[i] Json downloaded from url:\n%@\n\n", url];
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] Json downloaded! \n └> url: %@", url.absoluteString] UTF8String]);
         [CMCoreData databaseOperationInBackground:^{
             [self syncWithJson:responseObject];
         } completion:^{
             success(responseObject);
         }];
     } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        [CMTests CFLog:@"[!] Json not downloaded from url:\n%@error: %@\n\n", url, error.localizedDescription];
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded! \n └> url: %@\n └> error: %@", url.absoluteString, error.localizedDescription] UTF8String]);
         [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
         failure(error);
     }];

@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		02605DC2244D4B099667DB5F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 525811D60497460C9D9766C4 /* libPods.a */; };
-		7744E50E19FD60F1004D8C42 /* CMCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E4FD19FD60F1004D8C42 /* CMCoreData.m */; };
-		7744E50F19FD60F1004D8C42 /* CMHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E4FF19FD60F1004D8C42 /* CMHelper.m */; };
-		7744E51019FD60F1004D8C42 /* CMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50119FD60F1004D8C42 /* CMTests.m */; };
-		7744E51119FD60F1004D8C42 /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50319FD60F1004D8C42 /* CoreMapping.m */; };
-		7744E51219FD60F1004D8C42 /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50519FD60F1004D8C42 /* NSAttributeDescription+mapping.m */; };
-		7744E51319FD60F1004D8C42 /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50719FD60F1004D8C42 /* NSEntityDescription+mapping.m */; };
-		7744E51419FD60F1004D8C42 /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50919FD60F1004D8C42 /* NSManagedObject+manager.m */; };
-		7744E51519FD60F1004D8C42 /* NSObject+performing.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50B19FD60F1004D8C42 /* NSObject+performing.m */; };
-		7744E51619FD60F1004D8C42 /* NSRelationshipDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 7744E50D19FD60F1004D8C42 /* NSRelationshipDescription+mapping.m */; };
+		573EC0251A8B6B8D0011234C /* CMCoreData.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC0141A8B6B8D0011234C /* CMCoreData.m */; };
+		573EC0261A8B6B8D0011234C /* CMJsonPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC0161A8B6B8D0011234C /* CMJsonPath.m */; };
+		573EC0271A8B6B8D0011234C /* CMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC0181A8B6B8D0011234C /* CMTests.m */; };
+		573EC0281A8B6B8D0011234C /* CoreMapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC01A1A8B6B8D0011234C /* CoreMapping.m */; };
+		573EC0291A8B6B8D0011234C /* NSAttributeDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC01C1A8B6B8D0011234C /* NSAttributeDescription+mapping.m */; };
+		573EC02A1A8B6B8D0011234C /* NSEntityDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC01E1A8B6B8D0011234C /* NSEntityDescription+mapping.m */; };
+		573EC02B1A8B6B8D0011234C /* NSManagedObject+manager.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC0201A8B6B8D0011234C /* NSManagedObject+manager.m */; };
+		573EC02C1A8B6B8D0011234C /* NSObject+performing.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC0221A8B6B8D0011234C /* NSObject+performing.m */; };
+		573EC02D1A8B6B8D0011234C /* NSRelationshipDescription+mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = 573EC0241A8B6B8D0011234C /* NSRelationshipDescription+mapping.m */; };
 		8F04F40019B0A696009E3D0C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F04F3FF19B0A696009E3D0C /* MainViewController.m */; };
 		8F67F9A919AF9FF80034A734 /* test.json in Resources */ = {isa = PBXBuildFile; fileRef = 8F67F9A819AF9FF80034A734 /* test.json */; };
 		8F75977B19AC83D900A5F389 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8F75977A19AC83D900A5F389 /* Foundation.framework */; };
@@ -36,25 +36,25 @@
 
 /* Begin PBXFileReference section */
 		525811D60497460C9D9766C4 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		7744E4FB19FD60F1004D8C42 /* CMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMConstants.h; path = "CoreMapping Group/CMConstants.h"; sourceTree = "<group>"; };
-		7744E4FC19FD60F1004D8C42 /* CMCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMCoreData.h; path = "CoreMapping Group/CMCoreData.h"; sourceTree = "<group>"; };
-		7744E4FD19FD60F1004D8C42 /* CMCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMCoreData.m; path = "CoreMapping Group/CMCoreData.m"; sourceTree = "<group>"; };
-		7744E4FE19FD60F1004D8C42 /* CMHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMHelper.h; path = "CoreMapping Group/CMHelper.h"; sourceTree = "<group>"; };
-		7744E4FF19FD60F1004D8C42 /* CMHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMHelper.m; path = "CoreMapping Group/CMHelper.m"; sourceTree = "<group>"; };
-		7744E50019FD60F1004D8C42 /* CMTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMTests.h; path = "CoreMapping Group/CMTests.h"; sourceTree = "<group>"; };
-		7744E50119FD60F1004D8C42 /* CMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMTests.m; path = "CoreMapping Group/CMTests.m"; sourceTree = "<group>"; };
-		7744E50219FD60F1004D8C42 /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMapping.h; path = "CoreMapping Group/CoreMapping.h"; sourceTree = "<group>"; };
-		7744E50319FD60F1004D8C42 /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = "CoreMapping Group/CoreMapping.m"; sourceTree = "<group>"; };
-		7744E50419FD60F1004D8C42 /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping Group/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
-		7744E50519FD60F1004D8C42 /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping Group/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
-		7744E50619FD60F1004D8C42 /* NSEntityDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+mapping.h"; path = "CoreMapping Group/NSEntityDescription+mapping.h"; sourceTree = "<group>"; };
-		7744E50719FD60F1004D8C42 /* NSEntityDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+mapping.m"; path = "CoreMapping Group/NSEntityDescription+mapping.m"; sourceTree = "<group>"; };
-		7744E50819FD60F1004D8C42 /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+manager.h"; path = "CoreMapping Group/NSManagedObject+manager.h"; sourceTree = "<group>"; };
-		7744E50919FD60F1004D8C42 /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+manager.m"; path = "CoreMapping Group/NSManagedObject+manager.m"; sourceTree = "<group>"; };
-		7744E50A19FD60F1004D8C42 /* NSObject+performing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+performing.h"; path = "CoreMapping Group/NSObject+performing.h"; sourceTree = "<group>"; };
-		7744E50B19FD60F1004D8C42 /* NSObject+performing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+performing.m"; path = "CoreMapping Group/NSObject+performing.m"; sourceTree = "<group>"; };
-		7744E50C19FD60F1004D8C42 /* CMExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CMExtensions.h"; path = "CoreMapping Group/CMExtensions.h"; sourceTree = "<group>"; };
-		7744E50D19FD60F1004D8C42 /* NSRelationshipDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSRelationshipDescription+mapping.m"; path = "CoreMapping Group/NSRelationshipDescription+mapping.m"; sourceTree = "<group>"; };
+		573EC0121A8B6B8D0011234C /* CMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMConstants.h; path = "CoreMapping Group/CMConstants.h"; sourceTree = "<group>"; };
+		573EC0131A8B6B8D0011234C /* CMCoreData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMCoreData.h; path = "CoreMapping Group/CMCoreData.h"; sourceTree = "<group>"; };
+		573EC0141A8B6B8D0011234C /* CMCoreData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMCoreData.m; path = "CoreMapping Group/CMCoreData.m"; sourceTree = "<group>"; };
+		573EC0151A8B6B8D0011234C /* CMJsonPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMJsonPath.h; path = "CoreMapping Group/CMJsonPath.h"; sourceTree = "<group>"; };
+		573EC0161A8B6B8D0011234C /* CMJsonPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMJsonPath.m; path = "CoreMapping Group/CMJsonPath.m"; sourceTree = "<group>"; };
+		573EC0171A8B6B8D0011234C /* CMTests.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CMTests.h; path = "CoreMapping Group/CMTests.h"; sourceTree = "<group>"; };
+		573EC0181A8B6B8D0011234C /* CMTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CMTests.m; path = "CoreMapping Group/CMTests.m"; sourceTree = "<group>"; };
+		573EC0191A8B6B8D0011234C /* CoreMapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreMapping.h; path = "CoreMapping Group/CoreMapping.h"; sourceTree = "<group>"; };
+		573EC01A1A8B6B8D0011234C /* CoreMapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreMapping.m; path = "CoreMapping Group/CoreMapping.m"; sourceTree = "<group>"; };
+		573EC01B1A8B6B8D0011234C /* NSAttributeDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+mapping.h"; path = "CoreMapping Group/NSAttributeDescription+mapping.h"; sourceTree = "<group>"; };
+		573EC01C1A8B6B8D0011234C /* NSAttributeDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSAttributeDescription+mapping.m"; path = "CoreMapping Group/NSAttributeDescription+mapping.m"; sourceTree = "<group>"; };
+		573EC01D1A8B6B8D0011234C /* NSEntityDescription+mapping.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSEntityDescription+mapping.h"; path = "CoreMapping Group/NSEntityDescription+mapping.h"; sourceTree = "<group>"; };
+		573EC01E1A8B6B8D0011234C /* NSEntityDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSEntityDescription+mapping.m"; path = "CoreMapping Group/NSEntityDescription+mapping.m"; sourceTree = "<group>"; };
+		573EC01F1A8B6B8D0011234C /* NSManagedObject+manager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSManagedObject+manager.h"; path = "CoreMapping Group/NSManagedObject+manager.h"; sourceTree = "<group>"; };
+		573EC0201A8B6B8D0011234C /* NSManagedObject+manager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+manager.m"; path = "CoreMapping Group/NSManagedObject+manager.m"; sourceTree = "<group>"; };
+		573EC0211A8B6B8D0011234C /* NSObject+performing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSObject+performing.h"; path = "CoreMapping Group/NSObject+performing.h"; sourceTree = "<group>"; };
+		573EC0221A8B6B8D0011234C /* NSObject+performing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSObject+performing.m"; path = "CoreMapping Group/NSObject+performing.m"; sourceTree = "<group>"; };
+		573EC0231A8B6B8D0011234C /* CMExtensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "CMExtensions.h"; path = "CoreMapping Group/CMExtensions.h"; sourceTree = "<group>"; };
+		573EC0241A8B6B8D0011234C /* NSRelationshipDescription+mapping.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSRelationshipDescription+mapping.m"; path = "CoreMapping Group/NSRelationshipDescription+mapping.m"; sourceTree = "<group>"; };
 		7E39AC3D0DBB460792423FC9 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		8F04F3FE19B0A696009E3D0C /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = ../MainViewController.h; sourceTree = "<group>"; };
 		8F04F3FF19B0A696009E3D0C /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = ../MainViewController.m; sourceTree = "<group>"; };
@@ -198,25 +198,25 @@
 		8F7597C419ACBC7500A5F389 /* CoreMapping Group */ = {
 			isa = PBXGroup;
 			children = (
-				7744E4FB19FD60F1004D8C42 /* CMConstants.h */,
-				7744E4FC19FD60F1004D8C42 /* CMCoreData.h */,
-				7744E4FD19FD60F1004D8C42 /* CMCoreData.m */,
-				7744E4FE19FD60F1004D8C42 /* CMHelper.h */,
-				7744E4FF19FD60F1004D8C42 /* CMHelper.m */,
-				7744E50019FD60F1004D8C42 /* CMTests.h */,
-				7744E50119FD60F1004D8C42 /* CMTests.m */,
-				7744E50219FD60F1004D8C42 /* CoreMapping.h */,
-				7744E50319FD60F1004D8C42 /* CoreMapping.m */,
-				7744E50419FD60F1004D8C42 /* NSAttributeDescription+mapping.h */,
-				7744E50519FD60F1004D8C42 /* NSAttributeDescription+mapping.m */,
-				7744E50619FD60F1004D8C42 /* NSEntityDescription+mapping.h */,
-				7744E50719FD60F1004D8C42 /* NSEntityDescription+mapping.m */,
-				7744E50819FD60F1004D8C42 /* NSManagedObject+manager.h */,
-				7744E50919FD60F1004D8C42 /* NSManagedObject+manager.m */,
-				7744E50A19FD60F1004D8C42 /* NSObject+performing.h */,
-				7744E50B19FD60F1004D8C42 /* NSObject+performing.m */,
-				7744E50C19FD60F1004D8C42 /* CMExtensions.h */,
-				7744E50D19FD60F1004D8C42 /* NSRelationshipDescription+mapping.m */,
+				573EC0121A8B6B8D0011234C /* CMConstants.h */,
+				573EC0131A8B6B8D0011234C /* CMCoreData.h */,
+				573EC0141A8B6B8D0011234C /* CMCoreData.m */,
+				573EC0151A8B6B8D0011234C /* CMJsonPath.h */,
+				573EC0161A8B6B8D0011234C /* CMJsonPath.m */,
+				573EC0171A8B6B8D0011234C /* CMTests.h */,
+				573EC0181A8B6B8D0011234C /* CMTests.m */,
+				573EC0191A8B6B8D0011234C /* CoreMapping.h */,
+				573EC01A1A8B6B8D0011234C /* CoreMapping.m */,
+				573EC01B1A8B6B8D0011234C /* NSAttributeDescription+mapping.h */,
+				573EC01C1A8B6B8D0011234C /* NSAttributeDescription+mapping.m */,
+				573EC01D1A8B6B8D0011234C /* NSEntityDescription+mapping.h */,
+				573EC01E1A8B6B8D0011234C /* NSEntityDescription+mapping.m */,
+				573EC01F1A8B6B8D0011234C /* NSManagedObject+manager.h */,
+				573EC0201A8B6B8D0011234C /* NSManagedObject+manager.m */,
+				573EC0211A8B6B8D0011234C /* NSObject+performing.h */,
+				573EC0221A8B6B8D0011234C /* NSObject+performing.m */,
+				573EC0231A8B6B8D0011234C /* CMExtensions.h */,
+				573EC0241A8B6B8D0011234C /* NSRelationshipDescription+mapping.m */,
 			);
 			name = "CoreMapping Group";
 			sourceTree = "<group>";
@@ -322,19 +322,19 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F9D0F2219B47A7500E7C857 /* City.m in Sources */,
-				7744E51419FD60F1004D8C42 /* NSManagedObject+manager.m in Sources */,
+				573EC02B1A8B6B8D0011234C /* NSManagedObject+manager.m in Sources */,
 				8F75978D19AC83D900A5F389 /* AppDelegate.m in Sources */,
-				7744E51319FD60F1004D8C42 /* NSEntityDescription+mapping.m in Sources */,
-				7744E50F19FD60F1004D8C42 /* CMHelper.m in Sources */,
-				7744E51019FD60F1004D8C42 /* CMTests.m in Sources */,
-				7744E50E19FD60F1004D8C42 /* CMCoreData.m in Sources */,
+				573EC02A1A8B6B8D0011234C /* NSEntityDescription+mapping.m in Sources */,
+				573EC0251A8B6B8D0011234C /* CMCoreData.m in Sources */,
+				573EC0271A8B6B8D0011234C /* CMTests.m in Sources */,
+				573EC0261A8B6B8D0011234C /* CMJsonPath.m in Sources */,
 				8F7597B919ACB45C00A5F389 /* MyEntity+CustomLogic.m in Sources */,
-				7744E51219FD60F1004D8C42 /* NSAttributeDescription+mapping.m in Sources */,
+				573EC0291A8B6B8D0011234C /* NSAttributeDescription+mapping.m in Sources */,
 				8F9D0F1F19B47A7400E7C857 /* Phone.m in Sources */,
 				8F75979019AC83D900A5F389 /* CoreMapping.xcdatamodeld in Sources */,
-				7744E51519FD60F1004D8C42 /* NSObject+performing.m in Sources */,
-				7744E51619FD60F1004D8C42 /* NSRelationshipDescription+mapping.m in Sources */,
-				7744E51119FD60F1004D8C42 /* CoreMapping.m in Sources */,
+				573EC02C1A8B6B8D0011234C /* NSObject+performing.m in Sources */,
+				573EC02D1A8B6B8D0011234C /* NSRelationshipDescription+mapping.m in Sources */,
+				573EC0281A8B6B8D0011234C /* CoreMapping.m in Sources */,
 				8F04F40019B0A696009E3D0C /* MainViewController.m in Sources */,
 				8F75978919AC83D900A5F389 /* main.m in Sources */,
 			);

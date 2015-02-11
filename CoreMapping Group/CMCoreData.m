@@ -188,7 +188,7 @@ static NSManagedObjectModel* managedObjectModel;
 
 + (void) fullPrint: (BOOL) full
 {
-    [CMTests CFLog:@"\nCurrent Core Data status:"];
+    [CMTests CFLog:@"Current Core Data status:"];
     for (NSEntityDescription* entityDescription in [[CMCoreData managedObjectModel] entities])
     {
         

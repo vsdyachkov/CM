@@ -13,14 +13,14 @@
 
 # pragma mark - Finding
 
-+ (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) sortDescriptor;
-+ (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate;
++ (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors;
++ (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate;
 + (NSArray*) findAllRows;
 
 # pragma mark - Finding first
 
-+ (id) findFirstRowWithPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) sortDescriptor;
-+ (id) findFirstRowWithPredicate: (NSPredicate*) predicate;
++ (id) findFirstRowWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors;
++ (id) findFirstRowWithPredicate:(NSPredicate*)predicate;
 
 # pragma mark - Inserting
 
@@ -28,7 +28,7 @@
 
 # pragma mark - Deleting
 
-- (void) deleteObjects: (NSSet*) set;
+- (void) deleteObjects:(NSSet*)set;
 - (void) deleteRow;
 + (void) deleteAllRows;
 

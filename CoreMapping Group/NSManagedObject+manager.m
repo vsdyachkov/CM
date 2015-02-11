@@ -12,7 +12,7 @@
 
 # pragma mark - Helper method
 
-+ (NSFetchRequest*) requestWithPredicate: (NSPredicate*) predicate
++ (NSFetchRequest*) requestWithPredicate:(NSPredicate*)predicate
 {
     NSString* className = NSStringFromClass(self);
     NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
@@ -23,10 +23,10 @@
 
 # pragma mark - Finding
 
-+ (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) sortDescriptor
++ (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors
 {
     NSFetchRequest* request = [self requestWithPredicate:predicate];
-    if (sortDescriptor) [request setSortDescriptors:@[sortDescriptor]];
+    if (sortDescriptors) [request setSortDescriptors:sortDescriptors];
     NSError* error;
     NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
     if (error) NSLog(@"Error finding: %@",error.localizedDescription);
@@ -35,7 +35,7 @@
 
 + (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate
 {
-    return [self findRowsWithPredicate:predicate andSortDescriptor:nil];
+    return [self findRowsWithPredicate:predicate andSortDescriptors:nil];
 }
 
 + (NSArray*) findAllRows
@@ -45,10 +45,10 @@
 
 # pragma mark - Finding first
 
-+ (id) findFirstRowWithPredicate: (NSPredicate*) predicate andSortDescriptor: (NSSortDescriptor*) sortDescriptor
++ (id) findFirstRowWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors
 {
     NSFetchRequest* request = [self requestWithPredicate:predicate];
-    if (sortDescriptor) [request setSortDescriptors:@[sortDescriptor]];
+    if (sortDescriptors) [request setSortDescriptors:sortDescriptors];
     [request setFetchLimit:1];
     NSError* error;
     NSArray* results = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
@@ -60,9 +60,9 @@
     }
 }
 
-+ (id) findFirstRowWithPredicate: (NSPredicate*) predicate
++ (id) findFirstRowWithPredicate:(NSPredicate*)predicate
 {
-    return [self findFirstRowWithPredicate:predicate andSortDescriptor:nil];
+    return [self findFirstRowWithPredicate:predicate andSortDescriptors:nil];
 }
 
 # pragma mark - Inserting
@@ -75,7 +75,7 @@
 
 # pragma mark - Deleting
 
-- (void) deleteObjects: (NSSet*) set
+- (void) deleteObjects:(NSSet*)set
 {
     NSString* className;
     for (NSManagedObject* obj in set) {
