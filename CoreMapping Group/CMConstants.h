@@ -40,14 +40,19 @@ static NSString* CMIdPrefix = @"CM_ID";
 static NSString* CMNoParse = @"CM_NP";
 static NSString* CMParseOrd = @"CM_ORD";
 static NSString* CMManyToManyName = @"CM_MM";
+static NSString* CMRelationships = @"CMRelationships";
+
+/* Json keys */
 
 static NSString* CMJsonAddName = @"add";
 static NSString* CMJsonRemoveName = @"remove";
 
+/* Notification progress info  */
+
 static NSString* CMProgressNotificationName = @"CMProgressNotification";
+static NSString* CMText = @"CMText";
 static NSString* CMStatus = @"CMStatus";
 static NSString* CMProgress = @"CMProgress";
-static NSString* CMRelationships = @"CMRelationships";
 static NSString* CMEntityName = @"CMEntityName";
 
 

@@ -360,15 +360,26 @@ static NSMutableDictionary* relationshipDictionary;
     return json;
 }
 
-+ (void) progressNotificationWithStatus: (CMStatusType) status progress: (float) progress andEntity: (NSEntityDescription*) entity
++ (void) progressNotificationWithStatus:(CMStatusType)status progress:(float)progress andEntity:(NSEntityDescription*)entity
 {
-    NSDictionary* userInfo;
-    if (entity) {
-        userInfo = @{CMStatus:@(status), CMProgress:@(progress), CMEntityName:entity.mappingEntityName};
-    } else {
-        userInfo = @{CMStatus:@(status), CMProgress:@(progress)};
+    NSString* text;
+    switch (status)
+    {
+        case CMConnecting: text = NSLocalizedString(@"Connecting", @""); break;
+        case CMDownloading: text = [NSString stringWithFormat:@"%@ %.0f%%", NSLocalizedString(@"Downloading", @""), progress*100]; break;
+        case CMParsing: text = [NSString stringWithFormat:@"%@ %.0f%%", NSLocalizedString(@"Parsing", @""), progress*100]; break;
+        case CMComplete: text = NSLocalizedString(@"Complete", @""); break;
+        default: text = @" "; break;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:CMProgressNotificationName object:nil userInfo:userInfo];
+    
+    // loading indicator
+    [UIApplication sharedApplication].networkActivityIndicatorVisible = (status != CMComplete) ? YES : NO;
+
+    // Post on main thread
+    NSDictionary* userInfo = @{CMText:text, CMStatus:@(status), CMProgress:@(progress), CMEntityName:(entity) ? entity.mappingEntityName : [NSNull null]};
+    dispatch_async(dispatch_get_main_queue(),^{
+        [[NSNotificationCenter defaultCenter] postNotificationName:CMProgressNotificationName object:nil userInfo:userInfo];
+    });
 }
 
 #pragma mark - Sync methods
@@ -387,11 +398,13 @@ static NSMutableDictionary* relationshipDictionary;
     {
         if ([CMTests validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
         {
-            [self parseAddBlockForEntity:entity withJson:json];
+            // add
             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
-        
-            [self parseRemoveBlockForEntity:entity withJson:json];
+            [self parseAddBlockForEntity:entity withJson:json];
+            
+            // remove
             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
+            [self parseRemoveBlockForEntity:entity withJson:json];
         }
         else
         {
@@ -399,8 +412,11 @@ static NSMutableDictionary* relationshipDictionary;
         }
     }];
     
+    // relationships
+    NSEntityDescription* relationEntity = [NSEntityDescription new];
+    relationEntity.name = CMRelationships;
+    [self progressNotificationWithStatus:CMParsing progress:1.0f andEntity:relationEntity];
     [self parseRelationshipsWithJson:json];
-    [self progressNotificationWithStatus:CMParsing progress:1.0f andEntity:nil];
     
     [CMCoreData saveContext];
     [CMCoreData shortStatus];
