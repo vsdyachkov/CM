@@ -13,7 +13,7 @@
 
 + (void) getJsonFromUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
 {
-    [CMTests validateValue:url withClass:[NSURL class]];
+    [CMExtensions validateValue:url withClass:[NSURL class]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
@@ -36,8 +36,8 @@
 
 + (void) stringFromJsonWithUrl: (NSURL*) url andPath: (NSString*) path success:(void(^)(NSString* string)) success failure: (void(^)(NSError *error)) failure;
 {
-    [CMTests validateValue:url withClass:[NSURL class]];
-    [CMTests validateValue:path withClass:[NSString class]];
+    [CMExtensions validateValue:url withClass:[NSURL class]];
+    [CMExtensions validateValue:path withClass:[NSString class]];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
     AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];

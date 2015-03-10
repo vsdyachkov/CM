@@ -7,7 +7,6 @@
 //
 
 /*
- 
 For customize automatic Json parsing, create categories from your CoreData NSManagedObject subcalss
 If your class response to @selector(customizeWithJson:) CoreMapping perform it for each
 
@@ -19,20 +18,16 @@ name = CMProgressNotificationName
 userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrring>};
  
 (CMEntityName is optional)
- 
 */
 
 #import <CoreData/CoreData.h>
 #import <AFNetworking.h>
-#import "CMExtensions.h"
-#import "NSAttributeDescription+mapping.h"
-#import "NSEntityDescription+mapping.h"
-#import "NSManagedObject+manager.h"
-#import "NSObject+performing.h"
 #import "CMConstants.h"
+#import "CMExtensions.h"
 #import "CMCoreData.h"
 #import "CMJsonPath.h"
-#import "CMTests.h"
+#import "NSManagedObject+manager.h"
+
 
 @interface CoreMapping : NSObject
 

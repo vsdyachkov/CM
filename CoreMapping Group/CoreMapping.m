@@ -17,8 +17,8 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) mapValue:(id) value withJsonKey: (NSString*) key andType: (NSAttributeType) type andManagedObject: (NSManagedObject*) obj
 {
-    [CMTests validateValue:key withClass:[NSString class]];
-    [CMTests validateValue:obj withClass:[NSManagedObject class]];
+    [CMExtensions validateValue:key withClass:[NSString class]];
+    [CMExtensions validateValue:obj withClass:[NSManagedObject class]];
     
     id convertedValue;
     NSString* strValue = [NSString stringWithFormat:@"%@",value];
@@ -41,16 +41,16 @@ static NSMutableDictionary* relationshipDictionary;
         default: [NSException raise:CMUnsupportedAttrException format:CMUnsupportedAttrFormat]; break;
     }
     
-    [CMTests validateValue:convertedValue withClass:[convertedValue class]];
-    [CMTests validateValue:key withClass:[key class]];
+    [CMExtensions validateValue:convertedValue withClass:[convertedValue class]];
+    [CMExtensions validateValue:key withClass:[key class]];
     
     [obj setValue:convertedValue forKey:key];
 }
 
 + (NSManagedObject*) findObjectInEntity: (NSEntityDescription*) entity withId: (NSNumber*) idNumber enableCreating: (BOOL) create
 {
-    [CMTests validateValue:entity withClass:[NSEntityDescription class]];
-    [CMTests validateValue:idNumber withClass:[NSNumber class]];
+    [CMExtensions validateValue:entity withClass:[NSEntityDescription class]];
+    [CMExtensions validateValue:idNumber withClass:[NSNumber class]];
     
     NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:entity.name];
     NSString* idKey = [entity mappingIdKey];
@@ -72,8 +72,8 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (NSManagedObject*) mapSingleRowInEntity: (NSEntityDescription*) desc andJsonDict: (NSDictionary*) json
 {
-    [CMTests validateValue:desc withClass:[NSEntityDescription class]];
-    [CMTests validateValue:json withClass:[NSDictionary class]];
+    [CMExtensions validateValue:desc withClass:[NSEntityDescription class]];
+    [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
     NSString* mappingIdKey = [desc mappingIdValue];
     
@@ -102,7 +102,7 @@ static NSMutableDictionary* relationshipDictionary;
     
     [self mapRelationshipsWithObject:obj andJsonDict:json];
     
-    [CMTests validateValue:obj withClass:[NSManagedObject class]];
+    [CMExtensions validateValue:obj withClass:[NSManagedObject class]];
     
     return obj;
 }
@@ -124,8 +124,8 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) mapRelationshipsWithObject: (NSManagedObject*) obj andJsonDict: (NSDictionary*) json
 {
-    [CMTests validateValue:obj withClass:[NSManagedObject class]];
-    [CMTests validateValue:json withClass:[NSDictionary class]];
+    [CMExtensions validateValue:obj withClass:[NSManagedObject class]];
+    [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
     // perform Relationships: ManyToOne & OneToOne & OneToMany
     NSEntityDescription* desc = obj.entity;
@@ -157,8 +157,8 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) mapAllRowsInEntity: (NSEntityDescription*) desc andWithJsonArray: (NSArray*) jsonArray
 {
-    [CMTests validateValue:desc withClass:[NSEntityDescription class]];
-    [CMTests validateValue:jsonArray withClass:[NSArray class]];
+    [CMExtensions validateValue:desc withClass:[NSEntityDescription class]];
+    [CMExtensions validateValue:jsonArray withClass:[NSArray class]];
     
     [jsonArray enumerateObjectsUsingBlock:^(NSDictionary* singleDict, NSUInteger idx, BOOL *stop) {
         NSManagedObject* obj = [self mapSingleRowInEntity:desc andJsonDict:singleDict];
@@ -168,8 +168,8 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) removeRowsInEntity: (NSEntityDescription*) desc withNumberArray: (NSArray*) removeArray
 {
-    [CMTests validateValue:desc withClass:[NSEntityDescription class]];
-    [CMTests validateValue:removeArray withClass:[NSArray class]];
+    [CMExtensions validateValue:desc withClass:[NSEntityDescription class]];
+    [CMExtensions validateValue:removeArray withClass:[NSArray class]];
     
     [removeArray enumerateObjectsUsingBlock:^(NSNumber* removeId, NSUInteger idx, BOOL *stop) {
         NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:desc.name];
@@ -220,11 +220,11 @@ static NSMutableDictionary* relationshipDictionary;
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonAddName])
     {
-        NSArray* addArray = [CMTests validateValue:json[entity.mappingEntityName][CMJsonAddName] withClass:[NSArray class]];
-        [CMTests CFLog:@"[+] Added %lu '%@' from Json -> %@ -> %@\n", (unsigned long)addArray.count, entity.mappingEntityName, entity.mappingEntityName,CMJsonAddName];
+        NSArray* addArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonAddName] withClass:[NSArray class]];
+        printf ("%s\n", [[NSString stringWithFormat:@"[+] Added %lu '%@' from Json -> %@ -> %@", (unsigned long)addArray.count, entity.mappingEntityName, entity.mappingEntityName,CMJsonAddName] UTF8String]);
         if (addArray) [self mapAllRowsInEntity:entity andWithJsonArray:addArray];
     } else {
-        [CMTests CFLog:@"[i] No 'add' section in Json -> %@ -> %@\n", entity.mappingEntityName, CMJsonAddName];
+            printf ("%s\n", [[NSString stringWithFormat:@"[i] No 'add' section in Json -> %@ -> %@", entity.mappingEntityName, CMJsonAddName] UTF8String]);
     }
 }
 
@@ -233,11 +233,11 @@ static NSMutableDictionary* relationshipDictionary;
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonRemoveName])
     {
-        NSArray* removeArray = [CMTests validateValue:json[entity.mappingEntityName][CMJsonRemoveName] withClass:[NSArray class]];
-        [CMTests CFLog:@"[-] Removed %lu '%@' from Json -> %@ -> %@\n", (unsigned long)removeArray.count, entity.mappingEntityName, entity.mappingEntityName, CMJsonRemoveName];
+        NSArray* removeArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonRemoveName] withClass:[NSArray class]];
+        printf ("%s\n", [[NSString stringWithFormat:@"[-] Removed %lu '%@' from Json -> %@ -> %@", (unsigned long)removeArray.count, entity.mappingEntityName, entity.mappingEntityName, CMJsonRemoveName] UTF8String]);
         if (removeArray) [self removeRowsInEntity:entity withNumberArray:(NSArray*)removeArray];
     } else {
-        [CMTests CFLog:@"[i] No 'remove' section in Json -> %@ -> %@\n", entity.mappingEntityName, CMJsonRemoveName];
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] No 'remove' section in Json -> %@ -> %@", entity.mappingEntityName, CMJsonRemoveName] UTF8String]);
     }
 }
 
@@ -258,14 +258,14 @@ static NSMutableDictionary* relationshipDictionary;
         if (![json.allKeys containsObject:key]) continue;
         NSDictionary* relationDict = [json objectForKey:key];
         
-        relationDict = [CMTests validateValue:relationDict withClass:[NSDictionary class]];
+        relationDict = [CMExtensions validateValue:relationDict withClass:[NSDictionary class]];
 
         if (![relationDict.allKeys containsObject:CMJsonAddName]) continue;
         NSArray* addArray = [relationDict objectForKey:CMJsonAddName];
         
         for (NSDictionary* tmpJson in addArray)
         {
-            if (![CMTests validateValue:tmpJson withClass:[NSDictionary class]]) {
+            if (![CMExtensions validateValue:tmpJson withClass:[NSDictionary class]]) {
                 continue;
             }
             
@@ -302,7 +302,7 @@ static NSMutableDictionary* relationshipDictionary;
         
         for (NSDictionary* tmpJson in removeArray)
         {
-            if (![CMTests validateValue:tmpJson withClass:[NSDictionary class]]) {
+            if (![CMExtensions validateValue:tmpJson withClass:[NSDictionary class]]) {
                 continue;
             }
             
@@ -337,9 +337,9 @@ static NSMutableDictionary* relationshipDictionary;
     }
     
     if (relations>0) {
-        [CMTests CFLog:@"[+] Add %d relationship from tables: Json -> %@", relations, [relationshipDictionary.allKeys componentsJoinedByString:@", "]];
+        printf ("%s\n\n", [[NSString stringWithFormat:@"[+] Add %d relationship from tables: Json -> %@", relations, [relationshipDictionary.allKeys componentsJoinedByString:@", "]] UTF8String]);
     } else {
-        [CMTests CFLog:@"[i] No relationship tables found"];
+        printf ("%s\n\n", [[NSString stringWithFormat:@"[i] No relationship tables found"] UTF8String]);
     }
     
 }
@@ -348,11 +348,11 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (NSDictionary*) jsonWithFileName: (NSString*) name error: (NSError**) error
 {
-    [CMTests validateValue:name withClass:[NSString class]];
+    [CMExtensions validateValue:name withClass:[NSString class]];
     
     NSString *filePath = [[NSBundle mainBundle] pathForResource:name ofType:@"json"];
     
-    [CMTests validateValue:filePath withClass:[NSString class]];
+    [CMExtensions validateValue:filePath withClass:[NSString class]];
     
     NSData *myJSON = [NSData dataWithContentsOfFile:filePath];
     NSDictionary* json = [NSJSONSerialization JSONObjectWithData:myJSON options:kNilOptions error:error];
@@ -373,7 +373,10 @@ static NSMutableDictionary* relationshipDictionary;
     }
     
     // loading indicator
-    [UIApplication sharedApplication].networkActivityIndicatorVisible = (status != CMComplete) ? YES : NO;
+    if (status != CMComplete)
+    {
+        [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+    }
 
     // Post on main thread
     NSDictionary* userInfo = @{CMText:text, CMStatus:@(status), CMProgress:@(progress), CMEntityName:(entity) ? entity.mappingEntityName : [NSNull null]};
@@ -386,17 +389,17 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) syncWithJson: (NSDictionary*) json;
 {
-    [CMTests validateValue:json withClass:[NSDictionary class]];
+    [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
-    [CMTests CFLog:@"Parsing status:\n"];
+    printf ("\n%s\n", [[NSString stringWithFormat:@"Parsing status:"] UTF8String]);
+
     [self progressNotificationWithStatus:CMParsing progress:0.0f andEntity:nil];
     
     NSMutableArray* entities = [self entitiesForParsing];
-    NSArray* tmparr = [entities valueForKeyPath:@"mappingEntityName"];
     
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* entity, NSUInteger idx, BOOL *stop)
     {
-        if ([CMTests validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
+        if ([CMExtensions validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
         {
             // add
             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
@@ -408,7 +411,7 @@ static NSMutableDictionary* relationshipDictionary;
         }
         else
         {
-            [CMTests CFLog:@"[!] Json -> '%@' not found or not array\n", entity.mappingEntityName];
+            printf ("%s\n", [[NSString stringWithFormat:@"[!] Json -> '%@' not found or not array", entity.mappingEntityName] UTF8String]);
         }
     }];
     
@@ -427,7 +430,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion
 {
-    [CMTests validateValue:json withClass:[NSDictionary class]];
+    [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
     [CMCoreData databaseOperationInBackground:^{
         [self syncWithJson:json];
@@ -438,7 +441,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) syncWithJsonByName: (NSString*) name error: (NSError*) error;
 {
-    [CMTests validateValue:name withClass:[NSString class]];
+    [CMExtensions validateValue:name withClass:[NSString class]];
     
     NSDictionary* json = [self jsonWithFileName:name error:&error];
     [self syncWithJson:json];
@@ -446,7 +449,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) syncWithJsonByName: (NSString*) name success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
 {
-    [CMTests validateValue:name withClass:[NSString class]];
+    [CMExtensions validateValue:name withClass:[NSString class]];
     
     NSError* error;
     NSDictionary* json = [self jsonWithFileName:name error:&error];
@@ -463,7 +466,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) syncWithJsonByUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure
 {
-    [CMTests validateValue:url withClass:[NSURL class]];
+    [CMExtensions validateValue:url withClass:[NSURL class]];
 
     [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
 

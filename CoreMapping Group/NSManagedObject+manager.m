@@ -29,7 +29,7 @@
     if (sortDescriptors) [request setSortDescriptors:sortDescriptors];
     NSError* error;
     NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
-    if (error) NSLog(@"Error finding: %@",error.localizedDescription);
+    if (error) printf ("%s\n", [[NSString stringWithFormat:@"[!] Error finding: %@",error.localizedDescription] UTF8String]);
     return arr;
 }
 
@@ -52,7 +52,7 @@
     [request setFetchLimit:1];
     NSError* error;
     NSArray* results = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
-    if (error) NSLog(@"Error finding: %@",error.localizedDescription);
+    if (error) printf ("%s\n", [[NSString stringWithFormat:@"[!] Find object error: %@",error.localizedDescription] UTF8String]);
     if (results.count > 0) {
         return results [0];
     } else {
@@ -86,7 +86,7 @@
     [self performSelectorIfResponseFromString:selectorName withObject:set];
     NSError* error;
     if (![[CMCoreData managedObjectContext] save:&error]) {
-        NSLog(@"### Error: %@", error.localizedDescription);
+        if (error) printf ("%s\n", [[NSString stringWithFormat:@"[!] Delete object error: %@",error.localizedDescription] UTF8String]);
     }
     
 }
@@ -104,7 +104,7 @@
     }
     NSError* error;
     if (![[CMCoreData managedObjectContext] save:&error]) {
-        NSLog(@"### Error: %@", error.localizedDescription);
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Delete objects error: %@",error.localizedDescription] UTF8String]);
     }
 }
 

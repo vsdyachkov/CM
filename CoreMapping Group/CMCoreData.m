@@ -35,7 +35,7 @@ static NSManagedObjectModel* managedObjectModel;
     managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     
     if (managedObjectModel.entities.count == 0) {
-        [CMTests CFLog:CMModelError];
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@", CMModelError] UTF8String]);
         abort();
     }
     
@@ -54,12 +54,12 @@ static NSManagedObjectModel* managedObjectModel;
     NSError *error = nil;
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
         [[NSFileManager defaultManager] removeItemAtURL:[self SQLFilePath] error:nil];
-        [CMTests CFLog:CMMigrationError];
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@", CMMigrationError] UTF8String]);
         if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
-            [CMTests CFLog:@"%@: %@", CMPersistentStoreError, error.localizedDescription];
+            printf ("%s\n", [[NSString stringWithFormat:@"[!] %@ :%@", CMPersistentStoreError, error.localizedDescription] UTF8String]);
             abort();
         } else {
-            [CMTests CFLog:CMMigrationSuccess];
+            printf ("%s\n", [[NSString stringWithFormat:@"[i] %@", CMMigrationSuccess] UTF8String]);
         }
         
     }
@@ -102,7 +102,7 @@ static NSManagedObjectModel* managedObjectModel;
     NSError* error;
     [[self mainManagedObjectContext] save:&error];
     if (error) {
-        [CMTests CFLog:@"%@: %@", CMSavingMainContextError, error.localizedDescription];
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@: %@", CMSavingMainContextError, error.localizedDescription] UTF8String]);
         abort();
     }
 }
@@ -112,7 +112,7 @@ static NSManagedObjectModel* managedObjectModel;
     NSError* error;
     [[self childManagedObjectContext] save:&error];
     if (error) {
-        [CMTests CFLog:@"%@: %@", CMSavingChildContextError, error.localizedDescription];
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@: %@", CMSavingChildContextError, error.localizedDescription] UTF8String]);
         abort();
     }
 }
@@ -171,7 +171,7 @@ static NSManagedObjectModel* managedObjectModel;
             [[CMCoreData managedObjectContext] deleteObject:managedObject];
         }
         if (![[CMCoreData managedObjectContext] save:&error]) {
-            [CMTests CFLog:@"Error: %@",error.localizedDescription];
+            printf ("%s\n", [[NSString stringWithFormat:@"[!] Error: %@",error.localizedDescription] UTF8String]);
         }
     }
 }
@@ -188,7 +188,7 @@ static NSManagedObjectModel* managedObjectModel;
 
 + (void) fullPrint: (BOOL) full
 {
-    [CMTests CFLog:@"Current Core Data status:"];
+    printf ("%s\n", [[NSString stringWithFormat:@"Current Core Data status:"] UTF8String]);
     for (NSEntityDescription* entityDescription in [[CMCoreData managedObjectModel] entities])
     {
         
@@ -196,18 +196,18 @@ static NSManagedObjectModel* managedObjectModel;
         
         NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:nil];
         if (full)
-            [CMTests CFLog:@"\n"];
-        [CMTests CFLog:@"[i] %@: %lu rows\n", entityDescription.name, (unsigned long)arr.count];
+            printf ("\n");
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] %@: %lu rows", entityDescription.name, (unsigned long)arr.count] UTF8String]);
         if (full) {
-            [CMTests CFLog:@"\n"];
+            printf ("\n");
         } else {
             continue;
         }
         [arr enumerateObjectsUsingBlock:^(NSManagedObject* obj, NSUInteger idx, BOOL *stop) {
-            [CMTests CFLog:@"- %@\n\n", obj];
+            printf ("%s\n", [[NSString stringWithFormat:@"- %@\n", obj] UTF8String]);
         }];
         if (arr.count < 1)
-            [CMTests CFLog:@"- <Empty>"];
+            printf ("%s\n", [[NSString stringWithFormat:@"- <Empty>"] UTF8String]);
     }
 }
 
