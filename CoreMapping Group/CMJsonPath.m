@@ -11,49 +11,31 @@
 
 @implementation CMJsonPath
 
-+ (void) getJsonFromUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
++ (void) getJsonFromUrl:(NSURL*)url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure;
 {
     [CMExtensions validateValue:url withClass:[NSURL class]];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    op.responseSerializer = [AFJSONResponseSerializer serializer];
-    NSMutableSet* responseTypes = [NSMutableSet setWithSet:op.responseSerializer.acceptableContentTypes];
-    [responseTypes addObject:@"text/html"];
-    op.responseSerializer.acceptableContentTypes = responseTypes;
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* json)
-    {
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* json) {
         success (json);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error)  {
         printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded from url:\n%@\nerror: %@", url.absoluteString, error.localizedDescription] UTF8String]);
-         failure(error);
+        failure(error);
     }];
-    
-    [[NSOperationQueue mainQueue] cancelAllOperations];
-    [[NSOperationQueue mainQueue] addOperation:op];
-    
 }
 
-+ (void) stringFromJsonWithUrl: (NSURL*) url andPath: (NSString*) path success:(void(^)(NSString* string)) success failure: (void(^)(NSError *error)) failure;
++ (void) stringFromJsonWithUrl:(NSURL*)url parameters:(NSDictionary*)parameters jsonPath:(NSString*)path success:(void(^)(NSString* string))success failure:(void(^)(NSError *error))failure;
 {
     [CMExtensions validateValue:url withClass:[NSURL class]];
     [CMExtensions validateValue:path withClass:[NSString class]];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    op.responseSerializer = [AFJSONResponseSerializer serializer];
-    NSMutableSet* responseTypes = [NSMutableSet setWithSet:op.responseSerializer.acceptableContentTypes];
-    [responseTypes addObject:@"text/html"];
-    op.responseSerializer.acceptableContentTypes = responseTypes;
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* json)
-    {
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* json) {
         id obj;
         NSError* error = [NSError errorWithDomain:CMPathError code:-1 userInfo:nil];
-        
-        @try {
-            obj = [json valueForKeyPath:path];
-        }
-        
+        @try {  obj = [json valueForKeyPath:path]; }
         @finally {
             if (obj && [obj isKindOfClass:[NSArray class]] && [(NSArray*)obj count] > 0) {
                 NSString* str = [(NSArray*)obj objectAtIndex:0];
@@ -62,14 +44,10 @@
                 failure (error);
             }
         }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error)  {
         printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded from url:\n%@\nerror: %@", url.absoluteString, error.localizedDescription] UTF8String]);
         failure(error);
     }];
-    
-    [[NSOperationQueue mainQueue] cancelAllOperations];
-    [[NSOperationQueue mainQueue] addOperation:op];
 }
 
 @end

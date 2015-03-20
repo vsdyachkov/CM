@@ -481,12 +481,13 @@ static NSMutableDictionary* relationshipDictionary;
 + (void) syncWithJsonByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
     
     [CMExtensions validateValue:url withClass:[NSURL class]];
     printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@\n └> parameters: %@", url.absoluteString, parameters] UTF8String]);
     [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
     
-    AFHTTPRequestOperation *requestOperation = [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    AFHTTPRequestOperation *requestOperation = [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
         printf ("%s\n", [[NSString stringWithFormat:@"[i] Json downloaded! \n └> url: %@", url.absoluteString] UTF8String]);
         [CMCoreData databaseOperationInBackground:^{
             [self syncWithJson:responseObject];

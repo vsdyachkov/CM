@@ -10,11 +10,11 @@
 
 @interface CMJsonPath : NSObject
 
-+ (void) getJsonFromUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
++ (void) getJsonFromUrl:(NSURL*)url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure;
 
 // Example: get value from "alias" key
 // Json: {"message":[{"event":{"alias":"queen"}}]}
 // Path: @"message.event.alias"
-+ (void) stringFromJsonWithUrl: (NSURL*) url andPath: (NSString*) path success:(void(^)(NSString* string)) success failure: (void(^)(NSError *error)) failure;
++ (void) stringFromJsonWithUrl:(NSURL*)url parameters:(NSDictionary*)parameters jsonPath:(NSString*)path success:(void(^)(NSString* string))success failure:(void(^)(NSError *error))failure;
 
 @end
