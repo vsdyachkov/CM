@@ -354,8 +354,16 @@ static NSMutableDictionary* relationshipDictionary;
     
     [CMExtensions validateValue:filePath withClass:[NSString class]];
     
+    NSDictionary* json;
     NSData *myJSON = [NSData dataWithContentsOfFile:filePath];
-    NSDictionary* json = [NSJSONSerialization JSONObjectWithData:myJSON options:kNilOptions error:error];
+    if (myJSON)
+    {
+        json = [NSJSONSerialization JSONObjectWithData:myJSON options:kNilOptions error:error];
+    }
+    else
+    {
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] File with name '%@' not found in mainBundle", name] UTF8String]);
+    }
     
     return json;
 }
@@ -502,6 +510,42 @@ static NSMutableDictionary* relationshipDictionary;
     
     [[NSOperationQueue mainQueue] cancelAllOperations];
     [[NSOperationQueue mainQueue] addOperation:op];
+}
+
+
++ (void) syncWithJsonByUrl: (NSURL*) url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure
+{
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    
+    [CMExtensions validateValue:url withClass:[NSURL class]];
+    printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@", url.absoluteString] UTF8String]);
+    [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
+    
+    AFHTTPRequestOperation *requestOperation = [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject)
+    {
+         printf ("%s\n", [[NSString stringWithFormat:@"[i] Json downloaded! \n └> url: %@", url.absoluteString] UTF8String]);
+         [CMCoreData databaseOperationInBackground:^{
+             [self syncWithJson:responseObject];
+         } completion:^{
+             success(responseObject);
+         }];
+    }
+    failure:^(AFHTTPRequestOperation *operation, NSError *error)
+    {
+         printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded! \n └> url: %@\n └> error: %@", url.absoluteString, error.localizedDescription] UTF8String]);
+         [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
+         failure(error);
+     }];
+    
+    __weak AFHTTPRequestOperation* operation = requestOperation;
+    
+    [requestOperation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
+     {
+         NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
+         float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
+         [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
+     }];
+    
 }
 
 @end

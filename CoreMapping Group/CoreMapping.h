@@ -28,7 +28,6 @@ userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrr
 #import "CMJsonPath.h"
 #import "NSManagedObject+manager.h"
 
-
 @interface CoreMapping : NSObject
 
 // All methods with completion or success/failure block are async
@@ -43,5 +42,6 @@ userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrr
 
 // Parse Json from url
 + (void) syncWithJsonByUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
++ (void) syncWithJsonByUrl: (NSURL*) url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
 
 @end

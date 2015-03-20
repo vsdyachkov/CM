@@ -33,9 +33,20 @@
     return arr;
 }
 
-+ (NSArray*) findRowsWithPredicate: (NSPredicate*) predicate
++ (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate
 {
     return [self findRowsWithPredicate:predicate andSortDescriptors:nil];
+}
+
++ (NSArray*) findAllRowsWithSortDescriptors:(NSArray*)sortDescriptors
+{
+    return [self findRowsWithPredicate:nil andSortDescriptors:sortDescriptors];
+}
+
++ (NSArray*) findAllRowsSortedBy:(NSString*)sortProperty ascending:(BOOL)ascending
+{
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
+    return [self findRowsWithPredicate:nil andSortDescriptors:@[sortDescriptor]];
 }
 
 + (NSArray*) findAllRows
@@ -58,6 +69,12 @@
     } else {
         return nil;
     }
+}
+
++ (id) findFirstRowWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending
+{
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
+    return [self findFirstRowWithPredicate:predicate andSortDescriptors:@[sortDescriptor]];
 }
 
 + (id) findFirstRowWithPredicate:(NSPredicate*)predicate
