@@ -7,18 +7,18 @@
 //
 
 /*
-For customize automatic Json parsing, create categories from your CoreData NSManagedObject subcalss
-If your class response to @selector(customizeWithJson:) CoreMapping perform it for each
-
+ For customize automatic Json parsing, create categories from your CoreData NSManagedObject subcalss
+ If your class response to @selector(customizeWithJson:) CoreMapping perform it for each
+ 
  - (void) customizeWithJson: (NSDictionary*) json;
  
-Progress notification:
-
-name = CMProgressNotificationName
-userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrring>};
+ Progress notification:
  
-(CMEntityName is optional)
-*/
+ name = CMProgressNotificationName
+ userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrring>};
+ 
+ (CMEntityName is optional)
+ */
 
 #import <CoreData/CoreData.h>
 #import <AFNetworking.h>
@@ -33,15 +33,17 @@ userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrr
 // All methods with completion or success/failure block are async
 
 // Parse Json from NSDictionary
-+ (void) syncWithJson: (NSDictionary*) json;
-+ (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion;
- 
++ (void) syncWithJson:(NSDictionary*)json;
++ (void) syncWithJson:(NSDictionary*)json completion:(void(^)(NSDictionary* json))completion;
+
 // Parse Json from bundle
-+ (void) syncWithJsonByName: (NSString*) name error: (NSError*) error;
-+ (void) syncWithJsonByName: (NSString*) name success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
++ (void) syncWithJsonByName:(NSString*)name error:(NSError*)error;
++ (void) syncWithJsonByName:(NSString*)name success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure;
 
 // Parse Json from url
-+ (void) syncWithJsonByUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
-+ (void) syncWithJsonByUrl: (NSURL*) url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
++ (void) syncWithJsonByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure;
+
+// iOS 7+ background sync - application:performFetchWithCompletionHandler:
++ (void) performFetchByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters completion:(void(^)(UIBackgroundFetchResult result))completion;
 
 @end

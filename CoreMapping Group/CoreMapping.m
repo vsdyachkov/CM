@@ -11,12 +11,14 @@
 @implementation CoreMapping
 
 static NSMutableString* report;
+static bool hasNewData;
 static NSMutableDictionary* relationshipDictionary;
 
 #pragma mark - Mapping methods
 
 + (void) mapValue:(id) value withJsonKey: (NSString*) key andType: (NSAttributeType) type andManagedObject: (NSManagedObject*) obj
 {
+    
     [CMExtensions validateValue:key withClass:[NSString class]];
     [CMExtensions validateValue:obj withClass:[NSManagedObject class]];
     
@@ -37,7 +39,7 @@ static NSMutableDictionary* relationshipDictionary;
         case NSBooleanAttributeType: convertedValue =    [NSNumber numberWithInt:[strValue boolValue]]; break;
         case NSDateAttributeType: convertedValue =       [format dateFromString:strValue]; break;
         case NSBinaryDataAttributeType: convertedValue = [strValue dataUsingEncoding:NSUTF8StringEncoding]; break;
-            
+        
         default: [NSException raise:CMUnsupportedAttrException format:CMUnsupportedAttrFormat]; break;
     }
     
@@ -133,7 +135,7 @@ static NSMutableDictionary* relationshipDictionary;
         NSRelationshipDescription* relationFromChild = desc.relationshipsByName[name];
         NSRelationshipDescription* inverseFromParent = relationFromChild.inverseRelationship;
         
-        if ((relationFromChild && inverseFromParent) &&  ![[relationFromChild relationshipType] isEqual: @3]) {
+        if ((relationFromChild && inverseFromParent) &&  ![[relationFromChild relationshipType] isEqual: @(CMManyToMany)]) {
             // This (many) Childs to -> (one) Parent
             NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
             NSString* relationMappedName = [relationFromChild mappingName];
@@ -146,7 +148,7 @@ static NSMutableDictionary* relationshipDictionary;
                     NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
                     [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
                 }
-
+                
             }
         } else {
             [self addRelationshipIfNeed:[relationFromChild manyToManyTableName] andRelationship:relationFromChild];
@@ -182,7 +184,7 @@ static NSMutableDictionary* relationshipDictionary;
     }];
 }
 
-#pragma mark - Sync methods
+#pragma mark - Parse methods
 
 + (NSMutableArray*) entitiesForParsing
 {
@@ -195,22 +197,22 @@ static NSMutableDictionary* relationshipDictionary;
     }];
     
     [entities sortUsingComparator:^NSComparisonResult(NSEntityDescription* entity1, NSEntityDescription* entity2)
-    {
-        NSString* ord1 = entity1.userInfo[CMParseOrd];
-        NSString* ord2 = entity2.userInfo[CMParseOrd];
-        
-        if (!ord1 && !ord2) return NSOrderedSame;
-        if (!ord1 && ord2) return NSOrderedDescending;
-        if (ord1 && !ord2) return NSOrderedAscending;
-        
-        NSInteger ord1Int = [ord1 integerValue];
-        NSInteger ord2Int = [ord2 integerValue];
-        
-        if (ord1Int > ord2Int) return NSOrderedDescending;
-        if (ord1Int < ord2Int) return NSOrderedAscending;
-        
-        return NSOrderedSame;
-    }];
+     {
+         NSString* ord1 = entity1.userInfo[CMParseOrd];
+         NSString* ord2 = entity2.userInfo[CMParseOrd];
+         
+         if (!ord1 && !ord2) return NSOrderedSame;
+         if (!ord1 && ord2) return NSOrderedDescending;
+         if (ord1 && !ord2) return NSOrderedAscending;
+         
+         NSInteger ord1Int = [ord1 integerValue];
+         NSInteger ord2Int = [ord2 integerValue];
+         
+         if (ord1Int > ord2Int) return NSOrderedDescending;
+         if (ord1Int < ord2Int) return NSOrderedAscending;
+         
+         return NSOrderedSame;
+     }];
     
     return entities;
 }
@@ -220,11 +222,12 @@ static NSMutableDictionary* relationshipDictionary;
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonAddName])
     {
+        hasNewData = YES;
         NSArray* addArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonAddName] withClass:[NSArray class]];
         printf ("%s\n", [[NSString stringWithFormat:@"[+] Added %lu '%@' from Json -> %@ -> %@", (unsigned long)addArray.count, entity.mappingEntityName, entity.mappingEntityName,CMJsonAddName] UTF8String]);
         if (addArray) [self mapAllRowsInEntity:entity andWithJsonArray:addArray];
     } else {
-            printf ("%s\n", [[NSString stringWithFormat:@"[i] No 'add' section in Json -> %@ -> %@", entity.mappingEntityName, CMJsonAddName] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] No 'add' section in Json -> %@ -> %@", entity.mappingEntityName, CMJsonAddName] UTF8String]);
     }
 }
 
@@ -233,6 +236,7 @@ static NSMutableDictionary* relationshipDictionary;
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonRemoveName])
     {
+        hasNewData = YES;
         NSArray* removeArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonRemoveName] withClass:[NSArray class]];
         printf ("%s\n", [[NSString stringWithFormat:@"[-] Removed %lu '%@' from Json -> %@ -> %@", (unsigned long)removeArray.count, entity.mappingEntityName, entity.mappingEntityName, CMJsonRemoveName] UTF8String]);
         if (removeArray) [self removeRowsInEntity:entity withNumberArray:(NSArray*)removeArray];
@@ -246,6 +250,7 @@ static NSMutableDictionary* relationshipDictionary;
     // Parsing relationship tables
     for (NSString* tableName in [relationshipDictionary.copy allKeys])
     {
+        hasNewData = YES;
         if (!json[tableName]) {
             [relationshipDictionary removeObjectForKey:tableName];
         }
@@ -259,7 +264,7 @@ static NSMutableDictionary* relationshipDictionary;
         NSDictionary* relationDict = [json objectForKey:key];
         
         relationDict = [CMExtensions validateValue:relationDict withClass:[NSDictionary class]];
-
+        
         if (![relationDict.allKeys containsObject:CMJsonAddName]) continue;
         NSArray* addArray = [relationDict objectForKey:CMJsonAddName];
         
@@ -373,10 +378,10 @@ static NSMutableDictionary* relationshipDictionary;
     NSString* text;
     switch (status)
     {
-        case CMConnecting: text = NSLocalizedString(@"Connecting", @""); break;
-        case CMDownloading: text = [NSString stringWithFormat:@"%@ %.0f%%", NSLocalizedString(@"Downloading", @""), progress*100]; break;
-        case CMParsing: text = [NSString stringWithFormat:@"%@ %.0f%%", NSLocalizedString(@"Parsing", @""), progress*100]; break;
-        case CMComplete: text = NSLocalizedString(@"Complete", @""); break;
+        case CMConnecting: text = @"Соединение ..."; break;
+        case CMDownloading: text = [NSString stringWithFormat:@"Загрузка %.0f%%", progress*100]; break;
+        case CMParsing: text = [NSString stringWithFormat:@"Обработка %.0f%%", progress*100]; break;
+        case CMComplete: text = @"Готово"; break;
         default: text = @" "; break;
     }
     
@@ -385,7 +390,7 @@ static NSMutableDictionary* relationshipDictionary;
     {
         [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
     }
-
+    
     // Post on main thread
     NSDictionary* userInfo = @{CMText:text, CMStatus:@(status), CMProgress:@(progress), CMEntityName:(entity) ? entity.mappingEntityName : [NSNull null]};
     dispatch_async(dispatch_get_main_queue(),^{
@@ -397,31 +402,32 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) syncWithJson: (NSDictionary*) json;
 {
+    hasNewData = NO;
     [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
     printf ("\n%s\n", [[NSString stringWithFormat:@"Parsing status:"] UTF8String]);
-
+    
     [self progressNotificationWithStatus:CMParsing progress:0.0f andEntity:nil];
     
     NSMutableArray* entities = [self entitiesForParsing];
     
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* entity, NSUInteger idx, BOOL *stop)
-    {
-        if ([CMExtensions validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
-        {
-            // add
-            [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
-            [self parseAddBlockForEntity:entity withJson:json];
-            
-            // remove
-            [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
-            [self parseRemoveBlockForEntity:entity withJson:json];
-        }
-        else
-        {
-            printf ("%s\n", [[NSString stringWithFormat:@"[!] Json -> '%@' not found or not array", entity.mappingEntityName] UTF8String]);
-        }
-    }];
+     {
+         if ([CMExtensions validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
+         {
+             // add
+             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
+             [self parseAddBlockForEntity:entity withJson:json];
+             
+             // remove
+             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
+             [self parseRemoveBlockForEntity:entity withJson:json];
+         }
+         else
+         {
+             printf ("%s\n", [[NSString stringWithFormat:@"[!] Json -> '%@' not found or not array", entity.mappingEntityName] UTF8String]);
+         }
+     }];
     
     // relationships
     NSEntityDescription* relationEntity = [NSEntityDescription new];
@@ -431,7 +437,7 @@ static NSMutableDictionary* relationshipDictionary;
     
     [CMCoreData saveContext];
     [CMCoreData shortStatus];
-
+    
     [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
 }
 
@@ -472,70 +478,26 @@ static NSMutableDictionary* relationshipDictionary;
     }
 }
 
-+ (void) syncWithJsonByUrl: (NSURL*) url success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure
++ (void) syncWithJsonByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure
 {
+    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
+    
     [CMExtensions validateValue:url withClass:[NSURL class]];
-
+    printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@\n └> parameters: %@", url.absoluteString, parameters] UTF8String]);
     [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
-
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    //[request setTimeoutInterval:10.0];
-    AFHTTPRequestOperation *op = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    op.responseSerializer = [AFJSONResponseSerializer serializer];
-    NSMutableSet* responseTypes = [NSMutableSet setWithSet:op.responseSerializer.acceptableContentTypes];
-    [responseTypes addObject:@"text/html"];
-    op.responseSerializer.acceptableContentTypes = responseTypes;
-    printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@", url.absoluteString] UTF8String]);
-    [op setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
+    
+    AFHTTPRequestOperation *requestOperation = [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
         printf ("%s\n", [[NSString stringWithFormat:@"[i] Json downloaded! \n └> url: %@", url.absoluteString] UTF8String]);
         [CMCoreData databaseOperationInBackground:^{
             [self syncWithJson:responseObject];
         } completion:^{
             success(responseObject);
         }];
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error)  {
         printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded! \n └> url: %@\n └> error: %@", url.absoluteString, error.localizedDescription] UTF8String]);
         [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
         failure(error);
     }];
-    
-    __weak AFHTTPRequestOperation* operation = op;
-    
-    [op setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
-    {
-        NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
-        float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
-        [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
-    }];
-    
-    [[NSOperationQueue mainQueue] cancelAllOperations];
-    [[NSOperationQueue mainQueue] addOperation:op];
-}
-
-
-+ (void) syncWithJsonByUrl: (NSURL*) url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure
-{
-    AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
-    
-    [CMExtensions validateValue:url withClass:[NSURL class]];
-    printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@", url.absoluteString] UTF8String]);
-    [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
-    
-    AFHTTPRequestOperation *requestOperation = [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject)
-    {
-         printf ("%s\n", [[NSString stringWithFormat:@"[i] Json downloaded! \n └> url: %@", url.absoluteString] UTF8String]);
-         [CMCoreData databaseOperationInBackground:^{
-             [self syncWithJson:responseObject];
-         } completion:^{
-             success(responseObject);
-         }];
-    }
-    failure:^(AFHTTPRequestOperation *operation, NSError *error)
-    {
-         printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded! \n └> url: %@\n └> error: %@", url.absoluteString, error.localizedDescription] UTF8String]);
-         [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
-         failure(error);
-     }];
     
     __weak AFHTTPRequestOperation* operation = requestOperation;
     
@@ -545,7 +507,19 @@ static NSMutableDictionary* relationshipDictionary;
          float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
          [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
      }];
-    
+}
+
++ (void) performFetchByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters completion:(void(^)(UIBackgroundFetchResult result))completion
+{
+    [self syncWithJsonByUrl:url withParameters:parameters success:^(NSDictionary *json) {
+        if (hasNewData) {
+            completion (UIBackgroundFetchResultNewData);
+        } else {
+            completion (UIBackgroundFetchResultNoData);
+        }
+    } failure:^(NSError *error) {
+        completion (UIBackgroundFetchResultFailed);
+    }];
 }
 
 @end
