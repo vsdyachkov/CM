@@ -7,18 +7,18 @@
 //
 
 /*
- For customize automatic Json parsing, create categories from your CoreData NSManagedObject subcalss
- If your class response to @selector(customizeWithJson:) CoreMapping perform it for each
- 
+For customize automatic Json parsing, create categories from your CoreData NSManagedObject subcalss
+If your class response to @selector(customizeWithJson:) CoreMapping perform it for each
+
  - (void) customizeWithJson: (NSDictionary*) json;
  
- Progress notification:
+Progress notification:
+
+name = CMProgressNotificationName
+userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrring>};
  
- name = CMProgressNotificationName
- userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrring>};
- 
- (CMEntityName is optional)
- */
+(CMEntityName is optional)
+*/
 
 #import <CoreData/CoreData.h>
 #import <AFNetworking.h>
@@ -35,7 +35,7 @@
 // Parse Json from NSDictionary
 + (void) syncWithJson:(NSDictionary*)json;
 + (void) syncWithJson:(NSDictionary*)json completion:(void(^)(NSDictionary* json))completion;
-
+ 
 // Parse Json from bundle
 + (void) syncWithJsonByName:(NSString*)name error:(NSError*)error;
 + (void) syncWithJsonByName:(NSString*)name success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure;

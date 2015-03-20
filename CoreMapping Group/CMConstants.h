@@ -31,6 +31,7 @@ typedef enum {
 #define CMSavingChildContextError @"[!] There was an error when saving 'child' context"
 #define CMUnsupportedAttrException @"[!] Invalid attribute type"
 #define CMUnsupportedAttrFormat @"[!] This type is not supported in database"
+#define CMCustomParse @"customizeWithJson:"
 
 static NSString* CMDefaultDateFormat = @"yyyy-LL-dd kk:mm:ss";
 

@@ -35,7 +35,7 @@ static NSManagedObjectModel* managedObjectModel;
     managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
     
     if (managedObjectModel.entities.count == 0) {
-        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@", CMModelError] UTF8String]);
+        printf ("%s\n", [CMModelError UTF8String]);
         abort();
     }
     
@@ -54,12 +54,12 @@ static NSManagedObjectModel* managedObjectModel;
     NSError *error = nil;
     if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
         [[NSFileManager defaultManager] removeItemAtURL:[self SQLFilePath] error:nil];
-        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@", CMMigrationError] UTF8String]);
+        printf ("%s\n", [CMMigrationError UTF8String]);
         if (![persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:[self SQLFilePath] options:options error:&error]) {
-            printf ("%s\n", [[NSString stringWithFormat:@"[!] %@ :%@", CMPersistentStoreError, error.localizedDescription] UTF8String]);
+            printf ("%s\n", [[NSString stringWithFormat:@"%@ :%@", CMPersistentStoreError, error.localizedDescription] UTF8String]);
             abort();
         } else {
-            printf ("%s\n", [[NSString stringWithFormat:@"[i] %@", CMMigrationSuccess] UTF8String]);
+            printf ("%s\n", [CMMigrationSuccess UTF8String]);
         }
         
     }
@@ -102,7 +102,7 @@ static NSManagedObjectModel* managedObjectModel;
     NSError* error;
     [[self mainManagedObjectContext] save:&error];
     if (error) {
-        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@: %@", CMSavingMainContextError, error.localizedDescription] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"%@: %@", CMSavingMainContextError, error.localizedDescription] UTF8String]);
         abort();
     }
 }
@@ -112,7 +112,7 @@ static NSManagedObjectModel* managedObjectModel;
     NSError* error;
     [[self childManagedObjectContext] save:&error];
     if (error) {
-        printf ("%s\n", [[NSString stringWithFormat:@"[!] %@: %@", CMSavingChildContextError, error.localizedDescription] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"%@: %@", CMSavingChildContextError, error.localizedDescription] UTF8String]);
         abort();
     }
 }

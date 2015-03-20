@@ -164,7 +164,7 @@ static NSMutableDictionary* relationshipDictionary;
     
     [jsonArray enumerateObjectsUsingBlock:^(NSDictionary* singleDict, NSUInteger idx, BOOL *stop) {
         NSManagedObject* obj = [self mapSingleRowInEntity:desc andJsonDict:singleDict];
-        [obj performSelectorIfResponseFromString:@"customizeWithJson:" withObject:singleDict];
+        [obj performSelectorIfResponseFromString:CMCustomParse withObject:singleDict];
     }];
 }
 
