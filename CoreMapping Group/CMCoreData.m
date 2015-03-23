@@ -208,6 +208,7 @@ static NSManagedObjectModel* managedObjectModel;
         }];
         if (arr.count < 1)
             printf ("%s\n", [[NSString stringWithFormat:@"- <Empty>"] UTF8String]);
+        printf ("\n");
     }
 }
 

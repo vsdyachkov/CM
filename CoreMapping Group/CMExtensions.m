@@ -30,7 +30,9 @@
     if ([self respondsToSelector:NSSelectorFromString(name)]) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-        [self performSelector:NSSelectorFromString(name) withObject:object];
+        @try { [self performSelector:NSSelectorFromString(name) withObject:object]; }
+        @catch (NSException *exception) { return NO; }
+        @finally { return YES; }
 #pragma clang diagnostic pop
         return YES;
     } else {
@@ -126,10 +128,9 @@
 
 - (NSString*) manyToManyTableName
 {
-    NSString* name = [NSString stringWithFormat:@"%@",self.name];
     NSDictionary* userInfo = [self userInfo];
     NSString* value = userInfo[CMManyToManyName];
-    NSString* mapKey = (value) ? value : name;
+    NSString* mapKey = (value) ? value : nil;
     
     return mapKey;
 }

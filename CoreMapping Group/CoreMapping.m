@@ -72,7 +72,7 @@ static NSMutableDictionary* relationshipDictionary;
     }
 }
 
-+ (NSManagedObject*) mapSingleRowInEntity: (NSEntityDescription*) desc andJsonDict: (NSDictionary*) json
++ (NSManagedObject*) mapSingleRowInEntity:(NSEntityDescription*)desc andJsonDict:(NSDictionary*)json
 {
     [CMExtensions validateValue:desc withClass:[NSEntityDescription class]];
     [CMExtensions validateValue:json withClass:[NSDictionary class]];
@@ -109,7 +109,7 @@ static NSMutableDictionary* relationshipDictionary;
     return obj;
 }
 
-+ (NSMutableDictionary*) addRelationshipIfNeed: (NSString*) name andRelationship: (NSRelationshipDescription*) relationship
++ (NSMutableDictionary*) addRelationshipIfNeed:(NSString*)name andRelationship:(NSRelationshipDescription*)relationship
 {
     if (relationshipDictionary != nil) {
         if (![relationshipDictionary.allKeys containsObject:name]) {
@@ -124,7 +124,7 @@ static NSMutableDictionary* relationshipDictionary;
     return relationshipDictionary;
 }
 
-+ (void) mapRelationshipsWithObject: (NSManagedObject*) obj andJsonDict: (NSDictionary*) json
++ (void) mapRelationshipsWithObject:(NSManagedObject*)obj andJsonDict:(NSDictionary*)json
 {
     [CMExtensions validateValue:obj withClass:[NSManagedObject class]];
     [CMExtensions validateValue:json withClass:[NSDictionary class]];
@@ -135,7 +135,8 @@ static NSMutableDictionary* relationshipDictionary;
         NSRelationshipDescription* relationFromChild = desc.relationshipsByName[name];
         NSRelationshipDescription* inverseFromParent = relationFromChild.inverseRelationship;
         
-        if ((relationFromChild && inverseFromParent) &&  ![[relationFromChild relationshipType] isEqual: @(CMManyToMany)]) {
+        if (relationFromChild && inverseFromParent && ![relationFromChild manyToManyTableName]) {
+            // && ![[relationFromChild relationshipType] isEqual: @(CMManyToMany)]) {
             // This (many) Childs to -> (one) Parent
             NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
             NSString* relationMappedName = [relationFromChild mappingName];
@@ -145,10 +146,10 @@ static NSMutableDictionary* relationshipDictionary;
                 NSManagedObject* toObject = [self findObjectInEntity:destinationEntity withId:idObjectFormJson enableCreating:NO];
                 if (toObject)
                 {
-                    NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", inverseFromParent.name.capitalizedString];
+                    NSString* objectName = [NSString stringWithFormat:@"%@%@",[[inverseFromParent.name substringToIndex:1] uppercaseString],[inverseFromParent.name substringFromIndex:1] ];
+                    NSString* selectorName = [NSString stringWithFormat:@"add%@Object:", objectName];
                     [toObject performSelectorIfResponseFromString:selectorName withObject:obj];
                 }
-                
             }
         } else {
             [self addRelationshipIfNeed:[relationFromChild manyToManyTableName] andRelationship:relationFromChild];
@@ -250,7 +251,6 @@ static NSMutableDictionary* relationshipDictionary;
     // Parsing relationship tables
     for (NSString* tableName in [relationshipDictionary.copy allKeys])
     {
-        hasNewData = YES;
         if (!json[tableName]) {
             [relationshipDictionary removeObjectForKey:tableName];
         }
@@ -342,6 +342,7 @@ static NSMutableDictionary* relationshipDictionary;
     }
     
     if (relations>0) {
+        hasNewData = YES;
         printf ("%s\n\n", [[NSString stringWithFormat:@"[+] Add %d relationship from tables: Json -> %@", relations, [relationshipDictionary.allKeys componentsJoinedByString:@", "]] UTF8String]);
     } else {
         printf ("%s\n\n", [[NSString stringWithFormat:@"[i] No relationship tables found"] UTF8String]);
@@ -481,7 +482,7 @@ static NSMutableDictionary* relationshipDictionary;
 + (void) syncWithJsonByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure
 {
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"application/json", nil];
     
     [CMExtensions validateValue:url withClass:[NSURL class]];
     printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@\n └> parameters: %@", url.absoluteString, parameters] UTF8String]);
