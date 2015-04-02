@@ -11,10 +11,14 @@
 
 @interface NSManagedObject (manager)
 
-# pragma mark - Finding
+# pragma mark - Finding custom
 
 + (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors;
++ (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending;
 + (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate;
+
+# pragma mark - Finding all
+
 + (NSArray*) findAllRowsWithSortDescriptors:(NSArray*)sortDescriptors;
 + (NSArray*) findAllRowsSortedBy:(NSString*)sortProperty ascending:(BOOL)ascending;
 + (NSArray*) findAllRows;

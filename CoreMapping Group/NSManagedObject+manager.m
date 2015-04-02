@@ -28,9 +28,23 @@
     NSFetchRequest* request = [self requestWithPredicate:predicate];
     if (sortDescriptors) [request setSortDescriptors:sortDescriptors];
     NSError* error;
-    NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
-    if (error) printf ("%s\n", [[NSString stringWithFormat:@"[!] Error finding: %@",error.localizedDescription] UTF8String]);
-    return arr;
+    NSArray* arr;
+    @try {
+        arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
+    }
+    @catch (NSException *exception) {
+        if (exception) printf ("%s\n", [[NSString stringWithFormat:@"[!] Request error: %@", exception.description] UTF8String]);
+    }
+    @finally {
+        if (error) printf ("%s\n", [[NSString stringWithFormat:@"[!] Error finding: %@",error.localizedDescription] UTF8String]);
+        return arr;
+    }
+}
+
++ (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending
+{
+    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
+    return [self findRowsWithPredicate:predicate andSortDescriptors:@[sortDescriptor]];
 }
 
 + (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate
@@ -62,12 +76,20 @@
     if (sortDescriptors) [request setSortDescriptors:sortDescriptors];
     [request setFetchLimit:1];
     NSError* error;
-    NSArray* results = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
-    if (error) printf ("%s\n", [[NSString stringWithFormat:@"[!] Find object error: %@",error.localizedDescription] UTF8String]);
-    if (results.count > 0) {
-        return results [0];
-    } else {
-        return nil;
+    NSArray* results;
+    @try {
+        results = [[CMCoreData managedObjectContext] executeFetchRequest:request error:&error];
+    }
+    @catch (NSException *exception) {
+        if (exception) printf ("%s\n", [[NSString stringWithFormat:@"[!] Request error: %@", exception.description] UTF8String]);
+    }
+    @finally {
+        if (error) printf ("%s\n", [[NSString stringWithFormat:@"[!] Find object error: %@",error.localizedDescription] UTF8String]);
+        if (results.count > 0) {
+            return results [0];
+        } else {
+            return nil;
+        }
     }
 }
 
