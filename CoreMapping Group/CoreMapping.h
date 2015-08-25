@@ -27,6 +27,7 @@ userInfo = @{CMStatus:<CMStatusType>, CMProgress:<NSNumber>, CMEntityName:<NSSrr
 #import "CMCoreData.h"
 #import "CMJsonPath.h"
 #import "NSManagedObject+manager.h"
+#import <UIKit/UIKit.h>
 
 @interface CoreMapping : NSObject
 

@@ -12,6 +12,9 @@
 
 static NSMutableString* report;
 static bool hasNewData;
+static NSUInteger currentActionsCount;
+static NSUInteger totalActionsCount;
+static NSDate* parseTime;
 static NSMutableDictionary* relationshipDictionary;
 
 #pragma mark - Mapping methods
@@ -129,14 +132,13 @@ static NSMutableDictionary* relationshipDictionary;
     [CMExtensions validateValue:obj withClass:[NSManagedObject class]];
     [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
-    // perform Relationships: ManyToOne & OneToOne & OneToMany
+    // perform all relationships
     NSEntityDescription* desc = obj.entity;
     for (NSString* name in desc.relationshipsByName) {
         NSRelationshipDescription* relationFromChild = desc.relationshipsByName[name];
         NSRelationshipDescription* inverseFromParent = relationFromChild.inverseRelationship;
         
         if (relationFromChild && inverseFromParent && ![relationFromChild manyToManyTableName]) {
-            // && ![[relationFromChild relationshipType] isEqual: @(CMManyToMany)]) {
             // This (many) Childs to -> (one) Parent
             NSEntityDescription* destinationEntity = relationFromChild.destinationEntity;
             NSString* relationMappedName = [relationFromChild mappingName];
@@ -163,10 +165,14 @@ static NSMutableDictionary* relationshipDictionary;
     [CMExtensions validateValue:desc withClass:[NSEntityDescription class]];
     [CMExtensions validateValue:jsonArray withClass:[NSArray class]];
     
-    [jsonArray enumerateObjectsUsingBlock:^(NSDictionary* singleDict, NSUInteger idx, BOOL *stop) {
-        NSManagedObject* obj = [self mapSingleRowInEntity:desc andJsonDict:singleDict];
-        [obj performSelectorIfResponseFromString:CMCustomParse withObject:singleDict];
-    }];
+    [jsonArray enumerateObjectsUsingBlock:^(NSDictionary* singleDict, NSUInteger idx, BOOL *stop)
+     {
+         NSManagedObject* obj = [self mapSingleRowInEntity:desc andJsonDict:singleDict];
+         [obj performSelectorIfResponseFromString:CMCustomParse withObject:singleDict];
+         
+         currentActionsCount--;
+         [self progressNotificationWithStatus:CMParsing progress:1-(float)currentActionsCount/totalActionsCount andEntity:desc];
+     }];
 }
 
 + (void) removeRowsInEntity: (NSEntityDescription*) desc withNumberArray: (NSArray*) removeArray
@@ -182,6 +188,9 @@ static NSMutableDictionary* relationshipDictionary;
         if (arr.count > 0) {
             [[CMCoreData managedObjectContext] deleteObject:arr[0]];
         }
+        
+        currentActionsCount--;
+        [self progressNotificationWithStatus:CMParsing progress:1-(float)currentActionsCount/totalActionsCount andEntity:desc];
     }];
 }
 
@@ -223,10 +232,12 @@ static NSMutableDictionary* relationshipDictionary;
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonAddName])
     {
+        NSDate* startDate = [NSDate date];
         hasNewData = YES;
         NSArray* addArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonAddName] withClass:[NSArray class]];
-        printf ("%s\n", [[NSString stringWithFormat:@"[+] Added %lu '%@' from Json -> %@ -> %@", (unsigned long)addArray.count, entity.mappingEntityName, entity.mappingEntityName,CMJsonAddName] UTF8String]);
+        printf ("%s", [[NSString stringWithFormat:@"[+] Adding %lu '%@' from Json -> %@ -> %@ ... ", (unsigned long)addArray.count, entity.mappingEntityName, entity.mappingEntityName,CMJsonAddName] UTF8String]);
         if (addArray) [self mapAllRowsInEntity:entity andWithJsonArray:addArray];
+        printf("%s\n", [[NSString stringWithFormat:@"(%.1f sec)", [[NSDate date] timeIntervalSinceDate:startDate]] UTF8String]);
     } else {
         printf ("%s\n", [[NSString stringWithFormat:@"[i] No 'add' section in Json -> %@ -> %@", entity.mappingEntityName, CMJsonAddName] UTF8String]);
     }
@@ -237,10 +248,12 @@ static NSMutableDictionary* relationshipDictionary;
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonRemoveName])
     {
+        NSDate* startDate = [NSDate date];
         hasNewData = YES;
         NSArray* removeArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonRemoveName] withClass:[NSArray class]];
-        printf ("%s\n", [[NSString stringWithFormat:@"[-] Removed %lu '%@' from Json -> %@ -> %@", (unsigned long)removeArray.count, entity.mappingEntityName, entity.mappingEntityName, CMJsonRemoveName] UTF8String]);
+        printf ("%s", [[NSString stringWithFormat:@"[-] Removing %lu '%@' from Json -> %@ -> %@ ... ", (unsigned long)removeArray.count, entity.mappingEntityName, entity.mappingEntityName, CMJsonRemoveName] UTF8String]);
         if (removeArray) [self removeRowsInEntity:entity withNumberArray:(NSArray*)removeArray];
+        printf("%s\n", [[NSString stringWithFormat:@"(%.1f sec)", [[NSDate date] timeIntervalSinceDate:startDate]] UTF8String]);
     } else {
         printf ("%s\n", [[NSString stringWithFormat:@"[i] No 'remove' section in Json -> %@ -> %@", entity.mappingEntityName, CMJsonRemoveName] UTF8String]);
     }
@@ -343,9 +356,9 @@ static NSMutableDictionary* relationshipDictionary;
     
     if (relations>0) {
         hasNewData = YES;
-        printf ("%s\n\n", [[NSString stringWithFormat:@"[+] Add %d relationship from tables: Json -> %@", relations, [relationshipDictionary.allKeys componentsJoinedByString:@", "]] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"[+] Add %d relationship from tables: Json -> %@", relations, [relationshipDictionary.allKeys componentsJoinedByString:@", "]] UTF8String]);
     } else {
-        printf ("%s\n\n", [[NSString stringWithFormat:@"[i] No relationship tables found"] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] No relationship tables found"] UTF8String]);
     }
     
 }
@@ -380,8 +393,8 @@ static NSMutableDictionary* relationshipDictionary;
     switch (status)
     {
         case CMConnecting: text = @"Соединение ..."; break;
-        case CMDownloading: text = [NSString stringWithFormat:@"Загрузка %.0f%%", progress*100]; break;
-        case CMParsing: text = [NSString stringWithFormat:@"Обработка %.0f%%", progress*100]; break;
+        case CMDownloading: text = [NSString stringWithFormat:@"Загрузка ..."]; break;
+        case CMParsing: text = [NSString stringWithFormat:@"Обработка данных ..."]; break;
         case CMComplete: text = @"Готово"; break;
         default: text = @" "; break;
     }
@@ -399,29 +412,61 @@ static NSMutableDictionary* relationshipDictionary;
     });
 }
 
+#pragma mark - Counter methods
+
++ (void) countActionsForEntity: (NSEntityDescription*) entity withJson: (NSDictionary*) json
+{
+    NSDictionary* jsonTable = json[entity.mappingEntityName];
+    if ([jsonTable.allKeys containsObject:CMJsonAddName])
+    {
+        hasNewData = YES;
+        NSArray* addArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonAddName] withClass:[NSArray class]];
+        totalActionsCount += addArray.count;
+    }
+    
+    if ([jsonTable.allKeys containsObject:CMJsonRemoveName])
+    {
+        hasNewData = YES;
+        NSArray* removeArray = [CMExtensions validateValue:json[entity.mappingEntityName][CMJsonRemoveName] withClass:[NSArray class]];
+        totalActionsCount += removeArray.count;
+    }
+}
+
 #pragma mark - Sync methods
 
 + (void) syncWithJson: (NSDictionary*) json;
 {
+    NSDate* parseTime = [NSDate date];
     hasNewData = NO;
     [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
-    printf ("\n%s\n", [[NSString stringWithFormat:@"Parsing status:"] UTF8String]);
+    printf ("\n%s", [[NSString stringWithFormat:@"Parsing status: "] UTF8String]);
     
     [self progressNotificationWithStatus:CMParsing progress:0.0f andEntity:nil];
     
     NSMutableArray* entities = [self entitiesForParsing];
+    
+    /* counters */
+    totalActionsCount = 0;
+    [entities enumerateObjectsUsingBlock:^(NSEntityDescription* entity, NSUInteger idx, BOOL *stop)
+     {
+         if ([CMExtensions validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
+         {
+             [self countActionsForEntity:entity withJson:json];
+         }
+     }];
+    currentActionsCount = totalActionsCount;
+    printf ("%s\n", [[NSString stringWithFormat:@"(total %lu actions)", (unsigned long)totalActionsCount] UTF8String]);
+    /* */
     
     [entities enumerateObjectsUsingBlock:^(NSEntityDescription* entity, NSUInteger idx, BOOL *stop)
      {
          if ([CMExtensions validateValue:json[entity.mappingEntityName] withClass:[NSDictionary class]])
          {
              // add
-             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+0.5f)/(entities.count+1) andEntity:entity];
              [self parseAddBlockForEntity:entity withJson:json];
              
              // remove
-             [self progressNotificationWithStatus:CMParsing progress:(float)(idx+1.0f)/(entities.count+1) andEntity:entity];
              [self parseRemoveBlockForEntity:entity withJson:json];
          }
          else
@@ -437,6 +482,7 @@ static NSMutableDictionary* relationshipDictionary;
     [self parseRelationshipsWithJson:json];
     
     [CMCoreData saveContext];
+    printf("%s\n\n", [[NSString stringWithFormat:@"[√] Complete, total %.1f sec", [[NSDate date] timeIntervalSinceDate:parseTime]] UTF8String]);
     [CMCoreData shortStatus];
     
     [self progressNotificationWithStatus:CMComplete progress:1.0f andEntity:nil];
@@ -485,11 +531,17 @@ static NSMutableDictionary* relationshipDictionary;
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"application/json", nil];
     
     [CMExtensions validateValue:url withClass:[NSURL class]];
-    printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@\n └> parameters: %@", url.absoluteString, parameters] UTF8String]);
+    if (parameters) {
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@\n └> parameters: %@", url.absoluteString, parameters] UTF8String]);
+    } else {
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] Downloading Json ... \n └> url: %@", url.absoluteString] UTF8String]);
+    }
+    
     [self progressNotificationWithStatus:CMConnecting progress:0.0f andEntity:nil];
+    __block NSDate* startDate = [NSDate date];
     
     AFHTTPRequestOperation *requestOperation = [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* responseObject) {
-        printf ("%s\n", [[NSString stringWithFormat:@"[i] Json downloaded! \n └> url: %@", url.absoluteString] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"[i] Json downloaded! (%.1f sec)", [[NSDate date] timeIntervalSinceDate:startDate]] UTF8String]);
         [CMCoreData databaseOperationInBackground:^{
             [self syncWithJson:responseObject];
         } completion:^{
@@ -503,12 +555,11 @@ static NSMutableDictionary* relationshipDictionary;
     
     __weak AFHTTPRequestOperation* operation = requestOperation;
     
-    [requestOperation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead)
-     {
-         NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
-         float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
-         [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
-     }];
+    [requestOperation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        NSInteger totalContentSize = [operation.response.allHeaderFields[@"X-Uncompressed-Content-Length"] integerValue];
+        float progress = (totalContentSize > 0) ? (float)totalBytesRead / totalContentSize : 0.0f;
+        [self progressNotificationWithStatus:CMDownloading progress:progress andEntity:nil];
+    }];
 }
 
 + (void) performFetchByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters completion:(void(^)(UIBackgroundFetchResult result))completion

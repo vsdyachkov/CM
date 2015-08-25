@@ -191,7 +191,6 @@ static NSManagedObjectModel* managedObjectModel;
     printf ("%s\n", [[NSString stringWithFormat:@"Current Core Data status:"] UTF8String]);
     for (NSEntityDescription* entityDescription in [[CMCoreData managedObjectModel] entities])
     {
-        
         NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entityDescription.name];
         
         NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:nil];
@@ -208,7 +207,7 @@ static NSManagedObjectModel* managedObjectModel;
         }];
         if (arr.count < 1)
             printf ("%s\n", [[NSString stringWithFormat:@"- <Empty>"] UTF8String]);
-        printf ("\n");
+        printf ("\n\n");
     }
 }
 

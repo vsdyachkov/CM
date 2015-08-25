@@ -16,11 +16,11 @@
     [CMExtensions validateValue:url withClass:[NSURL class]];
     
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"application/json", nil];
     [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* json) {
         success (json);
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)  {
-        printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded from url:\n%@\nerror: %@", url.absoluteString, error.localizedDescription] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded from:\n └> url: %@\n └> error: %@", url.absoluteString, error.localizedDescription] UTF8String]);
         failure(error);
     }];
 }
@@ -31,7 +31,7 @@
     [CMExtensions validateValue:path withClass:[NSString class]];
     
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"application/json", nil];
     [manager GET:[url absoluteString] parameters:parameters success:^(AFHTTPRequestOperation *operation, NSDictionary* json) {
         id obj;
         NSError* error = [NSError errorWithDomain:CMPathError code:-1 userInfo:nil];
@@ -45,7 +45,7 @@
             }
         }
     } failure:^(AFHTTPRequestOperation *operation, NSError *error)  {
-        printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded from url:\n%@\nerror: %@", url.absoluteString, error.localizedDescription] UTF8String]);
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Json not downloaded from:\n └> url: %@\n └> error: %@", url.absoluteString, error.localizedDescription] UTF8String]);
         failure(error);
     }];
 }

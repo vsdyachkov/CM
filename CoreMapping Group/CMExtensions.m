@@ -128,9 +128,10 @@
 
 - (NSString*) manyToManyTableName
 {
+    NSString* name = nil;
     NSDictionary* userInfo = [self userInfo];
     NSString* value = userInfo[CMManyToManyName];
-    NSString* mapKey = (value) ? value : nil;
+    NSString* mapKey = (value) ? value : name;
     
     return mapKey;
 }
