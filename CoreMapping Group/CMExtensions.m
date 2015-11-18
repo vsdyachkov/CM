@@ -83,7 +83,7 @@
         }
         
     }];
-    NSAssert(key, @"Table should have '%@ = YES' userinfo", CMIdPrefix);
+    NSAssert(key, @"Table %@ should have '%@ = YES' userinfo", self.name, CMIdPrefix);
     return key;
 }
 

@@ -32,11 +32,37 @@ static NSManagedObjectModel* managedObjectModel;
     if (managedObjectModel != nil)
         return managedObjectModel;
     
-    managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    @try {
+        managedObjectModel = [NSManagedObjectModel mergedModelFromBundles:nil];
+    }
     
-    if (managedObjectModel.entities.count == 0) {
-        printf ("%s\n", [CMModelError UTF8String]);
-        abort();
+    @catch (NSException *exception)
+    {
+        printf ("[!] %s\n", exception.description.UTF8String);
+        
+        NSString *bundleRoot = [[NSBundle mainBundle] bundlePath];
+        NSFileManager *fm = [NSFileManager defaultManager];
+        NSArray *dirContents = [fm contentsOfDirectoryAtPath:bundleRoot error:nil];
+        NSPredicate *fltr = [NSPredicate predicateWithFormat:@"self ENDSWITH '.momd'"];
+        NSArray *momdFiles = [dirContents filteredArrayUsingPredicate:fltr];
+        
+        NSString* momdFileName;
+        if (momdFiles.count > 0) {
+            momdFileName = momdFiles.firstObject;
+        }
+        
+        NSString *path = [[NSBundle mainBundle] pathForResource:momdFileName.stringByDeletingPathExtension ofType:momdFileName.pathExtension];
+        NSURL *momURL = [NSURL fileURLWithPath:path];
+        managedObjectModel = [[NSManagedObjectModel alloc] initWithContentsOfURL:momURL];
+        
+        printf ("%s\n", [CMMigrationSuccess UTF8String]);
+    }
+    
+    @finally {
+        if (managedObjectModel.entities.count == 0) {
+            printf ("%s\n", [CMModelError UTF8String]);
+            abort();
+        }
     }
     
     return managedObjectModel;
