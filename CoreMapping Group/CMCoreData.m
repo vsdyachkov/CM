@@ -202,6 +202,21 @@ static NSManagedObjectModel* managedObjectModel;
     }
 }
 
++ (void) clearEntity:(NSString*)name
+{
+    NSFetchRequest *fetchRequest = [NSFetchRequest new];
+    NSEntityDescription *entity = [NSEntityDescription entityForName:name inManagedObjectContext:[CMCoreData mainManagedObjectContext]];
+    [fetchRequest setEntity:entity];
+    NSError *error;
+    NSArray *items = [[CMCoreData managedObjectContext] executeFetchRequest:fetchRequest error:&error];
+    for (NSManagedObject *managedObject in items) {
+        [[CMCoreData managedObjectContext] deleteObject:managedObject];
+    }
+    if (![[CMCoreData managedObjectContext] save:&error]) {
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Error: %@",error.localizedDescription] UTF8String]);
+    }
+}
+
 + (void) status
 {
     [self fullPrint:YES];

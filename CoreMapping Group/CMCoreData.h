@@ -19,6 +19,7 @@
 
 + (void) saveContext;
 + (void) clearDatabase;
++ (void) clearEntity:(NSString*)name;
 + (void) status;
 + (void) shortStatus;
 
