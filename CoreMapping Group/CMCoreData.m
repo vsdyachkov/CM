@@ -230,26 +230,32 @@ static NSManagedObjectModel* managedObjectModel;
 + (void) fullPrint: (BOOL) full
 {
     printf ("%s\n", [[NSString stringWithFormat:@"Current Core Data status:"] UTF8String]);
-    for (NSEntityDescription* entityDescription in [[CMCoreData managedObjectModel] entities])
-    {
-        NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entityDescription.name];
-        
-        NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:nil];
-        if (full)
-            printf ("\n");
-        printf ("%s\n", [[NSString stringWithFormat:@"[i] %@: %lu rows", entityDescription.name, (unsigned long)arr.count] UTF8String]);
-        if (full) {
-            printf ("\n");
-        } else {
-            continue;
-        }
-        [arr enumerateObjectsUsingBlock:^(NSManagedObject* obj, NSUInteger idx, BOOL *stop) {
-            printf ("%s\n", [[NSString stringWithFormat:@"- %@\n", obj] UTF8String]);
-        }];
-        if (arr.count < 1)
-            printf ("%s\n", [[NSString stringWithFormat:@"- <Empty>"] UTF8String]);
-        printf ("\n\n");
-    }
+    
+    NSInteger entitiesCount = [[CMCoreData managedObjectModel] entities].count;
+    
+    [[[CMCoreData managedObjectModel] entities] enumerateObjectsUsingBlock:^(NSEntityDescription* entityDescription, NSUInteger idx, BOOL * _Nonnull stop)
+     {
+         NSFetchRequest* request = [[NSFetchRequest alloc]initWithEntityName:entityDescription.name];
+         
+         NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:request error:nil];
+         if (full)
+             printf ("\n");
+         printf ("%s\n", [[NSString stringWithFormat:@"[i] %@: %lu rows", entityDescription.name, (unsigned long)arr.count] UTF8String]);
+         if (full) {
+             printf ("\n");
+         } else {
+             if (idx == entitiesCount-1) {
+                 printf ("\n");
+             }
+             return;
+         }
+         [arr enumerateObjectsUsingBlock:^(NSManagedObject* obj, NSUInteger idx, BOOL *stop) {
+             printf ("%s\n", [[NSString stringWithFormat:@"- %@\n", obj] UTF8String]);
+         }];
+         if (arr.count < 1)
+             printf ("%s\n", [[NSString stringWithFormat:@"- <Empty>"] UTF8String]);
+         printf ("\n");
+     }];
 }
 
 @end

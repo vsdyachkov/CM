@@ -43,8 +43,17 @@
 
 + (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending
 {
-    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
-    return [self findRowsWithPredicate:predicate andSortDescriptors:@[sortDescriptor]];
+    NSString* className = NSStringFromClass(self);
+    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
+    NSArray* arrayOfProperties = entity.attributesByName.allKeys;
+    
+    if (![arrayOfProperties containsObject:sortProperty]) {
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Entity '%@' don't contain property: '%@'", entity.name, sortProperty] UTF8String]);
+        return nil;
+    } else {
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
+        return [self findRowsWithPredicate:predicate andSortDescriptors:@[sortDescriptor]];
+    }
 }
 
 + (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate
@@ -59,8 +68,17 @@
 
 + (NSArray*) findAllRowsSortedBy:(NSString*)sortProperty ascending:(BOOL)ascending
 {
-    NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
-    return [self findRowsWithPredicate:nil andSortDescriptors:@[sortDescriptor]];
+    NSString* className = NSStringFromClass(self);
+    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
+    NSArray* arrayOfProperties = entity.attributesByName.allKeys;
+    
+    if (![arrayOfProperties containsObject:sortProperty]) {
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Entity '%@' don't contain property: '%@'", entity.name, sortProperty] UTF8String]);
+        return nil;
+    } else {
+        NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
+        return [self findRowsWithPredicate:nil andSortDescriptors:@[sortDescriptor]];
+    }
 }
 
 + (NSArray*) findAllRows
