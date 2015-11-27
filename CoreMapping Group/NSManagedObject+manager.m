@@ -21,6 +21,22 @@
     return request;
 }
 
+# pragma mark - Finding with id
+
++ (instancetype) findObjectWithId:(NSNumber*)idObj
+{
+    NSString* className = NSStringFromClass(self);
+    NSEntityDescription* entity = [NSEntityDescription entityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];
+    
+    NSFetchRequest* req = [[NSFetchRequest alloc]initWithEntityName:className];
+    NSString* idKey = [entity mappingIdKey];
+    NSPredicate* myPred = [NSPredicate predicateWithFormat:@"%K == %@", idKey, idObj];
+    [req setPredicate:myPred];
+    
+    NSArray* arr = [[CMCoreData managedObjectContext] executeFetchRequest:req error:nil];
+    return (arr.count > 0) ? arr[0] : nil;
+}
+
 # pragma mark - Finding
 
 + (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors
@@ -88,7 +104,7 @@
 
 # pragma mark - Finding first
 
-+ (id) findFirstRowWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors
++ (instancetype) findFirstRowWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors
 {
     NSFetchRequest* request = [self requestWithPredicate:predicate];
     if (sortDescriptors) [request setSortDescriptors:sortDescriptors];
@@ -111,20 +127,20 @@
     }
 }
 
-+ (id) findFirstRowWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending
++ (instancetype) findFirstRowWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending
 {
     NSSortDescriptor* sortDescriptor = [NSSortDescriptor sortDescriptorWithKey:sortProperty ascending:ascending];
     return [self findFirstRowWithPredicate:predicate andSortDescriptors:@[sortDescriptor]];
 }
 
-+ (id) findFirstRowWithPredicate:(NSPredicate*)predicate
++ (instancetype) findFirstRowWithPredicate:(NSPredicate*)predicate
 {
     return [self findFirstRowWithPredicate:predicate andSortDescriptors:nil];
 }
 
 # pragma mark - Inserting
 
-+ (id) insert
++ (instancetype) insert
 {
     NSString* className = NSStringFromClass([self class]);
     return [NSEntityDescription insertNewObjectForEntityForName:className inManagedObjectContext:[CMCoreData managedObjectContext]];

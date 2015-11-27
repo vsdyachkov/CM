@@ -19,7 +19,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 #pragma mark - Mapping methods
 
-+ (void) mapValue:(id) value withJsonKey: (NSString*) key andType: (NSAttributeType) type andManagedObject: (NSManagedObject*) obj
++ (void) mapValue:(id)value withJsonKey:(NSString*)key andType:(NSAttributeType)type andManagedObject:(NSManagedObject*)obj
 {
     
     [CMExtensions validateValue:key withClass:[NSString class]];
@@ -42,7 +42,7 @@ static NSMutableDictionary* relationshipDictionary;
         case NSBooleanAttributeType: convertedValue =    [NSNumber numberWithInt:[strValue boolValue]]; break;
         case NSDateAttributeType: convertedValue =       [format dateFromString:strValue]; break;
         case NSBinaryDataAttributeType: convertedValue = [strValue dataUsingEncoding:NSUTF8StringEncoding]; break;
-        
+            
         default: [NSException raise:CMUnsupportedAttrException format:CMUnsupportedAttrFormat]; break;
     }
     
@@ -52,7 +52,7 @@ static NSMutableDictionary* relationshipDictionary;
     [obj setValue:convertedValue forKey:key];
 }
 
-+ (NSManagedObject*) findObjectInEntity: (NSEntityDescription*) entity withId: (NSNumber*) idNumber enableCreating: (BOOL) create
++ (NSManagedObject*) findObjectInEntity:(NSEntityDescription*)entity withId:(NSNumber*)idNumber enableCreating:(BOOL)create
 {
     [CMExtensions validateValue:entity withClass:[NSEntityDescription class]];
     [CMExtensions validateValue:idNumber withClass:[NSNumber class]];
@@ -160,7 +160,7 @@ static NSMutableDictionary* relationshipDictionary;
     }
 }
 
-+ (void) mapAllRowsInEntity: (NSEntityDescription*) desc andWithJsonArray: (NSArray*) jsonArray
++ (void) mapAllRowsInEntity:(NSEntityDescription*)desc andWithJsonArray:(NSArray*)jsonArray
 {
     [CMExtensions validateValue:desc withClass:[NSEntityDescription class]];
     [CMExtensions validateValue:jsonArray withClass:[NSArray class]];
@@ -175,7 +175,7 @@ static NSMutableDictionary* relationshipDictionary;
      }];
 }
 
-+ (void) removeRowsInEntity: (NSEntityDescription*) desc withNumberArray: (NSArray*) removeArray
++ (void) removeRowsInEntity:(NSEntityDescription*)desc withNumberArray:(NSArray*)removeArray
 {
     [CMExtensions validateValue:desc withClass:[NSEntityDescription class]];
     [CMExtensions validateValue:removeArray withClass:[NSArray class]];
@@ -227,7 +227,7 @@ static NSMutableDictionary* relationshipDictionary;
     return entities;
 }
 
-+ (void) parseAddBlockForEntity: (NSEntityDescription*) entity withJson: (NSDictionary*) json
++ (void) parseAddBlockForEntity:(NSEntityDescription*)entity withJson:(NSDictionary*)json
 {
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonAddName])
@@ -243,7 +243,7 @@ static NSMutableDictionary* relationshipDictionary;
     }
 }
 
-+ (void) parseRemoveBlockForEntity: (NSEntityDescription*) entity withJson: (NSDictionary*) json
++ (void) parseRemoveBlockForEntity:(NSEntityDescription*)entity withJson:(NSDictionary*)json
 {
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonRemoveName])
@@ -365,7 +365,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 #pragma mark - Helper method
 
-+ (NSDictionary*) jsonWithFileName: (NSString*) name error: (NSError**) error
++ (NSDictionary*) jsonWithFileName:(NSString*)name error:(NSError**)error
 {
     [CMExtensions validateValue:name withClass:[NSString class]];
     
@@ -414,7 +414,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 #pragma mark - Counter methods
 
-+ (void) countActionsForEntity: (NSEntityDescription*) entity withJson: (NSDictionary*) json
++ (void) countActionsForEntity:(NSEntityDescription*)entity withJson:(NSDictionary*)json
 {
     NSDictionary* jsonTable = json[entity.mappingEntityName];
     if ([jsonTable.allKeys containsObject:CMJsonAddName])
@@ -434,7 +434,7 @@ static NSMutableDictionary* relationshipDictionary;
 
 #pragma mark - Sync methods
 
-+ (void) syncWithJson: (NSDictionary*) json;
++ (void) syncWithJson:(NSDictionary*)json;
 {
     NSDate* parseTime = [NSDate date];
     hasNewData = NO;
@@ -489,7 +489,7 @@ static NSMutableDictionary* relationshipDictionary;
 }
 
 
-+ (void) syncWithJson: (NSDictionary*) json completion:(void(^)(NSDictionary* json)) completion
++ (void) syncWithJson:(NSDictionary*)json completion:(void(^)(NSDictionary* json))completion
 {
     [CMExtensions validateValue:json withClass:[NSDictionary class]];
     
@@ -508,7 +508,7 @@ static NSMutableDictionary* relationshipDictionary;
     [self syncWithJson:json];
 }
 
-+ (void) syncWithJsonByName: (NSString*) name success:(void(^)(NSDictionary* json)) success failure: (void(^)(NSError *error)) failure;
++ (void) syncWithJsonByName:(NSString*)name success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure;
 {
     [CMExtensions validateValue:name withClass:[NSString class]];
     

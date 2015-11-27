@@ -11,6 +11,10 @@
 
 @interface NSManagedObject (manager)
 
+# pragma mark - Finding with id
+
++ (instancetype) findObjectWithId:(NSNumber*)idObj;
+
 # pragma mark - Finding custom
 
 + (NSArray*) findRowsWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors;
@@ -25,13 +29,13 @@
 
 # pragma mark - Finding first
 
-+ (id) findFirstRowWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors;
-+ (id) findFirstRowWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending;
-+ (id) findFirstRowWithPredicate:(NSPredicate*)predicate;
++ (instancetype) findFirstRowWithPredicate:(NSPredicate*)predicate andSortDescriptors:(NSArray*)sortDescriptors;
++ (instancetype) findFirstRowWithPredicate:(NSPredicate*)predicate sortedBy:(NSString*)sortProperty ascending:(BOOL)ascending;
++ (instancetype) findFirstRowWithPredicate:(NSPredicate*)predicate;
 
 # pragma mark - Inserting
 
-+ (id) insert;
++ (instancetype) insert;
 
 # pragma mark - Deleting
 
