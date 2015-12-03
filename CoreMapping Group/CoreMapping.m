@@ -527,6 +527,12 @@ static NSMutableDictionary* relationshipDictionary;
 
 + (void) syncWithJsonByUrl:(NSURL*)url withParameters:(NSDictionary*)parameters success:(void(^)(NSDictionary* json))success failure:(void(^)(NSError *error))failure
 {
+    [CMExtensions validateValue:url withClass:[NSURL class]];
+    if (!url) {
+        printf ("%s\n", [[NSString stringWithFormat:@"[!] Sync url is nil!"] UTF8String]);
+        return;
+    }
+    
     AFHTTPRequestOperationManager* manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"application/json", nil];
     
